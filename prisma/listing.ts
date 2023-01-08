@@ -24,6 +24,7 @@ export const ListingsFactory = (
       const listing = await prisma.listing.create({
         data: { ...parsedPayload },
       });
+      return listing;
     } catch (e) {
       console.log(e);
     }

@@ -1,6 +1,9 @@
 import { PrismaClient, Prisma, Listing } from "@prisma/client";
 import { z } from "zod";
 
+export interface GetAllListingsParams {
+  namePrefix?: string;
+}
 export const ListingsFactory = (
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,
@@ -43,9 +46,15 @@ export const ListingsFactory = (
     }
   }
 
-  async function getAllListings() {
+  async function getAllListings(payload: GetAllListingsParams) {
+    const getAllListingsParams = z.object({
+      name: z.string().default(""),
+    });
+    getAllListingsParams.parse(payload);
     try {
-      const listings = await prisma.listing.findMany();
+      const listings = await prisma.listing.findMany({
+        where: { name: { startsWith: payload.namePrefix } },
+      });
       return listings;
     } catch (e) {
       console.log(e);
@@ -125,7 +134,7 @@ export const ListingsFactory = (
       category: "bars",
       description: "A place to do things.",
     });
-    let listings = await getAllListings();
+    let listings = await getAllListings({});
 
     if (!listings) {
       console.log("no listings found ");
@@ -137,7 +146,7 @@ export const ListingsFactory = (
     console.log(listings[1]);
     await updateListing(listings[1]);
 
-    listings = await getAllListings();
+    listings = await getAllListings({});
     console.log(listings);
   }
 

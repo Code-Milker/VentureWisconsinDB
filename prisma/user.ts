@@ -1,6 +1,6 @@
 import { PrismaClient, Prisma, User } from "@prisma/client";
 import { z } from "zod";
-import { USER_ROLE } from "./consts";
+import { IFactory, USER_ROLE } from "./consts";
 
 export const UserFactory = (
   prisma: PrismaClient<
@@ -9,7 +9,7 @@ export const UserFactory = (
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >
 ) => {
-  async function createUser(payload: Omit<User, "id" | "createdAt">) {
+  async function create(payload: Omit<User, "id" | "createdAt">) {
     const createUserSchema = z.object({
       firstName: z.string(),
       lastName: z.string(),
@@ -17,37 +17,29 @@ export const UserFactory = (
       role: z.string(),
     });
 
-    try {
-      const parsedPayload = createUserSchema.parse(payload); //validate the incoming object
-      const user = await prisma.user.create({
-        data: { ...parsedPayload },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    const parsedPayload = createUserSchema.parse(payload); //validate the incoming object
+    const user = await prisma.user.create({
+      data: { ...parsedPayload },
+    });
+    return user;
   }
 
-  async function getUserByEmail(email: string) {
+  async function getByUnique(email: string) {
     const getListingSchema = z.string();
-    try {
-      const parsedName = getListingSchema.parse(email); //validate the incoming object
-      const user = await prisma.user.findUnique({ where: { email } });
-      return user;
-    } catch (e) {
-      console.log(e);
+    const parsedName = getListingSchema.parse(email); //validate the incoming object
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (user === null) {
+      throw Error("No user found");
     }
+    return user;
   }
 
-  async function getAllUsers() {
-    try {
-      const users = await prisma.user.findMany();
-      return users;
-    } catch (e) {
-      console.log(e);
-    }
+  async function getAll(filter: any) {
+    const users = await prisma.user.findMany();
+    return users;
   }
 
-  async function updateUser(payload: Partial<User>) {
+  async function update(email: Partial<User>) {
     const updatedUserSchema = z.object({
       firstName: z.string(),
       lastName: z.string(),
@@ -55,75 +47,68 @@ export const UserFactory = (
       role: z.string(),
     });
 
-    try {
-      const parsedPayload = updatedUserSchema.parse(payload); //validate the incoming object
-      const listings = await prisma.user.update({
-        where: { email: parsedPayload.email },
-        data: { ...parsedPayload },
-      });
-      return listings;
-    } catch (e) {
-      console.log(e);
-    }
+    const parsedPayload = updatedUserSchema.parse(email); //validate the incoming object
+    const listings = await prisma.user.update({
+      where: { email: parsedPayload.email },
+      data: { ...parsedPayload },
+    });
+    return listings;
   }
 
-  async function deleteUser(email: string) {
+  async function remove(identifier: string) {
     const deleteUserSchema = z.string(); //validate the incoming object
-    try {
-      const parsedEmail = deleteUserSchema.parse(email);
-      await prisma.user.delete({ where: { email: parsedEmail } });
-    } catch (e) {
-      console.log(e);
-    }
+    const parsedEmail = deleteUserSchema.parse(identifier);
+    const res = await prisma.user.delete({ where: { email: parsedEmail } });
+    return res.id;
   }
 
-  async function userDBTests() {
-    await createUser({
+  async function DBTests() {
+    await create({
       email: "ty@deso.org",
       firstName: "Tyler",
       lastName: "Fischer",
       role: USER_ROLE.ADMIN,
     });
 
-    await createUser({
+    await create({
       email: "dave@dingdong.org",
       firstName: "Dave",
       lastName: "Shuma",
       role: USER_ROLE.USER,
     });
 
-    await createUser({
+    await create({
       email: "evan@venture-wisconsin.org",
       firstName: "Evan",
       lastName: "Freimuth",
       role: USER_ROLE.USER,
     });
 
-    await createUser({
+    await create({
       email: "kyle@corndog.org",
       firstName: "Kyle",
       lastName: "Esser",
       role: USER_ROLE.USER,
     });
-    let users = await getAllUsers();
+    let users = await getAll({});
 
     if (!users) {
       console.log("no listings found ");
       return;
     }
-    await deleteUser("dave@dingdong.org");
+    await remove("dave@dingdong.org");
 
     users[2].firstName = "Not Evan";
-    await updateUser(users[2]);
-    users = await getAllUsers();
+    await update(users[2]);
+    users = await getAll({});
   }
-  const factory = {
-    createUser,
-    getUserByEmail,
-    getAllUsers,
-    updateUser,
-    deleteUser,
-    userDBTests,
+  const factory: IFactory<User, "id" | "createdAt"> = {
+    create,
+    getByUnique,
+    getAll,
+    update,
+    remove,
+    DBTests,
   };
   return factory;
 };

@@ -1,51 +1,44 @@
 import { PrismaClient, Prisma, Coupon } from "@prisma/client";
 import { z } from "zod";
+import { IFactory } from "./consts";
 
-export const CouponsFactory = (
+export const CouponFactory = (
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,
     never,
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >
 ) => {
-  async function createCoupon(payload: Omit<Coupon, "id">) {
+  async function create(payload: Omit<Coupon, "id">) {
     const createCouponSchema = z.object({
       name: z.string(),
       listingId: z.number().int(),
       deal: z.string(),
       expires: z.date(),
     });
-    try {
-      const parsedPayload = createCouponSchema.parse(payload); //validate the incoming object
-      const coupon = await prisma.coupon.create({
-        data: { ...parsedPayload },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    const parsedPayload = createCouponSchema.parse(payload); //validate the incoming object
+    const coupon = await prisma.coupon.create({
+      data: { ...parsedPayload },
+    });
+    return coupon;
   }
 
-  async function getCouponByName(name: string) {
+  async function getByUnique(name: string) {
     const getCouponSchema = z.string();
-    try {
-      const parsedName = getCouponSchema.parse(name); //validate the incoming object
-      const coupon = await prisma.coupon.findUnique({ where: { name } });
-      return coupon;
-    } catch (e) {
-      console.log(e);
+    const parsedName = getCouponSchema.parse(name); //validate the incoming object
+    const coupon = await prisma.coupon.findUnique({ where: { name } });
+    if (coupon === null) {
+      throw Error("No coupon found");
     }
+    return coupon;
   }
 
-  async function getAllCoupons() {
-    try {
-      const coupons = await prisma.coupon.findMany();
-      return coupons;
-    } catch (e) {
-      console.log(e);
-    }
+  async function getAll(filter: any) {
+    const coupons = await prisma.coupon.findMany();
+    return coupons;
   }
 
-  async function updateCoupon(payload: Partial<Coupon>) {
+  async function update(payload: Partial<Coupon>) {
     const createCouponSchema = z.object({
       id: z.number().int(),
       name: z.string(),
@@ -54,64 +47,60 @@ export const CouponsFactory = (
       expires: z.date(),
     });
 
-    try {
-      const parsedPayload = createCouponSchema.parse(payload); //validate the incoming object
-      const coupon = await prisma.coupon.update({
-        where: { id: parsedPayload.id },
-        data: { ...parsedPayload },
-      });
-      return coupon;
-    } catch (e) {
-      console.log(e);
-    }
+    const parsedPayload = createCouponSchema.parse(payload); //validate the incoming object
+    const coupon = await prisma.coupon.update({
+      where: { id: parsedPayload.id },
+      data: { ...parsedPayload },
+    });
+    return coupon;
   }
 
-  async function deleteCoupon(id: number) {
-    const deleteCouponSchema = z.number().int(); //validate the incoming object
-    try {
-      const parsedId = deleteCouponSchema.parse(id);
-      await prisma.coupon.delete({ where: { id: parsedId } });
-    } catch (e) {
-      console.log(e);
-    }
+  async function remove(name: string) {
+    const deleteCouponSchema = z.string(); //validate the incoming object
+    const parsedName = deleteCouponSchema.parse(name);
+    const removedCoupon = await prisma.coupon.delete({
+      where: { name: parsedName },
+    });
+    return removedCoupon.id;
   }
 
-  async function CouponDBTests() {
-    await createCoupon({
+  async function DBTests() {
+    await create({
       deal: "50% off banana bread",
       expires: new Date(4, 5, 20),
       name: "grandmas cookies shop",
       listingId: 4,
     });
-    await createCoupon({
+    await create({
       deal: "bogo bloodies",
       expires: new Date(4, 5, 20),
       name: "billy's funeral home",
       listingId: 4,
     });
-    let coupons = await getAllCoupons();
+    let coupons = await getAll({});
 
     if (!coupons) {
       console.log("no coupon found ");
       return;
     }
 
-    await deleteCoupon(coupons[0].id);
+    await remove(coupons[0].name);
     coupons[1].deal = "new description";
     coupons[1].listingId = 2;
     console.log(coupons[1]);
-    await updateCoupon(coupons[1]);
+    await update(coupons[1]);
 
-    coupons = await getAllCoupons();
+    coupons = await getAll({});
     console.log(coupons);
   }
 
-  const factory = {
-    createCoupon,
-    getAllCoupons,
-    updateCoupon,
-    deleteCoupon,
-    CouponDBTests,
+  const factory: IFactory<Coupon, "id"> = {
+    create,
+    getByUnique,
+    getAll,
+    update,
+    remove,
+    DBTests,
   };
   return factory;
 };

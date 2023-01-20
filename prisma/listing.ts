@@ -1,4 +1,9 @@
-import { PrismaClient, Prisma, Listing } from "@prisma/client";
+// import { PrismaClient, Prisma } from "../../VentureWisconsinShared/index";
+import {
+  Listing,
+  PrismaClient,
+  Prisma,
+} from "../../VentureWisconsinShared/index";
 import { z } from "zod";
 import { IFactory } from "./consts";
 

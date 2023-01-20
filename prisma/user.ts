@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, User } from "@prisma/client";
+import { PrismaClient, Prisma, User } from "../../VentureWisconsinShared/index";
 import { z } from "zod";
 import { IFactory, USER_ROLE } from "./consts";
 

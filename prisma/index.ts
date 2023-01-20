@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../VentureWisconsinShared/index";
 import { ListingsFactory } from "./listing";
 import { UserFactory } from "./user";
 import express from "express";

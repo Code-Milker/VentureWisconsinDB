@@ -1,114 +1,158 @@
 import { PrismaClient, Prisma, User } from "../../VentureWisconsinShared/index";
 import { z } from "zod";
-import { IFactory, USER_ROLE } from "./consts";
+import { IFactory } from "./consts";
+import {
+  ProcedureBuilder,
+  RootConfig,
+  DefaultErrorShape,
+  DefaultDataTransformer,
+  unsetMarker,
+} from "@trpc/server";
 
 export const UserFactory = (
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,
     never,
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
-  >
+  >,
+
+  publicProcedure:
+    | ProcedureBuilder<{
+        _config: RootConfig<{
+          ctx: object;
+          meta: object;
+          errorShape: DefaultErrorShape;
+          transformer: DefaultDataTransformer;
+        }>;
+        _ctx_out: object;
+        _input_in: typeof unsetMarker;
+        _input_out: typeof unsetMarker;
+        _output_in: typeof unsetMarker;
+        _output_out: typeof unsetMarker;
+        _meta: object;
+      }>
+    | undefined
 ) => {
-  async function create(payload: Omit<User, "id" | "createdAt">) {
-    const createUserSchema = z.object({
-      firstName: z.string(),
-      lastName: z.string(),
-      email: z.string(),
-      role: z.string(),
-    });
-
-    const parsedPayload = createUserSchema.parse(payload); //validate the incoming object
-    const user = await prisma.user.create({
-      data: { ...parsedPayload },
-    });
-    return user;
+  if (!publicProcedure) {
+    throw Error("public Procedure not found");
   }
 
-  async function getByUnique(email: string) {
-    const getListingSchema = z.string();
-    const parsedName = getListingSchema.parse(email); //validate the incoming object
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (user === null) {
-      throw Error("No user found");
-    }
-    return user;
-  }
-
-  async function getAll(filter: any) {
-    const users = await prisma.user.findMany();
-    return users;
-  }
-
-  async function update(email: Partial<User>) {
-    const updatedUserSchema = z.object({
-      firstName: z.string(),
-      lastName: z.string(),
-      email: z.string(),
-      role: z.string(),
+  const create = publicProcedure
+    .input((payload: unknown) => {
+      const createUserSchema = z.object({
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string(),
+        role: z.string(),
+      });
+      const parsedPayload = createUserSchema.parse(payload); //validate the incoming object
+      return parsedPayload;
+    })
+    .mutation(async ({ input }) => {
+      const user = await prisma.user.create({
+        data: { ...input },
+      });
+      return user;
     });
 
-    const parsedPayload = updatedUserSchema.parse(email); //validate the incoming object
-    const listings = await prisma.user.update({
-      where: { email: parsedPayload.email },
-      data: { ...parsedPayload },
-    });
-    return listings;
-  }
-
-  async function remove(identifier: string) {
-    const deleteUserSchema = z.string(); //validate the incoming object
-    const parsedEmail = deleteUserSchema.parse(identifier);
-    const res = await prisma.user.delete({ where: { email: parsedEmail } });
-    return res.id;
-  }
-
-  async function DBTests() {
-    await create({
-      email: "ty@deso.org",
-      firstName: "Tyler",
-      lastName: "Fischer",
-      role: USER_ROLE.ADMIN,
+  const getByUnique = publicProcedure
+    .input((payload: unknown) => {
+      const getListingSchema = z.string();
+      const parsedName = getListingSchema.parse(payload); //validate the incoming object
+      return parsedName;
+    })
+    .query(async ({ input }) => {
+      const user = await prisma.user.findUnique({ where: { email: input } });
+      if (user === null) {
+        throw Error("No user found");
+      }
+      return user;
     });
 
-    await create({
-      email: "dave@dingdong.org",
-      firstName: "Dave",
-      lastName: "Shuma",
-      role: USER_ROLE.USER,
+  const getAll = publicProcedure
+    .input((payload: unknown) => {})
+    .query(async ({ input }) => {
+      const users = await prisma.user.findMany();
+      return users;
     });
 
-    await create({
-      email: "evan@venture-wisconsin.org",
-      firstName: "Evan",
-      lastName: "Freimuth",
-      role: USER_ROLE.USER,
+  const update = publicProcedure
+    .input((payload: unknown) => {
+      const updatedUserSchema = z.object({
+        firstName: z.string(),
+        lastName: z.string(),
+        email: z.string(),
+        role: z.string(),
+      });
+
+      const parsedPayload = updatedUserSchema.parse(payload); //validate the incoming object
+      return parsedPayload;
+    })
+    .mutation(async ({ input }) => {
+      const listings = await prisma.user.update({
+        where: { email: input.email },
+        data: { ...input },
+      });
+      return listings;
     });
 
-    await create({
-      email: "kyle@corndog.org",
-      firstName: "Kyle",
-      lastName: "Esser",
-      role: USER_ROLE.USER,
+  const remove = publicProcedure
+    .input((payload: unknown) => {
+      const deleteUserSchema = z.string(); //validate the incoming object
+      const parsedEmail = deleteUserSchema.parse(payload);
+      return parsedEmail;
+    })
+    .mutation(async ({ input }) => {
+      const res = await prisma.user.delete({ where: { email: input } });
+      return res.id;
     });
-    let users = await getAll({});
 
-    if (!users) {
-      console.log("no listings found ");
-      return;
-    }
-    await remove("dave@dingdong.org");
+  // async function DBTests() {
+  //   await create({
+  //     email: "ty@deso.org",
+  //     firstName: "Tyler",
+  //     lastName: "Fischer",
+  //     role: USER_ROLE.ADMIN,
+  //   });
 
-    users[2].firstName = "Not Evan";
-    await update(users[2]);
-    users = await getAll({});
-  }
-  const factory: IFactory<User, "id" | "createdAt"> = {
-    create,
-    getByUnique,
-    getAll,
-    update,
-    remove,
-    DBTests,
+  //   await create({
+  //     email: "dave@dingdong.org",
+  //     firstName: "Dave",
+  //     lastName: "Shuma",
+  //     role: USER_ROLE.USER,
+  //   });
+
+  //   await create({
+  //     email: "evan@venture-wisconsin.org",
+  //     firstName: "Evan",
+  //     lastName: "Freimuth",
+  //     role: USER_ROLE.USER,
+  //   });
+
+  //   await create({
+  //     email: "kyle@corndog.org",
+  //     firstName: "Kyle",
+  //     lastName: "Esser",
+  //     role: USER_ROLE.USER,
+  //   });
+  //   let users = await getAll({});
+
+  //   if (!users) {
+  //     console.log("no listings found ");
+  //     return;
+  //   }
+  //   await remove("dave@dingdong.org");
+
+  //   users[2].firstName = "Not Evan";
+  //   await update(users[2]);
+  //   users = await getAll({});
+  // }
+  const userRoutes = {
+    userCreate: create,
+    userGetByUnique: getByUnique,
+    userListingUpdate: update,
+    userRemove: remove,
+    userGetAll: getAll,
   };
-  return factory;
+  return userRoutes;
 };

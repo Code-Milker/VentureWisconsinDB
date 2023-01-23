@@ -9,7 +9,7 @@ export enum ROUTES {
 }
 
 export interface IFactory<T, S extends string> {
-  create: (payload: Omit<T, S>) => Promise<T>;
+  create: () => {};
   getByUnique: (identifier: string) => Promise<T>;
   getAll: (filter: any) => Promise<T[]>;
   update: (payload: Partial<T>) => Promise<T>;

@@ -1,6 +1,5 @@
 import { PrismaClient, Prisma, User } from "../../VentureWisconsinShared/index";
 import { z } from "zod";
-import { IFactory } from "./consts";
 import {
   ProcedureBuilder,
   RootConfig,
@@ -9,7 +8,7 @@ import {
   unsetMarker,
 } from "@trpc/server";
 
-export const UserFactory = (
+export const UserRoutes = (
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,
     never,

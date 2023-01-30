@@ -1,9 +1,4 @@
-import {
-  PrismaClient,
-  Prisma,
-  Coupon,
-} from "../../VentureWisconsinShared/index";
-import { z } from "zod";
+import { PrismaClient, Prisma } from "../../VentureWisconsinShared/index";
 import {
   ProcedureBuilder,
   RootConfig,
@@ -11,6 +6,12 @@ import {
   DefaultDataTransformer,
   unsetMarker,
 } from "@trpc/server";
+import {
+  createCouponSchema,
+  deleteCouponSchema,
+  getCouponSchema,
+  updateCouponSchema,
+} from "../../VentureWisconsinShared/shared";
 
 export const CouponRoutes = (
   prisma: PrismaClient<
@@ -40,12 +41,6 @@ export const CouponRoutes = (
   }
   const create = publicProcedure
     .input((payload: unknown) => {
-      const createCouponSchema = z.object({
-        name: z.string(),
-        listingId: z.number().int(),
-        deal: z.string(),
-        expires: z.date(),
-      });
       const parsedPayload = createCouponSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
@@ -58,7 +53,6 @@ export const CouponRoutes = (
 
   const getByUnique = publicProcedure
     .input((payload: unknown) => {
-      const getCouponSchema = z.string();
       const parsedName = getCouponSchema.parse(payload); //validate the incoming object
       return parsedName;
     })
@@ -79,15 +73,7 @@ export const CouponRoutes = (
 
   const update = publicProcedure
     .input((payload: unknown) => {
-      const createCouponSchema = z.object({
-        id: z.number().int(),
-        name: z.string(),
-        listingId: z.number().int(),
-        deal: z.string(),
-        expires: z.date(),
-      });
-
-      const parsedPayload = createCouponSchema.parse(payload); //validate the incoming object
+      const parsedPayload = updateCouponSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
@@ -100,7 +86,6 @@ export const CouponRoutes = (
 
   const remove = publicProcedure
     .input((payload: unknown) => {
-      const deleteCouponSchema = z.string(); //validate the incoming object
       const parsedName = deleteCouponSchema.parse(name);
       return parsedName;
     })

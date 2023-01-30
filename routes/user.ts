@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma, User } from "../../VentureWisconsinShared/index";
-import { z } from "zod";
 import {
   ProcedureBuilder,
   RootConfig,
@@ -7,6 +6,12 @@ import {
   DefaultDataTransformer,
   unsetMarker,
 } from "@trpc/server";
+import {
+  createUserSchema,
+  deleteUserSchema,
+  getUserSchema,
+  updatedUserSchema,
+} from "../../VentureWisconsinShared/shared";
 
 export const UserRoutes = (
   prisma: PrismaClient<
@@ -38,12 +43,6 @@ export const UserRoutes = (
 
   const create = publicProcedure
     .input((payload: unknown) => {
-      const createUserSchema = z.object({
-        firstName: z.string(),
-        lastName: z.string(),
-        email: z.string(),
-        role: z.string(),
-      });
       const parsedPayload = createUserSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
@@ -56,8 +55,7 @@ export const UserRoutes = (
 
   const getByUnique = publicProcedure
     .input((payload: unknown) => {
-      const getListingSchema = z.string();
-      const parsedName = getListingSchema.parse(payload); //validate the incoming object
+      const parsedName = getUserSchema.parse(payload); //validate the incoming object
       return parsedName;
     })
     .query(async ({ input }) => {
@@ -77,13 +75,6 @@ export const UserRoutes = (
 
   const update = publicProcedure
     .input((payload: unknown) => {
-      const updatedUserSchema = z.object({
-        firstName: z.string(),
-        lastName: z.string(),
-        email: z.string(),
-        role: z.string(),
-      });
-
       const parsedPayload = updatedUserSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
@@ -97,7 +88,6 @@ export const UserRoutes = (
 
   const remove = publicProcedure
     .input((payload: unknown) => {
-      const deleteUserSchema = z.string(); //validate the incoming object
       const parsedEmail = deleteUserSchema.parse(payload);
       return parsedEmail;
     })

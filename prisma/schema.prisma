@@ -12,41 +12,49 @@ datasource db {
 }
 
 model User {
-  id                Int                 @id @default(autoincrement())
-  createdAt         DateTime            @default(now())
-  email             String              @unique
-  firstName         String?
-  lastName          String?
-  role              String              @default("USER") // alternative being "ADMIN"
-  couponsUsedByUser CouponsUsedByUser[]
+  id             Int              @id @default(autoincrement())
+  createdAt      DateTime         @default(now())
+  email          String           @unique
+  firstName      String?
+  lastName       String?
+  role           String           @default("USER") // alternative being "ADMIN"
+  couponsForUser CouponsForUser[]
 }
 
-model CouponsUsedByUser {
+model CouponsForUser {
   id          Int     @id @default(autoincrement())
   User        User?   @relation(fields: [userId], references: [id])
   userId      Int?
   Coupons     Coupon? @relation(fields: [couponsName], references: [name])
   couponsName String?
+  used        Boolean @default(false)
 }
 
 model Coupon {
-  id                Int                 @id @default(autoincrement())
-  name              String              @unique
-  listing           Listing?            @relation(fields: [listingId], references: [id])
+  id                Int              @id @default(autoincrement())
+  name              String           @unique
+  listing           Listing?         @relation(fields: [listingId], references: [id])
   listingId         Int?
   deal              String // 50% off of banana bread at ur grandmas goodies 
   expires           DateTime
-  couponsUsedByUser CouponsUsedByUser[]
+  couponsUsedByUser CouponsForUser[]
+  // product id for wine tags, passports, etc
 }
 
 model Listing {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique() // name of establishment
-  address     String // address of establishment
-  category    String // type of establishment 
-  description String // description of establishment
-  email       String
-  phone       String
-  website     String
-  coupons     Coupon[]
+  id           Int      @id @default(autoincrement())
+  name         String   @unique() // name of establishment
+  address      String // address of establishment
+  city         String
+  zipcode      String
+  displayTitle String // 30 chars or less
+  subTitle     String?
+  category     String? // type of establishment brewery, winery, supper club, distllery, tavern, restraunt, axe bar 
+  attributes   String // change this to array downtown, waterfront, historic buildling,
+  description  String // description of establishment
+  email        String
+  phone        String
+  website      String
+  images       String
+  coupons      Coupon[]
 }

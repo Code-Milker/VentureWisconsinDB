@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma } from "../../VentureWisconsinShared/index";
-import { z } from "zod";
 import {
   DefaultDataTransformer,
   DefaultErrorShape,
@@ -7,6 +6,13 @@ import {
   RootConfig,
   unsetMarker,
 } from "@trpc/server";
+import {
+  createListingSchema,
+  deleteListingSchema,
+  getAllListingsParams,
+  getListingSchema,
+  updatedListingSchema,
+} from "../../VentureWisconsinShared/shared";
 
 export interface GetAllListingsParams {
   namePrefix?: string;
@@ -39,15 +45,7 @@ export const ListingsRoutes = (
   }
   const create = publicProcedure
     .input((payload: unknown) => {
-      const createListingSchema = z.object({
-        name: z.string(),
-        address: z.string(),
-        category: z.string(),
-        description: z.string(),
-        email: z.string(),
-        phone: z.string(),
-        website: z.string(),
-      });
+      console.log("in create");
       const parsedPayload = createListingSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
@@ -55,12 +53,12 @@ export const ListingsRoutes = (
       const listing = await prisma.listing.create({
         data: { ...input },
       });
+      console.log(listing);
       return listing;
     });
 
   const getByUnique = publicProcedure
     .input((payload: unknown) => {
-      const getListingSchema = z.string();
       const parsedName = getListingSchema.parse(name); //validate the incoming object
       return parsedName;
     })
@@ -77,13 +75,12 @@ export const ListingsRoutes = (
 
   const getAll = publicProcedure
     .input((payload: unknown) => {
-      const getAllListingsParams = z.object({
-        name: z.string().default(""),
-      });
+      console.log("in 0");
       const res = getAllListingsParams.parse(payload);
       return res;
     })
     .query(async ({ input }) => {
+      console.log("in");
       const listings = await prisma.listing.findMany({
         where: { name: { startsWith: input.name } },
       });
@@ -92,15 +89,6 @@ export const ListingsRoutes = (
 
   const update = publicProcedure
     .input((payload: unknown) => {
-      const updatedListingSchema = z.object({
-        id: z.number().int(),
-        name: z.string(),
-        address: z.string(),
-        category: z.string(),
-        description: z.string(),
-        email: z.string(),
-        phone: z.string(),
-      });
       const parsedPayload = updatedListingSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
@@ -114,7 +102,6 @@ export const ListingsRoutes = (
 
   const remove = publicProcedure
     .input((payload: unknown) => {
-      const deleteListingSchema = z.string(); //validate the incoming object
       const parsedName = deleteListingSchema.parse(name);
       return parsedName;
     })

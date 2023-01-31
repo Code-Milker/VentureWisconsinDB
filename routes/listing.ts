@@ -7,11 +7,10 @@ import {
   unsetMarker,
 } from "@trpc/server";
 import {
-  createListingSchema,
+  listingSchema,
   deleteListingSchema,
   getAllListingsParams,
   getListingSchema,
-  updatedListingSchema,
 } from "../../VentureWisconsinShared/shared";
 
 export interface GetAllListingsParams {
@@ -46,7 +45,7 @@ export const ListingsRoutes = (
   const create = publicProcedure
     .input((payload: unknown) => {
       console.log("in create");
-      const parsedPayload = createListingSchema.parse(payload); //validate the incoming object
+      const parsedPayload = listingSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
@@ -75,12 +74,10 @@ export const ListingsRoutes = (
 
   const getAll = publicProcedure
     .input((payload: unknown) => {
-      console.log("in 0");
       const res = getAllListingsParams.parse(payload);
       return res;
     })
     .query(async ({ input }) => {
-      console.log("in");
       const listings = await prisma.listing.findMany({
         where: { name: { startsWith: input.name } },
       });
@@ -89,7 +86,7 @@ export const ListingsRoutes = (
 
   const update = publicProcedure
     .input((payload: unknown) => {
-      const parsedPayload = updatedListingSchema.parse(payload); //validate the incoming object
+      const parsedPayload = listingSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
@@ -102,13 +99,14 @@ export const ListingsRoutes = (
 
   const remove = publicProcedure
     .input((payload: unknown) => {
-      const parsedName = deleteListingSchema.parse(name);
+      const parsedName = deleteListingSchema.parse(payload);
       return parsedName;
     })
     .mutation(async ({ input }) => {
       const deletedListing = await prisma.listing.delete({
         where: { name: input },
       });
+      return deletedListing;
     });
 
   async function DBTests() {

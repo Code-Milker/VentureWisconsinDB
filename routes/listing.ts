@@ -16,6 +16,7 @@ import {
 export interface GetAllListingsParams {
   namePrefix?: string;
 }
+
 export const ListingsRoutes = (
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,

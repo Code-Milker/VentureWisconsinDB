@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma, User } from "../../VentureWisconsinShared/index";
+import { PrismaClient, Prisma } from "../../VentureWisconsinShared/index";
 import {
   ProcedureBuilder,
   RootConfig,
@@ -7,11 +7,13 @@ import {
   unsetMarker,
 } from "@trpc/server";
 import {
-  createUserSchema,
+  createNewUserSchema,
   deleteUserSchema,
   getUserSchema,
   updatedUserSchema,
 } from "../../VentureWisconsinShared/shared";
+import { z } from "zod";
+import bCrypt from "bcrypt";
 
 export const UserRoutes = (
   prisma: PrismaClient<
@@ -19,7 +21,6 @@ export const UserRoutes = (
     never,
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >,
-
   publicProcedure:
     | ProcedureBuilder<{
         _config: RootConfig<{
@@ -43,12 +44,13 @@ export const UserRoutes = (
 
   const create = publicProcedure
     .input((payload: unknown) => {
-      const parsedPayload = createUserSchema.parse(payload); //validate the incoming object
+      const parsedPayload = createNewUserSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
+      const hashedPassword = await bCrypt.hash(input.password, 0);
       const user = await prisma.user.create({
-        data: { ...input },
+        data: { ...input, password: hashedPassword },
       });
       return user;
     });
@@ -96,52 +98,38 @@ export const UserRoutes = (
       return res.id;
     });
 
-  // async function DBTests() {
-  //   await create({
-  //     email: "ty@deso.org",
-  //     firstName: "Tyler",
-  //     lastName: "Fischer",
-  //     role: USER_ROLE.ADMIN,
-  //   });
+  const userSession = publicProcedure
+    .input(async (payload: unknown) => {
+      const parsedPayload = z.string().parse(payload);
 
-  //   await create({
-  //     email: "dave@dingdong.org",
-  //     firstName: "Dave",
-  //     lastName: "Shuma",
-  //     role: USER_ROLE.USER,
-  //   });
+      return parsedPayload;
+    })
 
-  //   await create({
-  //     email: "evan@venture-wisconsin.org",
-  //     firstName: "Evan",
-  //     lastName: "Freimuth",
-  //     role: USER_ROLE.USER,
-  //   });
+    .mutation(async ({ input }) => {
+      // const isValidHash = await bCrypt.;
+      return;
+    });
+  const userLogin = publicProcedure
+    .input(async (payload: unknown) => {
+      const loginSchema = z.object({
+        username: z.string().min(1),
+        password: z.string().min(8),
+      });
+      const parsedPayload = loginSchema.parse(payload);
+      return { ...parsedPayload };
+    })
+    .mutation(async ({ input }) => {
+      const hashedPassword = await bCrypt.hash(input.password, 0);
+      return { ...input, hashedPassword };
+    });
 
-  //   await create({
-  //     email: "kyle@corndog.org",
-  //     firstName: "Kyle",
-  //     lastName: "Esser",
-  //     role: USER_ROLE.USER,
-  //   });
-  //   let users = await getAll({});
-
-  //   if (!users) {
-  //     console.log("no listings found ");
-  //     return;
-  //   }
-  //   await remove("dave@dingdong.org");
-
-  //   users[2].firstName = "Not Evan";
-  //   await update(users[2]);
-  //   users = await getAll({});
-  // }
   const userRoutes = {
     userCreate: create,
     userGetByUnique: getByUnique,
     userListingUpdate: update,
     userRemove: remove,
     userGetAll: getAll,
+    userLogin,
   };
   return userRoutes;
 };

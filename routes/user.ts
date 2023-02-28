@@ -52,7 +52,7 @@ export const UserRoutes = (
       const user = await prisma.user.create({
         data: { ...input, password: hashedPassword },
       });
-      return user;
+      return { ...user, session: user.password };
     });
 
   const getByUnique = publicProcedure
@@ -98,29 +98,32 @@ export const UserRoutes = (
       return res.id;
     });
 
-  const userSession = publicProcedure
-    .input(async (payload: unknown) => {
-      const parsedPayload = z.string().parse(payload);
-
-      return parsedPayload;
-    })
-
-    .mutation(async ({ input }) => {
-      // const isValidHash = await bCrypt.;
-      return;
-    });
   const userLogin = publicProcedure
     .input(async (payload: unknown) => {
       const loginSchema = z.object({
-        username: z.string().min(1),
+        email: z.string().min(1),
         password: z.string().min(8),
       });
       const parsedPayload = loginSchema.parse(payload);
       return { ...parsedPayload };
     })
     .mutation(async ({ input }) => {
-      const hashedPassword = await bCrypt.hash(input.password, 0);
-      return { ...input, hashedPassword };
+      const user = await prisma.user.findUnique({
+        where: { email: input.email },
+      });
+      if (user === null) {
+        return false;
+      }
+      const isCorrectLogin = await bCrypt.compare(
+        input.password,
+        user.password
+      );
+
+      if (isCorrectLogin) {
+        return { email: user.email, session: user.password };
+      } else {
+        return { email: null, session: null };
+      }
     });
 
   const userRoutes = {

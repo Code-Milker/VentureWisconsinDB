@@ -10,6 +10,7 @@ import {
   createNewUserSchema,
   deleteUserSchema,
   getUserSchema,
+  pinListingSchema,
   updatedUserSchema,
 } from "../../VentureWisconsinShared/shared";
 import { z } from "zod";
@@ -126,6 +127,64 @@ export const UserRoutes = (
       }
     });
 
+  const userUnPinListing = publicProcedure
+    .input((payload: unknown) => {
+      const parsedPayload = pinListingSchema.parse(payload);
+      return parsedPayload;
+    })
+    .mutation(async ({ input }) => {
+      const user = await prisma.user.findUnique({
+        where: { email: input.userEmail },
+      });
+      const listing = await prisma.listing.findUnique({
+        where: { name: input.listingName },
+      });
+      await prisma.pinnedUserListing.deleteMany({
+        where: { userId: user?.id, listingId: listing?.id },
+      });
+    });
+  const userPinListing = publicProcedure
+    .input((payload: unknown) => {
+      const parsedPayload = pinListingSchema.parse(payload);
+      return parsedPayload;
+    })
+    .mutation(async ({ input }) => {
+      const user = await prisma.user.findUnique({
+        where: { email: input.userEmail },
+      });
+
+      const listing = await prisma.listing.findUnique({
+        where: { name: input.listingName },
+      });
+      if (listing && user) {
+        const res = await prisma.pinnedUserListing.create({
+          data: { userId: user.id, listingId: listing.id },
+        });
+        console.log(res);
+      }
+      // return res.id;
+    });
+  const getUserPins = publicProcedure
+    .input((payload: unknown) => {
+      const parsedPayload = z.string().email().parse(payload);
+      return parsedPayload;
+    })
+    .mutation(async ({ input }) => {
+      const user = await prisma.user.findUnique({ where: { email: input } });
+      if (user) {
+        const pins = await prisma.pinnedUserListing.findMany({
+          where: { userId: user.id },
+        });
+        const pinnedIds = pins.map((p) => p.listingId);
+        const pinnedListing = await prisma.listing.findMany({
+          where: { id: { in: pinnedIds } },
+        });
+        return pinnedListing;
+      } else {
+        return [];
+      }
+    });
+
   const userRoutes = {
     userCreate: create,
     userGetByUnique: getByUnique,
@@ -133,6 +192,9 @@ export const UserRoutes = (
     userRemove: remove,
     userGetAll: getAll,
     userLogin,
+    userPinListing,
+    userUnPinListing,
+    getUserPins,
   };
   return userRoutes;
 };

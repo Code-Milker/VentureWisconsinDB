@@ -129,7 +129,7 @@ export const CouponRoutes = (
   const couponRoutes = {
     couponCreate: create,
     couponGetByUnique: getByUnique,
-    couponListingUpdate: update,
+    couponUpdate: update,
     couponRemove: remove,
     couponGetAll: getAll,
   };

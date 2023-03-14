@@ -45,8 +45,8 @@ model Coupon {
   name              String           @unique
   listing           Listing?         @relation(fields: [listingId], references: [id])
   listingId         Int?
-  deal              String // 50% off of banana bread at ur grandmas goodies 
-  expires           DateTime
+  description       String // 50% off of banana bread at ur grandmas goodies 
+  expired           Boolean          @default(false)
   couponsUsedByUser CouponsForUser[]
   // product id for wine tags, passports, etc
 }

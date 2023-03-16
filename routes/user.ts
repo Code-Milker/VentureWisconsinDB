@@ -53,7 +53,7 @@ export const UserRoutes = (
       const user = await prisma.user.create({
         data: { ...input, password: hashedPassword },
       });
-      return { ...user, session: user.password };
+      return { ...user, session: user.password, role: user.role };
     });
 
   const getByUnique = publicProcedure
@@ -82,11 +82,11 @@ export const UserRoutes = (
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
-      const listings = await prisma.user.update({
+      const user = await prisma.user.update({
         where: { email: input.email },
         data: { ...input },
       });
-      return listings;
+      return user;
     });
 
   const remove = publicProcedure
@@ -121,9 +121,9 @@ export const UserRoutes = (
       );
 
       if (isCorrectLogin) {
-        return { email: user.email, session: user.password };
+        return { email: user.email, session: user.password, role: user.role };
       } else {
-        return { email: null, session: null };
+        return { email: null, session: null, role: null };
       }
     });
 
@@ -188,7 +188,7 @@ export const UserRoutes = (
   const userRoutes = {
     userCreate: create,
     userGetByUnique: getByUnique,
-    userListingUpdate: update,
+    userUpdate: update,
     userRemove: remove,
     userGetAll: getAll,
     userLogin,

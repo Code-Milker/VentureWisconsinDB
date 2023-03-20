@@ -47,6 +47,7 @@ model Coupon {
   listingId         Int?
   description       String // 50% off of banana bread at ur grandmas goodies 
   expired           Boolean          @default(false)
+  email             String
   couponsUsedByUser CouponsForUser[]
   // product id for wine tags, passports, etc
 }

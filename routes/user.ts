@@ -15,6 +15,7 @@ import {
 } from "../../VentureWisconsinShared/shared";
 import { z } from "zod";
 import bCrypt from "bcrypt";
+import { USER_ROLE } from "../prisma/consts";
 
 export const UserRoutes = (
   prisma: PrismaClient<
@@ -42,16 +43,30 @@ export const UserRoutes = (
   if (!publicProcedure) {
     throw Error("public Procedure not found");
   }
+  const validateUserPermission = async (
+    session: string,
+    expectedRole: USER_ROLE
+  ) => {
+    const user = await prisma.user.findFirst({
+      where: { password: session },
+    });
+    if (user === null) return false;
+    return user.role === expectedRole;
+  };
 
   const create = publicProcedure
     .input((payload: unknown) => {
       const parsedPayload = createNewUserSchema.parse(payload); //validate the incoming object
-      return parsedPayload;
+      return { ...parsedPayload, email: parsedPayload.email.toLowerCase() };
     })
     .mutation(async ({ input }) => {
       const hashedPassword = await bCrypt.hash(input.password, 0);
+      let role = "USER";
+      if (input.email === "tylerf66@gmail.com") {
+        role = "ADMIN";
+      }
       const user = await prisma.user.create({
-        data: { ...input, password: hashedPassword },
+        data: { ...input, password: hashedPassword, role },
       });
       return { ...user, session: user.password, role: user.role };
     });
@@ -77,14 +92,22 @@ export const UserRoutes = (
     });
 
   const update = publicProcedure
-    .input((payload: unknown) => {
+    .input(async (payload: unknown) => {
       const parsedPayload = updatedUserSchema.parse(payload); //validate the incoming object
-      return parsedPayload;
+      const hasCorrectPermissions = validateUserPermission(
+        parsedPayload.session,
+        USER_ROLE.ADMIN
+      );
+      if (!hasCorrectPermissions) {
+        throw Error("invalid permissions");
+      }
+      return { ...parsedPayload, email: parsedPayload.email.toLowerCase() };
     })
     .mutation(async ({ input }) => {
+      const { session, ...data } = input;
       const user = await prisma.user.update({
         where: { email: input.email },
-        data: { ...input },
+        data,
       });
       return user;
     });
@@ -92,7 +115,7 @@ export const UserRoutes = (
   const remove = publicProcedure
     .input((payload: unknown) => {
       const parsedEmail = deleteUserSchema.parse(payload);
-      return parsedEmail;
+      return parsedEmail.toLowerCase();
     })
     .mutation(async ({ input }) => {
       const res = await prisma.user.delete({ where: { email: input } });
@@ -106,7 +129,7 @@ export const UserRoutes = (
         password: z.string().min(8),
       });
       const parsedPayload = loginSchema.parse(payload);
-      return { ...parsedPayload };
+      return { ...parsedPayload, email: parsedPayload.email.toLowerCase() };
     })
     .mutation(async ({ input }) => {
       const user = await prisma.user.findUnique({
@@ -130,7 +153,10 @@ export const UserRoutes = (
   const userUnPinListing = publicProcedure
     .input((payload: unknown) => {
       const parsedPayload = pinListingSchema.parse(payload);
-      return parsedPayload;
+      return {
+        ...parsedPayload,
+        userEmail: parsedPayload.userEmail.toLowerCase(),
+      };
     })
     .mutation(async ({ input }) => {
       const user = await prisma.user.findUnique({
@@ -146,7 +172,10 @@ export const UserRoutes = (
   const userPinListing = publicProcedure
     .input((payload: unknown) => {
       const parsedPayload = pinListingSchema.parse(payload);
-      return parsedPayload;
+      return {
+        ...parsedPayload,
+        userEmail: parsedPayload.userEmail.toLowerCase(),
+      };
     })
     .mutation(async ({ input }) => {
       const user = await prisma.user.findUnique({
@@ -160,7 +189,6 @@ export const UserRoutes = (
         const res = await prisma.pinnedUserListing.create({
           data: { userId: user.id, listingId: listing.id },
         });
-        console.log(res);
       }
       // return res.id;
     });

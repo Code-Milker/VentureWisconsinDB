@@ -45,7 +45,6 @@ export const ListingsRoutes = (
   }
   const create = publicProcedure
     .input((payload: unknown) => {
-      console.log("in create");
       const parsedPayload = listingSchema.parse(payload); //validate the incoming object
       return parsedPayload;
     })
@@ -53,7 +52,6 @@ export const ListingsRoutes = (
       const listing = await prisma.listing.create({
         data: { ...input },
       });
-      console.log(listing);
       return listing;
     });
 
@@ -109,59 +107,6 @@ export const ListingsRoutes = (
       });
       return deletedListing;
     });
-
-  async function DBTests() {
-    // await create({
-    //   address: "515 N Main St, Oshkosh, WI 54901",
-    //   name: "d pub",
-    //   website: "https://www.facebook.com/DistilleryPub/",
-    //   email: "dpub@oshkosh.com",
-    //   phone: "(920) 233-2565",
-    //   category: "bars",
-    //   description:
-    //     "Located in historic downtown Oshkosh. Quaint, laid back pub, full-service restaurant and amazing mugs of imported beer.",
-    // });
-    // await create({
-    //   email: "mollys@oshkosh.com",
-    //   website: "mollymcguiresoshkosh.com",
-    //   phone: "(920) 233-3301",
-    //   address: "539 Campus Pl, Oshkosh, WI 54901",
-    //   name: "Molly McGuire's",
-    //   category: "bars",
-    //   description:
-    //     "Pub grub, cocktails & draft beer served in a wood-paneled space with a pool table & arcade games.",
-    // });
-    // await create({
-    //   address: "430 N Main St, Oshkosh, WI 54901",
-    //   name: "Bar 430",
-    //   email: "bar430@oshkosh.com",
-    //   website: "bar430.com",
-    //   phone: "(920) 230-1114",
-    //   category: "bars",
-    //   description:
-    //     "Venue for classic bar fare with some creative twists, a robust drink menu & brunch on weekends.",
-    // });
-    // await create({
-    //   address: "566 N Main St, Oshkosh, WI 54901",
-    //   website: "https://www.facebook.com/fletchslocaltaphouse/",
-    //   name: "Fletch's Local Tap House",
-    //   email: "fletch's@oshkosh.com",
-    //   phone: "(920) 385-1571",
-    //   category: "bars",
-    //   description: "A place to do things.",
-    // });
-    // let listings = await getAll({});
-    // if (!listings) {
-    //   console.log("no listings found ");
-    //   return;
-    // }
-    // await remove(listings[0].name);
-    // listings[1].description = "new description";
-    // console.log(listings[1]);
-    // await update(listings[1]);
-    // listings = await getAll({});
-    // console.log(listings);
-  }
 
   const listingRoutes = {
     listingCreate: create,

@@ -9,6 +9,7 @@ import {
 import {
   createCouponSchema,
   deleteCouponSchema,
+  getAllCouponsSchema,
   getCouponSchema,
   updateCouponSchema,
 } from "../../VentureWisconsinShared/shared";
@@ -65,10 +66,20 @@ export const CouponRoutes = (
     });
 
   const getAll = publicProcedure
-    .input((payload: unknown) => {})
+    .input((email: unknown) => {
+      const parsedPayload = getAllCouponsSchema.parse(email);
+      return parsedPayload;
+    })
     .query(async ({ input }) => {
-      const coupons = await prisma.coupon.findMany();
-      return coupons;
+      if (input) {
+        const coupons = await prisma.coupon.findMany({
+          where: { email: input },
+        });
+        return coupons;
+      } else {
+        const coupons = await prisma.coupon.findMany();
+        return coupons;
+      }
     });
 
   const update = publicProcedure
@@ -95,36 +106,6 @@ export const CouponRoutes = (
       });
       return removedCoupon.id;
     });
-
-  // async function DBTests() {
-  //   await create({
-  //     deal: "50% off banana bread",
-  //     expires: new Date(4, 5, 20),
-  //     name: "grandmas cookies shop",
-  //     listingId: 4,
-  //   });
-  //   await create({
-  //     deal: "bogo bloodies",
-  //     expires: new Date(4, 5, 20),
-  //     name: "billy's funeral home",
-  //     listingId: 4,
-  //   });
-  //   let coupons = await getAll({});
-
-  //   if (!coupons) {
-  //     console.log("no coupon found ");
-  //     return;
-  //   }
-
-  //   await remove(coupons[0].name);
-  //   coupons[1].deal = "new description";
-  //   coupons[1].listingId = 2;
-  //   console.log(coupons[1]);
-  //   await update(coupons[1]);
-
-  //   coupons = await getAll({});
-  //   console.log(coupons);
-  // }
 
   const couponRoutes = {
     couponCreate: create,

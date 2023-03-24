@@ -32,12 +32,13 @@ model PinnedUserListing {
 }
 
 model CouponsForUser {
-  id          Int     @id @default(autoincrement())
-  User        User?   @relation(fields: [userId], references: [id])
-  userId      Int?
-  Coupons     Coupon? @relation(fields: [couponsName], references: [name])
-  couponsName String?
-  used        Boolean @default(false)
+  id        Int     @id @default(autoincrement())
+  User      User?   @relation(fields: [userId], references: [id])
+  userId    Int
+  userEmail String  @default("")
+  couponId  Int
+  Coupons   Coupon? @relation(fields: [couponId], references: [id])
+  used      Boolean @default(false)
 }
 
 model Coupon {
@@ -49,6 +50,7 @@ model Coupon {
   expired           Boolean          @default(false)
   email             String
   couponsUsedByUser CouponsForUser[]
+  group             String           @default("None")
   // product id for wine tags, passports, etc
 }
 

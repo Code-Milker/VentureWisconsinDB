@@ -12,6 +12,7 @@ import {
   getAllCouponsSchema,
   getCouponSchema,
   updateCouponSchema,
+  useCouponSchema,
 } from "../../VentureWisconsinShared/shared";
 
 export const CouponRoutes = (
@@ -74,10 +75,13 @@ export const CouponRoutes = (
       if (input) {
         const coupons = await prisma.coupon.findMany({
           where: { email: input },
+          include: { couponsUsedByUser: true },
         });
         return coupons;
       } else {
-        const coupons = await prisma.coupon.findMany();
+        const coupons = await prisma.coupon.findMany({
+          include: { couponsUsedByUser: true },
+        });
         return coupons;
       }
     });
@@ -106,6 +110,41 @@ export const CouponRoutes = (
       });
       return removedCoupon.id;
     });
+  const couponUse = publicProcedure
+    .input((payload: unknown) => {
+      const parsedName = useCouponSchema.parse(payload);
+      return parsedName;
+    })
+    .mutation(async ({ input }) => {
+      const user = await prisma.user.findUnique({
+        where: { email: input.email },
+      });
+      if (user?.id && input.email) {
+        const existAlready = await prisma.couponsForUser.findFirst({
+          where: { couponId: input.couponId, userEmail: input.email },
+        });
+
+        if (!existAlready) {
+          const response = await prisma.couponsForUser.create({
+            data: {
+              userId: user?.id,
+              couponId: input.couponId,
+              userEmail: input.email,
+              used: true,
+            },
+          });
+          return response;
+        } else {
+          const response = await prisma.couponsForUser.update({
+            where: {
+              id: existAlready.id,
+            },
+            data: { ...existAlready, used: true },
+          });
+          return response;
+        }
+      }
+    });
 
   const couponRoutes = {
     couponCreate: create,
@@ -113,6 +152,7 @@ export const CouponRoutes = (
     couponUpdate: update,
     couponRemove: remove,
     couponGetAll: getAll,
+    couponUse,
   };
   return couponRoutes;
 };

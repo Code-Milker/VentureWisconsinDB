@@ -21,6 +21,8 @@ model User {
   role              String              @default("USER") // alternative being "ADMIN"
   couponsForUser    CouponsForUser[]
   PinnedUserListing PinnedUserListing[]
+  Groups            Groups?             @relation(fields: [groupsGroupName], references: [groupName])
+  groupsGroupName   String?
 }
 
 model PinnedUserListing {
@@ -41,17 +43,24 @@ model CouponsForUser {
   used      Boolean @default(false)
 }
 
+model Groups {
+  groupName String   @id()
+  coupons   Coupon[]
+  users     User[]
+}
+
 model Coupon {
   id                Int              @id @default(autoincrement())
   name              String           @unique
   listing           Listing?         @relation(fields: [listingId], references: [id])
   listingId         Int?
-  description       String // 50% off of banana bread at ur grandmas goodies 
+  description       String
   expired           Boolean          @default(false)
   email             String
   couponsUsedByUser CouponsForUser[]
-  group             String           @default("None")
   // product id for wine tags, passports, etc
+  Group             Groups?          @relation(fields: [groupName], references: [groupName])
+  groupName         String?
 }
 
 model Listing {

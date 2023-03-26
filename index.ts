@@ -4,6 +4,7 @@ import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import { CouponRoutes } from "./routes/coupons";
 import { ListingsRoutes } from "./routes/listing";
 import { UserRoutes } from "./routes/user";
+import { GroupsRoutes } from "./routes/groups";
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
 const t = initTRPC.create();
@@ -12,7 +13,13 @@ const router = t.router;
 const listingRoutes = ListingsRoutes(prisma, publicProcedure);
 const couponRoutes = CouponRoutes(prisma, publicProcedure);
 const userRoutes = UserRoutes(prisma, publicProcedure);
-const appRouter = router({ ...listingRoutes, ...couponRoutes, ...userRoutes });
+const groupRoutes = GroupsRoutes(prisma, publicProcedure);
+const appRouter = router({
+  ...listingRoutes,
+  ...couponRoutes,
+  ...userRoutes,
+  ...groupRoutes,
+});
 console.log("server running on port 3000");
 createHTTPServer({
   router: appRouter,

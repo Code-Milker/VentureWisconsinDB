@@ -92,6 +92,17 @@ export const CouponRoutes = (
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
+      const { groupName, ...i } = input;
+      if (groupName) {
+        const alreadyExists = await prisma.groups.findUnique({
+          where: { groupName },
+        });
+        if (!alreadyExists) {
+          await prisma.groups.create({
+            data: { groupName: groupName },
+          });
+        }
+      }
       const coupon = await prisma.coupon.update({
         where: { id: input.id },
         data: { ...input },
@@ -110,6 +121,7 @@ export const CouponRoutes = (
       });
       return removedCoupon.id;
     });
+
   const couponUse = publicProcedure
     .input((payload: unknown) => {
       const parsedName = useCouponSchema.parse(payload);

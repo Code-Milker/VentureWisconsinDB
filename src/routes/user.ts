@@ -15,7 +15,7 @@ import {
 } from "../shared";
 import { z } from "zod";
 import bCrypt from "bcrypt";
-import { USER_ROLE } from "../prisma/consts";
+import { USER_ROLE } from "../consts";
 
 export const UserRoutes = (
   prisma: PrismaClient<

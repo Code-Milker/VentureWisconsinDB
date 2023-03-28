@@ -1,10 +1,11 @@
-import { PrismaClient } from "../VentureWisconsinShared/index";
 import { initTRPC } from "@trpc/server";
 import { createHTTPServer } from "@trpc/server/adapters/standalone";
 import { CouponRoutes } from "./routes/coupons";
 import { ListingsRoutes } from "./routes/listing";
 import { UserRoutes } from "./routes/user";
 import { GroupsRoutes } from "./routes/groups";
+
+import { PrismaClient, Prisma } from "@prisma/client";
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
 const t = initTRPC.create();
@@ -20,7 +21,6 @@ const appRouter = router({
   ...userRoutes,
   ...groupRoutes,
 });
-console.log("server running on port 3000");
 createHTTPServer({
   router: appRouter,
   createContext() {

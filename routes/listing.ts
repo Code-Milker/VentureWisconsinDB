@@ -1,4 +1,5 @@
-import { PrismaClient, Prisma } from "../../VentureWisconsinShared/index";
+import { PrismaClient, Prisma } from "@prisma/client";
+
 import {
   DefaultDataTransformer,
   DefaultErrorShape,
@@ -11,7 +12,7 @@ import {
   deleteListingSchema,
   getAllListingsParams,
   getListingSchema,
-} from "../../VentureWisconsinShared/shared";
+} from "../shared";
 
 export interface GetAllListingsParams {
   namePrefix?: string;

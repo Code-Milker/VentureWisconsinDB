@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../../VentureWisconsinShared/"
+  output   = "../../VentureWisconsinDB/output"
 }
 
 datasource db {
@@ -72,7 +72,11 @@ model Listing {
   displayTitle      String // 30 chars or less
   subTitle          String?
   category          String? // type of establishment brewery, winery, supper club, distllery, tavern, restraunt, axe bar 
-  attributes        String? // change this to array downtown, waterfront, historic buildling,
+  // attributes        String? // change this to array downtown, waterfront, historic buildling,
+  experience1       String?
+  experience2       String?
+  experience3       String?
+  experience4       String?
   description       String // description of establishment
   email             String
   phone             String

@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "../../VentureWisconsinShared/index";
+import { Prisma, PrismaClient } from "@prisma/client";
 import {
   ProcedureBuilder,
   RootConfig,
@@ -12,7 +12,7 @@ import {
   getUserSchema,
   pinListingSchema,
   updatedUserSchema,
-} from "../../VentureWisconsinShared/shared";
+} from "../shared";
 import { z } from "zod";
 import bCrypt from "bcrypt";
 import { USER_ROLE } from "../prisma/consts";

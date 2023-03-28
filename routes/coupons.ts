@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "../../VentureWisconsinShared/index";
+import { Prisma, PrismaClient } from "@prisma/client";
 import {
   ProcedureBuilder,
   RootConfig,
@@ -13,7 +13,7 @@ import {
   getCouponSchema,
   updateCouponSchema,
   useCouponSchema,
-} from "../../VentureWisconsinShared/shared";
+} from "../shared";
 
 export const CouponRoutes = (
   prisma: PrismaClient<

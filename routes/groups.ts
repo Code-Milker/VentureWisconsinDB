@@ -1,4 +1,4 @@
-import { PrismaClient, Prisma } from "../../VentureWisconsinShared/index";
+import { Prisma, PrismaClient } from "@prisma/client";
 import {
   DefaultDataTransformer,
   DefaultErrorShape,
@@ -6,7 +6,6 @@ import {
   RootConfig,
   unsetMarker,
 } from "@trpc/server";
-import { createGroupSchema } from "../../VentureWisconsinShared/shared";
 
 export const GroupsRoutes = (
   prisma: PrismaClient<

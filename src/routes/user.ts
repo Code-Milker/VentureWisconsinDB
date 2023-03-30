@@ -181,10 +181,12 @@ export const UserRoutes = (
       const user = await prisma.user.findUnique({
         where: { email: input.userEmail },
       });
+      console.log(user);
 
       const listing = await prisma.listing.findUnique({
         where: { name: input.listingName },
       });
+      console.log(listing);
       if (listing && user) {
         const res = await prisma.pinnedUserListing.create({
           data: { userId: user.id, listingId: listing.id },

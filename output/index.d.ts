@@ -921,183 +921,6 @@ export namespace Prisma {
    */
 
 
-  /**
-   * Count Type UserCountOutputType
-   */
-
-
-  export type UserCountOutputType = {
-    couponsForUser: number
-    PinnedUserListing: number
-  }
-
-  export type UserCountOutputTypeSelect = {
-    couponsForUser?: boolean
-    PinnedUserListing?: boolean
-  }
-
-  export type UserCountOutputTypeGetPayload<S extends boolean | null | undefined | UserCountOutputTypeArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? UserCountOutputType :
-    S extends undefined ? never :
-    S extends { include: any } & (UserCountOutputTypeArgs)
-    ? UserCountOutputType 
-    : S extends { select: any } & (UserCountOutputTypeArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof UserCountOutputType ? UserCountOutputType[P] : never
-  } 
-      : UserCountOutputType
-
-
-
-
-  // Custom InputTypes
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeArgs = {
-    /**
-     * Select specific fields to fetch from the UserCountOutputType
-     */
-    select?: UserCountOutputTypeSelect | null
-  }
-
-
-
-  /**
-   * Count Type GroupsCountOutputType
-   */
-
-
-  export type GroupsCountOutputType = {
-    coupons: number
-    users: number
-  }
-
-  export type GroupsCountOutputTypeSelect = {
-    coupons?: boolean
-    users?: boolean
-  }
-
-  export type GroupsCountOutputTypeGetPayload<S extends boolean | null | undefined | GroupsCountOutputTypeArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? GroupsCountOutputType :
-    S extends undefined ? never :
-    S extends { include: any } & (GroupsCountOutputTypeArgs)
-    ? GroupsCountOutputType 
-    : S extends { select: any } & (GroupsCountOutputTypeArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof GroupsCountOutputType ? GroupsCountOutputType[P] : never
-  } 
-      : GroupsCountOutputType
-
-
-
-
-  // Custom InputTypes
-
-  /**
-   * GroupsCountOutputType without action
-   */
-  export type GroupsCountOutputTypeArgs = {
-    /**
-     * Select specific fields to fetch from the GroupsCountOutputType
-     */
-    select?: GroupsCountOutputTypeSelect | null
-  }
-
-
-
-  /**
-   * Count Type CouponCountOutputType
-   */
-
-
-  export type CouponCountOutputType = {
-    couponsUsedByUser: number
-  }
-
-  export type CouponCountOutputTypeSelect = {
-    couponsUsedByUser?: boolean
-  }
-
-  export type CouponCountOutputTypeGetPayload<S extends boolean | null | undefined | CouponCountOutputTypeArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? CouponCountOutputType :
-    S extends undefined ? never :
-    S extends { include: any } & (CouponCountOutputTypeArgs)
-    ? CouponCountOutputType 
-    : S extends { select: any } & (CouponCountOutputTypeArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof CouponCountOutputType ? CouponCountOutputType[P] : never
-  } 
-      : CouponCountOutputType
-
-
-
-
-  // Custom InputTypes
-
-  /**
-   * CouponCountOutputType without action
-   */
-  export type CouponCountOutputTypeArgs = {
-    /**
-     * Select specific fields to fetch from the CouponCountOutputType
-     */
-    select?: CouponCountOutputTypeSelect | null
-  }
-
-
-
-  /**
-   * Count Type ListingCountOutputType
-   */
-
-
-  export type ListingCountOutputType = {
-    coupons: number
-    PinnedUserListing: number
-  }
-
-  export type ListingCountOutputTypeSelect = {
-    coupons?: boolean
-    PinnedUserListing?: boolean
-  }
-
-  export type ListingCountOutputTypeGetPayload<S extends boolean | null | undefined | ListingCountOutputTypeArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? ListingCountOutputType :
-    S extends undefined ? never :
-    S extends { include: any } & (ListingCountOutputTypeArgs)
-    ? ListingCountOutputType 
-    : S extends { select: any } & (ListingCountOutputTypeArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof ListingCountOutputType ? ListingCountOutputType[P] : never
-  } 
-      : ListingCountOutputType
-
-
-
-
-  // Custom InputTypes
-
-  /**
-   * ListingCountOutputType without action
-   */
-  export type ListingCountOutputTypeArgs = {
-    /**
-     * Select specific fields to fetch from the ListingCountOutputType
-     */
-    select?: ListingCountOutputTypeSelect | null
-  }
-
-
 
   /**
    * Models
@@ -1326,40 +1149,20 @@ export namespace Prisma {
     lastName?: boolean
     password?: boolean
     role?: boolean
-    couponsForUser?: boolean | User$couponsForUserArgs
-    PinnedUserListing?: boolean | User$PinnedUserListingArgs
-    Groups?: boolean | GroupsArgs
     groupsGroupName?: boolean
-    _count?: boolean | UserCountOutputTypeArgs
   }
 
-
-  export type UserInclude = {
-    couponsForUser?: boolean | User$couponsForUserArgs
-    PinnedUserListing?: boolean | User$PinnedUserListingArgs
-    Groups?: boolean | GroupsArgs
-    _count?: boolean | UserCountOutputTypeArgs
-  }
 
   export type UserGetPayload<S extends boolean | null | undefined | UserArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
     S extends true ? User :
     S extends undefined ? never :
     S extends { include: any } & (UserArgs | UserFindManyArgs)
-    ? User  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'couponsForUser' ? Array < CouponsForUserGetPayload<S['include'][P]>>  :
-        P extends 'PinnedUserListing' ? Array < PinnedUserListingGetPayload<S['include'][P]>>  :
-        P extends 'Groups' ? GroupsGetPayload<S['include'][P]> | null :
-        P extends '_count' ? UserCountOutputTypeGetPayload<S['include'][P]> :  never
-  } 
+    ? User 
     : S extends { select: any } & (UserArgs | UserFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'couponsForUser' ? Array < CouponsForUserGetPayload<S['select'][P]>>  :
-        P extends 'PinnedUserListing' ? Array < PinnedUserListingGetPayload<S['select'][P]>>  :
-        P extends 'Groups' ? GroupsGetPayload<S['select'][P]> | null :
-        P extends '_count' ? UserCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof User ? User[P] : never
+    P extends keyof User ? User[P] : never
   } 
       : User
 
@@ -1717,11 +1520,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    couponsForUser<T extends User$couponsForUserArgs= {}>(args?: Subset<T, User$couponsForUserArgs>): PrismaPromise<Array<CouponsForUserGetPayload<T>>| Null>;
-
-    PinnedUserListing<T extends User$PinnedUserListingArgs= {}>(args?: Subset<T, User$PinnedUserListingArgs>): PrismaPromise<Array<PinnedUserListingGetPayload<T>>| Null>;
-
-    Groups<T extends GroupsArgs= {}>(args?: Subset<T, GroupsArgs>): Prisma__GroupsClient<GroupsGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -1759,10 +1557,6 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
-    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1789,10 +1583,6 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
-    /**
      * Filter, which User to fetch.
      */
     where: UserWhereUniqueInput
@@ -1807,10 +1597,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
     /**
      * Filter, which User to fetch.
      */
@@ -1868,10 +1654,6 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
-    /**
      * Filter, which User to fetch.
      */
     where?: UserWhereInput
@@ -1917,10 +1699,6 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
-    /**
      * Filter, which Users to fetch.
      */
     where?: UserWhereInput
@@ -1961,10 +1739,6 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
-    /**
      * The data needed to create a User.
      */
     data: XOR<UserCreateInput, UserUncheckedCreateInput>
@@ -1979,10 +1753,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
     /**
      * The data needed to update a User.
      */
@@ -2018,10 +1788,6 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
-    /**
      * The filter to search for the User to update in case it exists.
      */
     where: UserWhereUniqueInput
@@ -2045,10 +1811,6 @@ export namespace Prisma {
      */
     select?: UserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
-    /**
      * Filter which User to delete.
      */
     where: UserWhereUniqueInput
@@ -2067,48 +1829,6 @@ export namespace Prisma {
 
 
   /**
-   * User.couponsForUser
-   */
-  export type User$couponsForUserArgs = {
-    /**
-     * Select specific fields to fetch from the CouponsForUser
-     */
-    select?: CouponsForUserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
-    where?: CouponsForUserWhereInput
-    orderBy?: Enumerable<CouponsForUserOrderByWithRelationInput>
-    cursor?: CouponsForUserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<CouponsForUserScalarFieldEnum>
-  }
-
-
-  /**
-   * User.PinnedUserListing
-   */
-  export type User$PinnedUserListingArgs = {
-    /**
-     * Select specific fields to fetch from the PinnedUserListing
-     */
-    select?: PinnedUserListingSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
-    where?: PinnedUserListingWhereInput
-    orderBy?: Enumerable<PinnedUserListingOrderByWithRelationInput>
-    cursor?: PinnedUserListingWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<PinnedUserListingScalarFieldEnum>
-  }
-
-
-  /**
    * User without action
    */
   export type UserArgs = {
@@ -2116,10 +1836,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the User
      */
     select?: UserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
   }
 
 
@@ -2314,33 +2030,21 @@ export namespace Prisma {
 
   export type PinnedUserListingSelect = {
     id?: boolean
-    user?: boolean | UserArgs
-    listing?: boolean | ListingArgs
     userId?: boolean
     listingId?: boolean
   }
 
-
-  export type PinnedUserListingInclude = {
-    user?: boolean | UserArgs
-    listing?: boolean | ListingArgs
-  }
 
   export type PinnedUserListingGetPayload<S extends boolean | null | undefined | PinnedUserListingArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
     S extends true ? PinnedUserListing :
     S extends undefined ? never :
     S extends { include: any } & (PinnedUserListingArgs | PinnedUserListingFindManyArgs)
-    ? PinnedUserListing  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'user' ? UserGetPayload<S['include'][P]> :
-        P extends 'listing' ? ListingGetPayload<S['include'][P]> :  never
-  } 
+    ? PinnedUserListing 
     : S extends { select: any } & (PinnedUserListingArgs | PinnedUserListingFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'user' ? UserGetPayload<S['select'][P]> :
-        P extends 'listing' ? ListingGetPayload<S['select'][P]> :  P extends keyof PinnedUserListing ? PinnedUserListing[P] : never
+    P extends keyof PinnedUserListing ? PinnedUserListing[P] : never
   } 
       : PinnedUserListing
 
@@ -2698,9 +2402,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    user<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
-
-    listing<T extends ListingArgs= {}>(args?: Subset<T, ListingArgs>): Prisma__ListingClient<ListingGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -2738,10 +2439,6 @@ export namespace Prisma {
      */
     select?: PinnedUserListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
-    /**
      * Filter, which PinnedUserListing to fetch.
      */
     where: PinnedUserListingWhereUniqueInput
@@ -2768,10 +2465,6 @@ export namespace Prisma {
      */
     select?: PinnedUserListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
-    /**
      * Filter, which PinnedUserListing to fetch.
      */
     where: PinnedUserListingWhereUniqueInput
@@ -2786,10 +2479,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the PinnedUserListing
      */
     select?: PinnedUserListingSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
     /**
      * Filter, which PinnedUserListing to fetch.
      */
@@ -2847,10 +2536,6 @@ export namespace Prisma {
      */
     select?: PinnedUserListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
-    /**
      * Filter, which PinnedUserListing to fetch.
      */
     where?: PinnedUserListingWhereInput
@@ -2896,10 +2581,6 @@ export namespace Prisma {
      */
     select?: PinnedUserListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
-    /**
      * Filter, which PinnedUserListings to fetch.
      */
     where?: PinnedUserListingWhereInput
@@ -2940,10 +2621,6 @@ export namespace Prisma {
      */
     select?: PinnedUserListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
-    /**
      * The data needed to create a PinnedUserListing.
      */
     data: XOR<PinnedUserListingCreateInput, PinnedUserListingUncheckedCreateInput>
@@ -2958,10 +2635,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the PinnedUserListing
      */
     select?: PinnedUserListingSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
     /**
      * The data needed to update a PinnedUserListing.
      */
@@ -2997,10 +2670,6 @@ export namespace Prisma {
      */
     select?: PinnedUserListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
-    /**
      * The filter to search for the PinnedUserListing to update in case it exists.
      */
     where: PinnedUserListingWhereUniqueInput
@@ -3023,10 +2692,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the PinnedUserListing
      */
     select?: PinnedUserListingSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
     /**
      * Filter which PinnedUserListing to delete.
      */
@@ -3053,10 +2718,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the PinnedUserListing
      */
     select?: PinnedUserListingSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
   }
 
 
@@ -3265,35 +2926,23 @@ export namespace Prisma {
 
   export type CouponsForUserSelect = {
     id?: boolean
-    User?: boolean | UserArgs
     userId?: boolean
     userEmail?: boolean
     couponId?: boolean
-    Coupons?: boolean | CouponArgs
     used?: boolean
   }
 
-
-  export type CouponsForUserInclude = {
-    User?: boolean | UserArgs
-    Coupons?: boolean | CouponArgs
-  }
 
   export type CouponsForUserGetPayload<S extends boolean | null | undefined | CouponsForUserArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
     S extends true ? CouponsForUser :
     S extends undefined ? never :
     S extends { include: any } & (CouponsForUserArgs | CouponsForUserFindManyArgs)
-    ? CouponsForUser  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'User' ? UserGetPayload<S['include'][P]> | null :
-        P extends 'Coupons' ? CouponGetPayload<S['include'][P]> | null :  never
-  } 
+    ? CouponsForUser 
     : S extends { select: any } & (CouponsForUserArgs | CouponsForUserFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'User' ? UserGetPayload<S['select'][P]> | null :
-        P extends 'Coupons' ? CouponGetPayload<S['select'][P]> | null :  P extends keyof CouponsForUser ? CouponsForUser[P] : never
+    P extends keyof CouponsForUser ? CouponsForUser[P] : never
   } 
       : CouponsForUser
 
@@ -3651,9 +3300,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    User<T extends UserArgs= {}>(args?: Subset<T, UserArgs>): Prisma__UserClient<UserGetPayload<T> | Null>;
-
-    Coupons<T extends CouponArgs= {}>(args?: Subset<T, CouponArgs>): Prisma__CouponClient<CouponGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -3691,10 +3337,6 @@ export namespace Prisma {
      */
     select?: CouponsForUserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
-    /**
      * Filter, which CouponsForUser to fetch.
      */
     where: CouponsForUserWhereUniqueInput
@@ -3721,10 +3363,6 @@ export namespace Prisma {
      */
     select?: CouponsForUserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
-    /**
      * Filter, which CouponsForUser to fetch.
      */
     where: CouponsForUserWhereUniqueInput
@@ -3739,10 +3377,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the CouponsForUser
      */
     select?: CouponsForUserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
     /**
      * Filter, which CouponsForUser to fetch.
      */
@@ -3800,10 +3434,6 @@ export namespace Prisma {
      */
     select?: CouponsForUserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
-    /**
      * Filter, which CouponsForUser to fetch.
      */
     where?: CouponsForUserWhereInput
@@ -3849,10 +3479,6 @@ export namespace Prisma {
      */
     select?: CouponsForUserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
-    /**
      * Filter, which CouponsForUsers to fetch.
      */
     where?: CouponsForUserWhereInput
@@ -3893,10 +3519,6 @@ export namespace Prisma {
      */
     select?: CouponsForUserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
-    /**
      * The data needed to create a CouponsForUser.
      */
     data: XOR<CouponsForUserCreateInput, CouponsForUserUncheckedCreateInput>
@@ -3911,10 +3533,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the CouponsForUser
      */
     select?: CouponsForUserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
     /**
      * The data needed to update a CouponsForUser.
      */
@@ -3950,10 +3568,6 @@ export namespace Prisma {
      */
     select?: CouponsForUserSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
-    /**
      * The filter to search for the CouponsForUser to update in case it exists.
      */
     where: CouponsForUserWhereUniqueInput
@@ -3976,10 +3590,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the CouponsForUser
      */
     select?: CouponsForUserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
     /**
      * Filter which CouponsForUser to delete.
      */
@@ -4006,10 +3616,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the CouponsForUser
      */
     select?: CouponsForUserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
   }
 
 
@@ -4148,35 +3754,19 @@ export namespace Prisma {
 
   export type GroupsSelect = {
     groupName?: boolean
-    coupons?: boolean | Groups$couponsArgs
-    users?: boolean | Groups$usersArgs
-    _count?: boolean | GroupsCountOutputTypeArgs
   }
 
-
-  export type GroupsInclude = {
-    coupons?: boolean | Groups$couponsArgs
-    users?: boolean | Groups$usersArgs
-    _count?: boolean | GroupsCountOutputTypeArgs
-  }
 
   export type GroupsGetPayload<S extends boolean | null | undefined | GroupsArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
     S extends true ? Groups :
     S extends undefined ? never :
     S extends { include: any } & (GroupsArgs | GroupsFindManyArgs)
-    ? Groups  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'coupons' ? Array < CouponGetPayload<S['include'][P]>>  :
-        P extends 'users' ? Array < UserGetPayload<S['include'][P]>>  :
-        P extends '_count' ? GroupsCountOutputTypeGetPayload<S['include'][P]> :  never
-  } 
+    ? Groups 
     : S extends { select: any } & (GroupsArgs | GroupsFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'coupons' ? Array < CouponGetPayload<S['select'][P]>>  :
-        P extends 'users' ? Array < UserGetPayload<S['select'][P]>>  :
-        P extends '_count' ? GroupsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Groups ? Groups[P] : never
+    P extends keyof Groups ? Groups[P] : never
   } 
       : Groups
 
@@ -4534,9 +4124,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    coupons<T extends Groups$couponsArgs= {}>(args?: Subset<T, Groups$couponsArgs>): PrismaPromise<Array<CouponGetPayload<T>>| Null>;
-
-    users<T extends Groups$usersArgs= {}>(args?: Subset<T, Groups$usersArgs>): PrismaPromise<Array<UserGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -4574,10 +4161,6 @@ export namespace Prisma {
      */
     select?: GroupsSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
-    /**
      * Filter, which Groups to fetch.
      */
     where: GroupsWhereUniqueInput
@@ -4604,10 +4187,6 @@ export namespace Prisma {
      */
     select?: GroupsSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
-    /**
      * Filter, which Groups to fetch.
      */
     where: GroupsWhereUniqueInput
@@ -4622,10 +4201,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Groups
      */
     select?: GroupsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
     /**
      * Filter, which Groups to fetch.
      */
@@ -4683,10 +4258,6 @@ export namespace Prisma {
      */
     select?: GroupsSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
-    /**
      * Filter, which Groups to fetch.
      */
     where?: GroupsWhereInput
@@ -4732,10 +4303,6 @@ export namespace Prisma {
      */
     select?: GroupsSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
-    /**
      * Filter, which Groups to fetch.
      */
     where?: GroupsWhereInput
@@ -4776,10 +4343,6 @@ export namespace Prisma {
      */
     select?: GroupsSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
-    /**
      * The data needed to create a Groups.
      */
     data: XOR<GroupsCreateInput, GroupsUncheckedCreateInput>
@@ -4794,10 +4357,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Groups
      */
     select?: GroupsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
     /**
      * The data needed to update a Groups.
      */
@@ -4833,10 +4392,6 @@ export namespace Prisma {
      */
     select?: GroupsSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
-    /**
      * The filter to search for the Groups to update in case it exists.
      */
     where: GroupsWhereUniqueInput
@@ -4860,10 +4415,6 @@ export namespace Prisma {
      */
     select?: GroupsSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
-    /**
      * Filter which Groups to delete.
      */
     where: GroupsWhereUniqueInput
@@ -4882,48 +4433,6 @@ export namespace Prisma {
 
 
   /**
-   * Groups.coupons
-   */
-  export type Groups$couponsArgs = {
-    /**
-     * Select specific fields to fetch from the Coupon
-     */
-    select?: CouponSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
-    where?: CouponWhereInput
-    orderBy?: Enumerable<CouponOrderByWithRelationInput>
-    cursor?: CouponWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<CouponScalarFieldEnum>
-  }
-
-
-  /**
-   * Groups.users
-   */
-  export type Groups$usersArgs = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: UserInclude | null
-    where?: UserWhereInput
-    orderBy?: Enumerable<UserOrderByWithRelationInput>
-    cursor?: UserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<UserScalarFieldEnum>
-  }
-
-
-  /**
    * Groups without action
    */
   export type GroupsArgs = {
@@ -4931,10 +4440,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Groups
      */
     select?: GroupsSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: GroupsInclude | null
   }
 
 
@@ -5154,44 +4659,24 @@ export namespace Prisma {
   export type CouponSelect = {
     id?: boolean
     name?: boolean
-    listing?: boolean | ListingArgs
     listingId?: boolean
     description?: boolean
     expired?: boolean
     email?: boolean
-    couponsUsedByUser?: boolean | Coupon$couponsUsedByUserArgs
-    Group?: boolean | GroupsArgs
     groupName?: boolean
-    _count?: boolean | CouponCountOutputTypeArgs
   }
 
-
-  export type CouponInclude = {
-    listing?: boolean | ListingArgs
-    couponsUsedByUser?: boolean | Coupon$couponsUsedByUserArgs
-    Group?: boolean | GroupsArgs
-    _count?: boolean | CouponCountOutputTypeArgs
-  }
 
   export type CouponGetPayload<S extends boolean | null | undefined | CouponArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
     S extends true ? Coupon :
     S extends undefined ? never :
     S extends { include: any } & (CouponArgs | CouponFindManyArgs)
-    ? Coupon  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'listing' ? ListingGetPayload<S['include'][P]> | null :
-        P extends 'couponsUsedByUser' ? Array < CouponsForUserGetPayload<S['include'][P]>>  :
-        P extends 'Group' ? GroupsGetPayload<S['include'][P]> | null :
-        P extends '_count' ? CouponCountOutputTypeGetPayload<S['include'][P]> :  never
-  } 
+    ? Coupon 
     : S extends { select: any } & (CouponArgs | CouponFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'listing' ? ListingGetPayload<S['select'][P]> | null :
-        P extends 'couponsUsedByUser' ? Array < CouponsForUserGetPayload<S['select'][P]>>  :
-        P extends 'Group' ? GroupsGetPayload<S['select'][P]> | null :
-        P extends '_count' ? CouponCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Coupon ? Coupon[P] : never
+    P extends keyof Coupon ? Coupon[P] : never
   } 
       : Coupon
 
@@ -5549,11 +5034,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    listing<T extends ListingArgs= {}>(args?: Subset<T, ListingArgs>): Prisma__ListingClient<ListingGetPayload<T> | Null>;
-
-    couponsUsedByUser<T extends Coupon$couponsUsedByUserArgs= {}>(args?: Subset<T, Coupon$couponsUsedByUserArgs>): PrismaPromise<Array<CouponsForUserGetPayload<T>>| Null>;
-
-    Group<T extends GroupsArgs= {}>(args?: Subset<T, GroupsArgs>): Prisma__GroupsClient<GroupsGetPayload<T> | Null>;
 
     private get _document();
     /**
@@ -5591,10 +5071,6 @@ export namespace Prisma {
      */
     select?: CouponSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
-    /**
      * Filter, which Coupon to fetch.
      */
     where: CouponWhereUniqueInput
@@ -5621,10 +5097,6 @@ export namespace Prisma {
      */
     select?: CouponSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
-    /**
      * Filter, which Coupon to fetch.
      */
     where: CouponWhereUniqueInput
@@ -5639,10 +5111,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Coupon
      */
     select?: CouponSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
     /**
      * Filter, which Coupon to fetch.
      */
@@ -5700,10 +5168,6 @@ export namespace Prisma {
      */
     select?: CouponSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
-    /**
      * Filter, which Coupon to fetch.
      */
     where?: CouponWhereInput
@@ -5749,10 +5213,6 @@ export namespace Prisma {
      */
     select?: CouponSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
-    /**
      * Filter, which Coupons to fetch.
      */
     where?: CouponWhereInput
@@ -5793,10 +5253,6 @@ export namespace Prisma {
      */
     select?: CouponSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
-    /**
      * The data needed to create a Coupon.
      */
     data: XOR<CouponCreateInput, CouponUncheckedCreateInput>
@@ -5811,10 +5267,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Coupon
      */
     select?: CouponSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
     /**
      * The data needed to update a Coupon.
      */
@@ -5850,10 +5302,6 @@ export namespace Prisma {
      */
     select?: CouponSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
-    /**
      * The filter to search for the Coupon to update in case it exists.
      */
     where: CouponWhereUniqueInput
@@ -5877,10 +5325,6 @@ export namespace Prisma {
      */
     select?: CouponSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
-    /**
      * Filter which Coupon to delete.
      */
     where: CouponWhereUniqueInput
@@ -5899,27 +5343,6 @@ export namespace Prisma {
 
 
   /**
-   * Coupon.couponsUsedByUser
-   */
-  export type Coupon$couponsUsedByUserArgs = {
-    /**
-     * Select specific fields to fetch from the CouponsForUser
-     */
-    select?: CouponsForUserSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponsForUserInclude | null
-    where?: CouponsForUserWhereInput
-    orderBy?: Enumerable<CouponsForUserOrderByWithRelationInput>
-    cursor?: CouponsForUserWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<CouponsForUserScalarFieldEnum>
-  }
-
-
-  /**
    * Coupon without action
    */
   export type CouponArgs = {
@@ -5927,10 +5350,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Coupon
      */
     select?: CouponSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
   }
 
 
@@ -6255,35 +5674,19 @@ export namespace Prisma {
     image2?: boolean
     image3?: boolean
     image4?: boolean
-    coupons?: boolean | Listing$couponsArgs
-    PinnedUserListing?: boolean | Listing$PinnedUserListingArgs
-    _count?: boolean | ListingCountOutputTypeArgs
   }
 
-
-  export type ListingInclude = {
-    coupons?: boolean | Listing$couponsArgs
-    PinnedUserListing?: boolean | Listing$PinnedUserListingArgs
-    _count?: boolean | ListingCountOutputTypeArgs
-  }
 
   export type ListingGetPayload<S extends boolean | null | undefined | ListingArgs> =
     S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
     S extends true ? Listing :
     S extends undefined ? never :
     S extends { include: any } & (ListingArgs | ListingFindManyArgs)
-    ? Listing  & {
-    [P in TruthyKeys<S['include']>]:
-        P extends 'coupons' ? Array < CouponGetPayload<S['include'][P]>>  :
-        P extends 'PinnedUserListing' ? Array < PinnedUserListingGetPayload<S['include'][P]>>  :
-        P extends '_count' ? ListingCountOutputTypeGetPayload<S['include'][P]> :  never
-  } 
+    ? Listing 
     : S extends { select: any } & (ListingArgs | ListingFindManyArgs)
       ? {
     [P in TruthyKeys<S['select']>]:
-        P extends 'coupons' ? Array < CouponGetPayload<S['select'][P]>>  :
-        P extends 'PinnedUserListing' ? Array < PinnedUserListingGetPayload<S['select'][P]>>  :
-        P extends '_count' ? ListingCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Listing ? Listing[P] : never
+    P extends keyof Listing ? Listing[P] : never
   } 
       : Listing
 
@@ -6641,9 +6044,6 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    coupons<T extends Listing$couponsArgs= {}>(args?: Subset<T, Listing$couponsArgs>): PrismaPromise<Array<CouponGetPayload<T>>| Null>;
-
-    PinnedUserListing<T extends Listing$PinnedUserListingArgs= {}>(args?: Subset<T, Listing$PinnedUserListingArgs>): PrismaPromise<Array<PinnedUserListingGetPayload<T>>| Null>;
 
     private get _document();
     /**
@@ -6681,10 +6081,6 @@ export namespace Prisma {
      */
     select?: ListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
-    /**
      * Filter, which Listing to fetch.
      */
     where: ListingWhereUniqueInput
@@ -6711,10 +6107,6 @@ export namespace Prisma {
      */
     select?: ListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
-    /**
      * Filter, which Listing to fetch.
      */
     where: ListingWhereUniqueInput
@@ -6729,10 +6121,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Listing
      */
     select?: ListingSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
     /**
      * Filter, which Listing to fetch.
      */
@@ -6790,10 +6178,6 @@ export namespace Prisma {
      */
     select?: ListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
-    /**
      * Filter, which Listing to fetch.
      */
     where?: ListingWhereInput
@@ -6839,10 +6223,6 @@ export namespace Prisma {
      */
     select?: ListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
-    /**
      * Filter, which Listings to fetch.
      */
     where?: ListingWhereInput
@@ -6883,10 +6263,6 @@ export namespace Prisma {
      */
     select?: ListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
-    /**
      * The data needed to create a Listing.
      */
     data: XOR<ListingCreateInput, ListingUncheckedCreateInput>
@@ -6901,10 +6277,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Listing
      */
     select?: ListingSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
     /**
      * The data needed to update a Listing.
      */
@@ -6940,10 +6312,6 @@ export namespace Prisma {
      */
     select?: ListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
-    /**
      * The filter to search for the Listing to update in case it exists.
      */
     where: ListingWhereUniqueInput
@@ -6967,10 +6335,6 @@ export namespace Prisma {
      */
     select?: ListingSelect | null
     /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
-    /**
      * Filter which Listing to delete.
      */
     where: ListingWhereUniqueInput
@@ -6989,48 +6353,6 @@ export namespace Prisma {
 
 
   /**
-   * Listing.coupons
-   */
-  export type Listing$couponsArgs = {
-    /**
-     * Select specific fields to fetch from the Coupon
-     */
-    select?: CouponSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: CouponInclude | null
-    where?: CouponWhereInput
-    orderBy?: Enumerable<CouponOrderByWithRelationInput>
-    cursor?: CouponWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<CouponScalarFieldEnum>
-  }
-
-
-  /**
-   * Listing.PinnedUserListing
-   */
-  export type Listing$PinnedUserListingArgs = {
-    /**
-     * Select specific fields to fetch from the PinnedUserListing
-     */
-    select?: PinnedUserListingSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: PinnedUserListingInclude | null
-    where?: PinnedUserListingWhereInput
-    orderBy?: Enumerable<PinnedUserListingOrderByWithRelationInput>
-    cursor?: PinnedUserListingWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: Enumerable<PinnedUserListingScalarFieldEnum>
-  }
-
-
-  /**
    * Listing without action
    */
   export type ListingArgs = {
@@ -7038,10 +6360,6 @@ export namespace Prisma {
      * Select specific fields to fetch from the Listing
      */
     select?: ListingSelect | null
-    /**
-     * Choose, which related nodes to fetch as well.
-     */
-    include?: ListingInclude | null
   }
 
 
@@ -7164,9 +6482,6 @@ export namespace Prisma {
     lastName?: StringNullableFilter | string | null
     password?: StringFilter | string
     role?: StringFilter | string
-    couponsForUser?: CouponsForUserListRelationFilter
-    PinnedUserListing?: PinnedUserListingListRelationFilter
-    Groups?: XOR<GroupsRelationFilter, GroupsWhereInput> | null
     groupsGroupName?: StringNullableFilter | string | null
   }
 
@@ -7178,9 +6493,6 @@ export namespace Prisma {
     lastName?: SortOrder
     password?: SortOrder
     role?: SortOrder
-    couponsForUser?: CouponsForUserOrderByRelationAggregateInput
-    PinnedUserListing?: PinnedUserListingOrderByRelationAggregateInput
-    Groups?: GroupsOrderByWithRelationInput
     groupsGroupName?: SortOrder
   }
 
@@ -7224,16 +6536,12 @@ export namespace Prisma {
     OR?: Enumerable<PinnedUserListingWhereInput>
     NOT?: Enumerable<PinnedUserListingWhereInput>
     id?: IntFilter | number
-    user?: XOR<UserRelationFilter, UserWhereInput>
-    listing?: XOR<ListingRelationFilter, ListingWhereInput>
     userId?: IntFilter | number
     listingId?: IntFilter | number
   }
 
   export type PinnedUserListingOrderByWithRelationInput = {
     id?: SortOrder
-    user?: UserOrderByWithRelationInput
-    listing?: ListingOrderByWithRelationInput
     userId?: SortOrder
     listingId?: SortOrder
   }
@@ -7267,21 +6575,17 @@ export namespace Prisma {
     OR?: Enumerable<CouponsForUserWhereInput>
     NOT?: Enumerable<CouponsForUserWhereInput>
     id?: IntFilter | number
-    User?: XOR<UserRelationFilter, UserWhereInput> | null
     userId?: IntFilter | number
     userEmail?: StringFilter | string
     couponId?: IntFilter | number
-    Coupons?: XOR<CouponRelationFilter, CouponWhereInput> | null
     used?: BoolFilter | boolean
   }
 
   export type CouponsForUserOrderByWithRelationInput = {
     id?: SortOrder
-    User?: UserOrderByWithRelationInput
     userId?: SortOrder
     userEmail?: SortOrder
     couponId?: SortOrder
-    Coupons?: CouponOrderByWithRelationInput
     used?: SortOrder
   }
 
@@ -7318,14 +6622,10 @@ export namespace Prisma {
     OR?: Enumerable<GroupsWhereInput>
     NOT?: Enumerable<GroupsWhereInput>
     groupName?: StringFilter | string
-    coupons?: CouponListRelationFilter
-    users?: UserListRelationFilter
   }
 
   export type GroupsOrderByWithRelationInput = {
     groupName?: SortOrder
-    coupons?: CouponOrderByRelationAggregateInput
-    users?: UserOrderByRelationAggregateInput
   }
 
   export type GroupsWhereUniqueInput = {
@@ -7352,26 +6652,20 @@ export namespace Prisma {
     NOT?: Enumerable<CouponWhereInput>
     id?: IntFilter | number
     name?: StringFilter | string
-    listing?: XOR<ListingRelationFilter, ListingWhereInput> | null
     listingId?: IntNullableFilter | number | null
     description?: StringFilter | string
     expired?: BoolFilter | boolean
     email?: StringFilter | string
-    couponsUsedByUser?: CouponsForUserListRelationFilter
-    Group?: XOR<GroupsRelationFilter, GroupsWhereInput> | null
     groupName?: StringNullableFilter | string | null
   }
 
   export type CouponOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
-    listing?: ListingOrderByWithRelationInput
     listingId?: SortOrder
     description?: SortOrder
     expired?: SortOrder
     email?: SortOrder
-    couponsUsedByUser?: CouponsForUserOrderByRelationAggregateInput
-    Group?: GroupsOrderByWithRelationInput
     groupName?: SortOrder
   }
 
@@ -7432,8 +6726,6 @@ export namespace Prisma {
     image2?: StringNullableFilter | string | null
     image3?: StringNullableFilter | string | null
     image4?: StringNullableFilter | string | null
-    coupons?: CouponListRelationFilter
-    PinnedUserListing?: PinnedUserListingListRelationFilter
   }
 
   export type ListingOrderByWithRelationInput = {
@@ -7457,8 +6749,6 @@ export namespace Prisma {
     image2?: SortOrder
     image3?: SortOrder
     image4?: SortOrder
-    coupons?: CouponOrderByRelationAggregateInput
-    PinnedUserListing?: PinnedUserListingOrderByRelationAggregateInput
   }
 
   export type ListingWhereUniqueInput = {
@@ -7527,9 +6817,7 @@ export namespace Prisma {
     lastName?: string | null
     password: string
     role?: string
-    couponsForUser?: CouponsForUserCreateNestedManyWithoutUserInput
-    PinnedUserListing?: PinnedUserListingCreateNestedManyWithoutUserInput
-    Groups?: GroupsCreateNestedOneWithoutUsersInput
+    groupsGroupName?: string | null
   }
 
   export type UserUncheckedCreateInput = {
@@ -7540,8 +6828,6 @@ export namespace Prisma {
     lastName?: string | null
     password: string
     role?: string
-    couponsForUser?: CouponsForUserUncheckedCreateNestedManyWithoutUserInput
-    PinnedUserListing?: PinnedUserListingUncheckedCreateNestedManyWithoutUserInput
     groupsGroupName?: string | null
   }
 
@@ -7552,9 +6838,7 @@ export namespace Prisma {
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
-    couponsForUser?: CouponsForUserUpdateManyWithoutUserNestedInput
-    PinnedUserListing?: PinnedUserListingUpdateManyWithoutUserNestedInput
-    Groups?: GroupsUpdateOneWithoutUsersNestedInput
+    groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7565,8 +6849,6 @@ export namespace Prisma {
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
-    couponsForUser?: CouponsForUserUncheckedUpdateManyWithoutUserNestedInput
-    PinnedUserListing?: PinnedUserListingUncheckedUpdateManyWithoutUserNestedInput
     groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -7577,6 +6859,7 @@ export namespace Prisma {
     lastName?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
+    groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -7591,8 +6874,8 @@ export namespace Prisma {
   }
 
   export type PinnedUserListingCreateInput = {
-    user: UserCreateNestedOneWithoutPinnedUserListingInput
-    listing: ListingCreateNestedOneWithoutPinnedUserListingInput
+    userId: number
+    listingId: number
   }
 
   export type PinnedUserListingUncheckedCreateInput = {
@@ -7602,8 +6885,8 @@ export namespace Prisma {
   }
 
   export type PinnedUserListingUpdateInput = {
-    user?: UserUpdateOneRequiredWithoutPinnedUserListingNestedInput
-    listing?: ListingUpdateOneRequiredWithoutPinnedUserListingNestedInput
+    userId?: IntFieldUpdateOperationsInput | number
+    listingId?: IntFieldUpdateOperationsInput | number
   }
 
   export type PinnedUserListingUncheckedUpdateInput = {
@@ -7613,7 +6896,8 @@ export namespace Prisma {
   }
 
   export type PinnedUserListingUpdateManyMutationInput = {
-
+    userId?: IntFieldUpdateOperationsInput | number
+    listingId?: IntFieldUpdateOperationsInput | number
   }
 
   export type PinnedUserListingUncheckedUpdateManyInput = {
@@ -7623,9 +6907,9 @@ export namespace Prisma {
   }
 
   export type CouponsForUserCreateInput = {
-    User?: UserCreateNestedOneWithoutCouponsForUserInput
+    userId: number
     userEmail?: string
-    Coupons?: CouponCreateNestedOneWithoutCouponsUsedByUserInput
+    couponId: number
     used?: boolean
   }
 
@@ -7638,9 +6922,9 @@ export namespace Prisma {
   }
 
   export type CouponsForUserUpdateInput = {
-    User?: UserUpdateOneWithoutCouponsForUserNestedInput
+    userId?: IntFieldUpdateOperationsInput | number
     userEmail?: StringFieldUpdateOperationsInput | string
-    Coupons?: CouponUpdateOneWithoutCouponsUsedByUserNestedInput
+    couponId?: IntFieldUpdateOperationsInput | number
     used?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -7653,7 +6937,9 @@ export namespace Prisma {
   }
 
   export type CouponsForUserUpdateManyMutationInput = {
+    userId?: IntFieldUpdateOperationsInput | number
     userEmail?: StringFieldUpdateOperationsInput | string
+    couponId?: IntFieldUpdateOperationsInput | number
     used?: BoolFieldUpdateOperationsInput | boolean
   }
 
@@ -7667,26 +6953,18 @@ export namespace Prisma {
 
   export type GroupsCreateInput = {
     groupName: string
-    coupons?: CouponCreateNestedManyWithoutGroupInput
-    users?: UserCreateNestedManyWithoutGroupsInput
   }
 
   export type GroupsUncheckedCreateInput = {
     groupName: string
-    coupons?: CouponUncheckedCreateNestedManyWithoutGroupInput
-    users?: UserUncheckedCreateNestedManyWithoutGroupsInput
   }
 
   export type GroupsUpdateInput = {
     groupName?: StringFieldUpdateOperationsInput | string
-    coupons?: CouponUpdateManyWithoutGroupNestedInput
-    users?: UserUpdateManyWithoutGroupsNestedInput
   }
 
   export type GroupsUncheckedUpdateInput = {
     groupName?: StringFieldUpdateOperationsInput | string
-    coupons?: CouponUncheckedUpdateManyWithoutGroupNestedInput
-    users?: UserUncheckedUpdateManyWithoutGroupsNestedInput
   }
 
   export type GroupsUpdateManyMutationInput = {
@@ -7699,12 +6977,11 @@ export namespace Prisma {
 
   export type CouponCreateInput = {
     name: string
-    listing?: ListingCreateNestedOneWithoutCouponsInput
+    listingId?: number | null
     description: string
     expired?: boolean
     email: string
-    couponsUsedByUser?: CouponsForUserCreateNestedManyWithoutCouponsInput
-    Group?: GroupsCreateNestedOneWithoutCouponsInput
+    groupName?: string | null
   }
 
   export type CouponUncheckedCreateInput = {
@@ -7714,18 +6991,16 @@ export namespace Prisma {
     description: string
     expired?: boolean
     email: string
-    couponsUsedByUser?: CouponsForUserUncheckedCreateNestedManyWithoutCouponsInput
     groupName?: string | null
   }
 
   export type CouponUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
-    listing?: ListingUpdateOneWithoutCouponsNestedInput
+    listingId?: NullableIntFieldUpdateOperationsInput | number | null
     description?: StringFieldUpdateOperationsInput | string
     expired?: BoolFieldUpdateOperationsInput | boolean
     email?: StringFieldUpdateOperationsInput | string
-    couponsUsedByUser?: CouponsForUserUpdateManyWithoutCouponsNestedInput
-    Group?: GroupsUpdateOneWithoutCouponsNestedInput
+    groupName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CouponUncheckedUpdateInput = {
@@ -7735,15 +7010,16 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     expired?: BoolFieldUpdateOperationsInput | boolean
     email?: StringFieldUpdateOperationsInput | string
-    couponsUsedByUser?: CouponsForUserUncheckedUpdateManyWithoutCouponsNestedInput
     groupName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CouponUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
+    listingId?: NullableIntFieldUpdateOperationsInput | number | null
     description?: StringFieldUpdateOperationsInput | string
     expired?: BoolFieldUpdateOperationsInput | boolean
     email?: StringFieldUpdateOperationsInput | string
+    groupName?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CouponUncheckedUpdateManyInput = {
@@ -7776,8 +7052,6 @@ export namespace Prisma {
     image2?: string | null
     image3?: string | null
     image4?: string | null
-    coupons?: CouponCreateNestedManyWithoutListingInput
-    PinnedUserListing?: PinnedUserListingCreateNestedManyWithoutListingInput
   }
 
   export type ListingUncheckedCreateInput = {
@@ -7801,8 +7075,6 @@ export namespace Prisma {
     image2?: string | null
     image3?: string | null
     image4?: string | null
-    coupons?: CouponUncheckedCreateNestedManyWithoutListingInput
-    PinnedUserListing?: PinnedUserListingUncheckedCreateNestedManyWithoutListingInput
   }
 
   export type ListingUpdateInput = {
@@ -7825,8 +7097,6 @@ export namespace Prisma {
     image2?: NullableStringFieldUpdateOperationsInput | string | null
     image3?: NullableStringFieldUpdateOperationsInput | string | null
     image4?: NullableStringFieldUpdateOperationsInput | string | null
-    coupons?: CouponUpdateManyWithoutListingNestedInput
-    PinnedUserListing?: PinnedUserListingUpdateManyWithoutListingNestedInput
   }
 
   export type ListingUncheckedUpdateInput = {
@@ -7850,8 +7120,6 @@ export namespace Prisma {
     image2?: NullableStringFieldUpdateOperationsInput | string | null
     image3?: NullableStringFieldUpdateOperationsInput | string | null
     image4?: NullableStringFieldUpdateOperationsInput | string | null
-    coupons?: CouponUncheckedUpdateManyWithoutListingNestedInput
-    PinnedUserListing?: PinnedUserListingUncheckedUpdateManyWithoutListingNestedInput
   }
 
   export type ListingUpdateManyMutationInput = {
@@ -7947,31 +7215,6 @@ export namespace Prisma {
     startsWith?: string
     endsWith?: string
     not?: NestedStringNullableFilter | string | null
-  }
-
-  export type CouponsForUserListRelationFilter = {
-    every?: CouponsForUserWhereInput
-    some?: CouponsForUserWhereInput
-    none?: CouponsForUserWhereInput
-  }
-
-  export type PinnedUserListingListRelationFilter = {
-    every?: PinnedUserListingWhereInput
-    some?: PinnedUserListingWhereInput
-    none?: PinnedUserListingWhereInput
-  }
-
-  export type GroupsRelationFilter = {
-    is?: GroupsWhereInput | null
-    isNot?: GroupsWhereInput | null
-  }
-
-  export type CouponsForUserOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type PinnedUserListingOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -8079,16 +7322,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter
   }
 
-  export type UserRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
-  export type ListingRelationFilter = {
-    is?: ListingWhereInput | null
-    isNot?: ListingWhereInput | null
-  }
-
   export type PinnedUserListingCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -8117,11 +7350,6 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     listingId?: SortOrder
-  }
-
-  export type CouponRelationFilter = {
-    is?: CouponWhereInput | null
-    isNot?: CouponWhereInput | null
   }
 
   export type BoolFilter = {
@@ -8171,26 +7399,6 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedBoolFilter
     _max?: NestedBoolFilter
-  }
-
-  export type CouponListRelationFilter = {
-    every?: CouponWhereInput
-    some?: CouponWhereInput
-    none?: CouponWhereInput
-  }
-
-  export type UserListRelationFilter = {
-    every?: UserWhereInput
-    some?: UserWhereInput
-    none?: UserWhereInput
-  }
-
-  export type CouponOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type UserOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type GroupsCountOrderByAggregateInput = {
@@ -8349,36 +7557,6 @@ export namespace Prisma {
     id?: SortOrder
   }
 
-  export type CouponsForUserCreateNestedManyWithoutUserInput = {
-    create?: XOR<Enumerable<CouponsForUserCreateWithoutUserInput>, Enumerable<CouponsForUserUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<CouponsForUserCreateOrConnectWithoutUserInput>
-    connect?: Enumerable<CouponsForUserWhereUniqueInput>
-  }
-
-  export type PinnedUserListingCreateNestedManyWithoutUserInput = {
-    create?: XOR<Enumerable<PinnedUserListingCreateWithoutUserInput>, Enumerable<PinnedUserListingUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<PinnedUserListingCreateOrConnectWithoutUserInput>
-    connect?: Enumerable<PinnedUserListingWhereUniqueInput>
-  }
-
-  export type GroupsCreateNestedOneWithoutUsersInput = {
-    create?: XOR<GroupsCreateWithoutUsersInput, GroupsUncheckedCreateWithoutUsersInput>
-    connectOrCreate?: GroupsCreateOrConnectWithoutUsersInput
-    connect?: GroupsWhereUniqueInput
-  }
-
-  export type CouponsForUserUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<Enumerable<CouponsForUserCreateWithoutUserInput>, Enumerable<CouponsForUserUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<CouponsForUserCreateOrConnectWithoutUserInput>
-    connect?: Enumerable<CouponsForUserWhereUniqueInput>
-  }
-
-  export type PinnedUserListingUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<Enumerable<PinnedUserListingCreateWithoutUserInput>, Enumerable<PinnedUserListingUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<PinnedUserListingCreateOrConnectWithoutUserInput>
-    connect?: Enumerable<PinnedUserListingWhereUniqueInput>
-  }
-
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -8391,42 +7569,6 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type CouponsForUserUpdateManyWithoutUserNestedInput = {
-    create?: XOR<Enumerable<CouponsForUserCreateWithoutUserInput>, Enumerable<CouponsForUserUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<CouponsForUserCreateOrConnectWithoutUserInput>
-    upsert?: Enumerable<CouponsForUserUpsertWithWhereUniqueWithoutUserInput>
-    set?: Enumerable<CouponsForUserWhereUniqueInput>
-    disconnect?: Enumerable<CouponsForUserWhereUniqueInput>
-    delete?: Enumerable<CouponsForUserWhereUniqueInput>
-    connect?: Enumerable<CouponsForUserWhereUniqueInput>
-    update?: Enumerable<CouponsForUserUpdateWithWhereUniqueWithoutUserInput>
-    updateMany?: Enumerable<CouponsForUserUpdateManyWithWhereWithoutUserInput>
-    deleteMany?: Enumerable<CouponsForUserScalarWhereInput>
-  }
-
-  export type PinnedUserListingUpdateManyWithoutUserNestedInput = {
-    create?: XOR<Enumerable<PinnedUserListingCreateWithoutUserInput>, Enumerable<PinnedUserListingUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<PinnedUserListingCreateOrConnectWithoutUserInput>
-    upsert?: Enumerable<PinnedUserListingUpsertWithWhereUniqueWithoutUserInput>
-    set?: Enumerable<PinnedUserListingWhereUniqueInput>
-    disconnect?: Enumerable<PinnedUserListingWhereUniqueInput>
-    delete?: Enumerable<PinnedUserListingWhereUniqueInput>
-    connect?: Enumerable<PinnedUserListingWhereUniqueInput>
-    update?: Enumerable<PinnedUserListingUpdateWithWhereUniqueWithoutUserInput>
-    updateMany?: Enumerable<PinnedUserListingUpdateManyWithWhereWithoutUserInput>
-    deleteMany?: Enumerable<PinnedUserListingScalarWhereInput>
-  }
-
-  export type GroupsUpdateOneWithoutUsersNestedInput = {
-    create?: XOR<GroupsCreateWithoutUsersInput, GroupsUncheckedCreateWithoutUsersInput>
-    connectOrCreate?: GroupsCreateOrConnectWithoutUsersInput
-    upsert?: GroupsUpsertWithoutUsersInput
-    disconnect?: boolean
-    delete?: boolean
-    connect?: GroupsWhereUniqueInput
-    update?: XOR<GroupsUpdateWithoutUsersInput, GroupsUncheckedUpdateWithoutUsersInput>
-  }
-
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -8435,227 +7577,8 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type CouponsForUserUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<Enumerable<CouponsForUserCreateWithoutUserInput>, Enumerable<CouponsForUserUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<CouponsForUserCreateOrConnectWithoutUserInput>
-    upsert?: Enumerable<CouponsForUserUpsertWithWhereUniqueWithoutUserInput>
-    set?: Enumerable<CouponsForUserWhereUniqueInput>
-    disconnect?: Enumerable<CouponsForUserWhereUniqueInput>
-    delete?: Enumerable<CouponsForUserWhereUniqueInput>
-    connect?: Enumerable<CouponsForUserWhereUniqueInput>
-    update?: Enumerable<CouponsForUserUpdateWithWhereUniqueWithoutUserInput>
-    updateMany?: Enumerable<CouponsForUserUpdateManyWithWhereWithoutUserInput>
-    deleteMany?: Enumerable<CouponsForUserScalarWhereInput>
-  }
-
-  export type PinnedUserListingUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<Enumerable<PinnedUserListingCreateWithoutUserInput>, Enumerable<PinnedUserListingUncheckedCreateWithoutUserInput>>
-    connectOrCreate?: Enumerable<PinnedUserListingCreateOrConnectWithoutUserInput>
-    upsert?: Enumerable<PinnedUserListingUpsertWithWhereUniqueWithoutUserInput>
-    set?: Enumerable<PinnedUserListingWhereUniqueInput>
-    disconnect?: Enumerable<PinnedUserListingWhereUniqueInput>
-    delete?: Enumerable<PinnedUserListingWhereUniqueInput>
-    connect?: Enumerable<PinnedUserListingWhereUniqueInput>
-    update?: Enumerable<PinnedUserListingUpdateWithWhereUniqueWithoutUserInput>
-    updateMany?: Enumerable<PinnedUserListingUpdateManyWithWhereWithoutUserInput>
-    deleteMany?: Enumerable<PinnedUserListingScalarWhereInput>
-  }
-
-  export type UserCreateNestedOneWithoutPinnedUserListingInput = {
-    create?: XOR<UserCreateWithoutPinnedUserListingInput, UserUncheckedCreateWithoutPinnedUserListingInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPinnedUserListingInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type ListingCreateNestedOneWithoutPinnedUserListingInput = {
-    create?: XOR<ListingCreateWithoutPinnedUserListingInput, ListingUncheckedCreateWithoutPinnedUserListingInput>
-    connectOrCreate?: ListingCreateOrConnectWithoutPinnedUserListingInput
-    connect?: ListingWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutPinnedUserListingNestedInput = {
-    create?: XOR<UserCreateWithoutPinnedUserListingInput, UserUncheckedCreateWithoutPinnedUserListingInput>
-    connectOrCreate?: UserCreateOrConnectWithoutPinnedUserListingInput
-    upsert?: UserUpsertWithoutPinnedUserListingInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutPinnedUserListingInput, UserUncheckedUpdateWithoutPinnedUserListingInput>
-  }
-
-  export type ListingUpdateOneRequiredWithoutPinnedUserListingNestedInput = {
-    create?: XOR<ListingCreateWithoutPinnedUserListingInput, ListingUncheckedCreateWithoutPinnedUserListingInput>
-    connectOrCreate?: ListingCreateOrConnectWithoutPinnedUserListingInput
-    upsert?: ListingUpsertWithoutPinnedUserListingInput
-    connect?: ListingWhereUniqueInput
-    update?: XOR<ListingUpdateWithoutPinnedUserListingInput, ListingUncheckedUpdateWithoutPinnedUserListingInput>
-  }
-
-  export type UserCreateNestedOneWithoutCouponsForUserInput = {
-    create?: XOR<UserCreateWithoutCouponsForUserInput, UserUncheckedCreateWithoutCouponsForUserInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCouponsForUserInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type CouponCreateNestedOneWithoutCouponsUsedByUserInput = {
-    create?: XOR<CouponCreateWithoutCouponsUsedByUserInput, CouponUncheckedCreateWithoutCouponsUsedByUserInput>
-    connectOrCreate?: CouponCreateOrConnectWithoutCouponsUsedByUserInput
-    connect?: CouponWhereUniqueInput
-  }
-
-  export type UserUpdateOneWithoutCouponsForUserNestedInput = {
-    create?: XOR<UserCreateWithoutCouponsForUserInput, UserUncheckedCreateWithoutCouponsForUserInput>
-    connectOrCreate?: UserCreateOrConnectWithoutCouponsForUserInput
-    upsert?: UserUpsertWithoutCouponsForUserInput
-    disconnect?: boolean
-    delete?: boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<UserUpdateWithoutCouponsForUserInput, UserUncheckedUpdateWithoutCouponsForUserInput>
-  }
-
-  export type CouponUpdateOneWithoutCouponsUsedByUserNestedInput = {
-    create?: XOR<CouponCreateWithoutCouponsUsedByUserInput, CouponUncheckedCreateWithoutCouponsUsedByUserInput>
-    connectOrCreate?: CouponCreateOrConnectWithoutCouponsUsedByUserInput
-    upsert?: CouponUpsertWithoutCouponsUsedByUserInput
-    disconnect?: boolean
-    delete?: boolean
-    connect?: CouponWhereUniqueInput
-    update?: XOR<CouponUpdateWithoutCouponsUsedByUserInput, CouponUncheckedUpdateWithoutCouponsUsedByUserInput>
-  }
-
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
-  }
-
-  export type CouponCreateNestedManyWithoutGroupInput = {
-    create?: XOR<Enumerable<CouponCreateWithoutGroupInput>, Enumerable<CouponUncheckedCreateWithoutGroupInput>>
-    connectOrCreate?: Enumerable<CouponCreateOrConnectWithoutGroupInput>
-    connect?: Enumerable<CouponWhereUniqueInput>
-  }
-
-  export type UserCreateNestedManyWithoutGroupsInput = {
-    create?: XOR<Enumerable<UserCreateWithoutGroupsInput>, Enumerable<UserUncheckedCreateWithoutGroupsInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutGroupsInput>
-    connect?: Enumerable<UserWhereUniqueInput>
-  }
-
-  export type CouponUncheckedCreateNestedManyWithoutGroupInput = {
-    create?: XOR<Enumerable<CouponCreateWithoutGroupInput>, Enumerable<CouponUncheckedCreateWithoutGroupInput>>
-    connectOrCreate?: Enumerable<CouponCreateOrConnectWithoutGroupInput>
-    connect?: Enumerable<CouponWhereUniqueInput>
-  }
-
-  export type UserUncheckedCreateNestedManyWithoutGroupsInput = {
-    create?: XOR<Enumerable<UserCreateWithoutGroupsInput>, Enumerable<UserUncheckedCreateWithoutGroupsInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutGroupsInput>
-    connect?: Enumerable<UserWhereUniqueInput>
-  }
-
-  export type CouponUpdateManyWithoutGroupNestedInput = {
-    create?: XOR<Enumerable<CouponCreateWithoutGroupInput>, Enumerable<CouponUncheckedCreateWithoutGroupInput>>
-    connectOrCreate?: Enumerable<CouponCreateOrConnectWithoutGroupInput>
-    upsert?: Enumerable<CouponUpsertWithWhereUniqueWithoutGroupInput>
-    set?: Enumerable<CouponWhereUniqueInput>
-    disconnect?: Enumerable<CouponWhereUniqueInput>
-    delete?: Enumerable<CouponWhereUniqueInput>
-    connect?: Enumerable<CouponWhereUniqueInput>
-    update?: Enumerable<CouponUpdateWithWhereUniqueWithoutGroupInput>
-    updateMany?: Enumerable<CouponUpdateManyWithWhereWithoutGroupInput>
-    deleteMany?: Enumerable<CouponScalarWhereInput>
-  }
-
-  export type UserUpdateManyWithoutGroupsNestedInput = {
-    create?: XOR<Enumerable<UserCreateWithoutGroupsInput>, Enumerable<UserUncheckedCreateWithoutGroupsInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutGroupsInput>
-    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutGroupsInput>
-    set?: Enumerable<UserWhereUniqueInput>
-    disconnect?: Enumerable<UserWhereUniqueInput>
-    delete?: Enumerable<UserWhereUniqueInput>
-    connect?: Enumerable<UserWhereUniqueInput>
-    update?: Enumerable<UserUpdateWithWhereUniqueWithoutGroupsInput>
-    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutGroupsInput>
-    deleteMany?: Enumerable<UserScalarWhereInput>
-  }
-
-  export type CouponUncheckedUpdateManyWithoutGroupNestedInput = {
-    create?: XOR<Enumerable<CouponCreateWithoutGroupInput>, Enumerable<CouponUncheckedCreateWithoutGroupInput>>
-    connectOrCreate?: Enumerable<CouponCreateOrConnectWithoutGroupInput>
-    upsert?: Enumerable<CouponUpsertWithWhereUniqueWithoutGroupInput>
-    set?: Enumerable<CouponWhereUniqueInput>
-    disconnect?: Enumerable<CouponWhereUniqueInput>
-    delete?: Enumerable<CouponWhereUniqueInput>
-    connect?: Enumerable<CouponWhereUniqueInput>
-    update?: Enumerable<CouponUpdateWithWhereUniqueWithoutGroupInput>
-    updateMany?: Enumerable<CouponUpdateManyWithWhereWithoutGroupInput>
-    deleteMany?: Enumerable<CouponScalarWhereInput>
-  }
-
-  export type UserUncheckedUpdateManyWithoutGroupsNestedInput = {
-    create?: XOR<Enumerable<UserCreateWithoutGroupsInput>, Enumerable<UserUncheckedCreateWithoutGroupsInput>>
-    connectOrCreate?: Enumerable<UserCreateOrConnectWithoutGroupsInput>
-    upsert?: Enumerable<UserUpsertWithWhereUniqueWithoutGroupsInput>
-    set?: Enumerable<UserWhereUniqueInput>
-    disconnect?: Enumerable<UserWhereUniqueInput>
-    delete?: Enumerable<UserWhereUniqueInput>
-    connect?: Enumerable<UserWhereUniqueInput>
-    update?: Enumerable<UserUpdateWithWhereUniqueWithoutGroupsInput>
-    updateMany?: Enumerable<UserUpdateManyWithWhereWithoutGroupsInput>
-    deleteMany?: Enumerable<UserScalarWhereInput>
-  }
-
-  export type ListingCreateNestedOneWithoutCouponsInput = {
-    create?: XOR<ListingCreateWithoutCouponsInput, ListingUncheckedCreateWithoutCouponsInput>
-    connectOrCreate?: ListingCreateOrConnectWithoutCouponsInput
-    connect?: ListingWhereUniqueInput
-  }
-
-  export type CouponsForUserCreateNestedManyWithoutCouponsInput = {
-    create?: XOR<Enumerable<CouponsForUserCreateWithoutCouponsInput>, Enumerable<CouponsForUserUncheckedCreateWithoutCouponsInput>>
-    connectOrCreate?: Enumerable<CouponsForUserCreateOrConnectWithoutCouponsInput>
-    connect?: Enumerable<CouponsForUserWhereUniqueInput>
-  }
-
-  export type GroupsCreateNestedOneWithoutCouponsInput = {
-    create?: XOR<GroupsCreateWithoutCouponsInput, GroupsUncheckedCreateWithoutCouponsInput>
-    connectOrCreate?: GroupsCreateOrConnectWithoutCouponsInput
-    connect?: GroupsWhereUniqueInput
-  }
-
-  export type CouponsForUserUncheckedCreateNestedManyWithoutCouponsInput = {
-    create?: XOR<Enumerable<CouponsForUserCreateWithoutCouponsInput>, Enumerable<CouponsForUserUncheckedCreateWithoutCouponsInput>>
-    connectOrCreate?: Enumerable<CouponsForUserCreateOrConnectWithoutCouponsInput>
-    connect?: Enumerable<CouponsForUserWhereUniqueInput>
-  }
-
-  export type ListingUpdateOneWithoutCouponsNestedInput = {
-    create?: XOR<ListingCreateWithoutCouponsInput, ListingUncheckedCreateWithoutCouponsInput>
-    connectOrCreate?: ListingCreateOrConnectWithoutCouponsInput
-    upsert?: ListingUpsertWithoutCouponsInput
-    disconnect?: boolean
-    delete?: boolean
-    connect?: ListingWhereUniqueInput
-    update?: XOR<ListingUpdateWithoutCouponsInput, ListingUncheckedUpdateWithoutCouponsInput>
-  }
-
-  export type CouponsForUserUpdateManyWithoutCouponsNestedInput = {
-    create?: XOR<Enumerable<CouponsForUserCreateWithoutCouponsInput>, Enumerable<CouponsForUserUncheckedCreateWithoutCouponsInput>>
-    connectOrCreate?: Enumerable<CouponsForUserCreateOrConnectWithoutCouponsInput>
-    upsert?: Enumerable<CouponsForUserUpsertWithWhereUniqueWithoutCouponsInput>
-    set?: Enumerable<CouponsForUserWhereUniqueInput>
-    disconnect?: Enumerable<CouponsForUserWhereUniqueInput>
-    delete?: Enumerable<CouponsForUserWhereUniqueInput>
-    connect?: Enumerable<CouponsForUserWhereUniqueInput>
-    update?: Enumerable<CouponsForUserUpdateWithWhereUniqueWithoutCouponsInput>
-    updateMany?: Enumerable<CouponsForUserUpdateManyWithWhereWithoutCouponsInput>
-    deleteMany?: Enumerable<CouponsForUserScalarWhereInput>
-  }
-
-  export type GroupsUpdateOneWithoutCouponsNestedInput = {
-    create?: XOR<GroupsCreateWithoutCouponsInput, GroupsUncheckedCreateWithoutCouponsInput>
-    connectOrCreate?: GroupsCreateOrConnectWithoutCouponsInput
-    upsert?: GroupsUpsertWithoutCouponsInput
-    disconnect?: boolean
-    delete?: boolean
-    connect?: GroupsWhereUniqueInput
-    update?: XOR<GroupsUpdateWithoutCouponsInput, GroupsUncheckedUpdateWithoutCouponsInput>
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -8664,95 +7587,6 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type CouponsForUserUncheckedUpdateManyWithoutCouponsNestedInput = {
-    create?: XOR<Enumerable<CouponsForUserCreateWithoutCouponsInput>, Enumerable<CouponsForUserUncheckedCreateWithoutCouponsInput>>
-    connectOrCreate?: Enumerable<CouponsForUserCreateOrConnectWithoutCouponsInput>
-    upsert?: Enumerable<CouponsForUserUpsertWithWhereUniqueWithoutCouponsInput>
-    set?: Enumerable<CouponsForUserWhereUniqueInput>
-    disconnect?: Enumerable<CouponsForUserWhereUniqueInput>
-    delete?: Enumerable<CouponsForUserWhereUniqueInput>
-    connect?: Enumerable<CouponsForUserWhereUniqueInput>
-    update?: Enumerable<CouponsForUserUpdateWithWhereUniqueWithoutCouponsInput>
-    updateMany?: Enumerable<CouponsForUserUpdateManyWithWhereWithoutCouponsInput>
-    deleteMany?: Enumerable<CouponsForUserScalarWhereInput>
-  }
-
-  export type CouponCreateNestedManyWithoutListingInput = {
-    create?: XOR<Enumerable<CouponCreateWithoutListingInput>, Enumerable<CouponUncheckedCreateWithoutListingInput>>
-    connectOrCreate?: Enumerable<CouponCreateOrConnectWithoutListingInput>
-    connect?: Enumerable<CouponWhereUniqueInput>
-  }
-
-  export type PinnedUserListingCreateNestedManyWithoutListingInput = {
-    create?: XOR<Enumerable<PinnedUserListingCreateWithoutListingInput>, Enumerable<PinnedUserListingUncheckedCreateWithoutListingInput>>
-    connectOrCreate?: Enumerable<PinnedUserListingCreateOrConnectWithoutListingInput>
-    connect?: Enumerable<PinnedUserListingWhereUniqueInput>
-  }
-
-  export type CouponUncheckedCreateNestedManyWithoutListingInput = {
-    create?: XOR<Enumerable<CouponCreateWithoutListingInput>, Enumerable<CouponUncheckedCreateWithoutListingInput>>
-    connectOrCreate?: Enumerable<CouponCreateOrConnectWithoutListingInput>
-    connect?: Enumerable<CouponWhereUniqueInput>
-  }
-
-  export type PinnedUserListingUncheckedCreateNestedManyWithoutListingInput = {
-    create?: XOR<Enumerable<PinnedUserListingCreateWithoutListingInput>, Enumerable<PinnedUserListingUncheckedCreateWithoutListingInput>>
-    connectOrCreate?: Enumerable<PinnedUserListingCreateOrConnectWithoutListingInput>
-    connect?: Enumerable<PinnedUserListingWhereUniqueInput>
-  }
-
-  export type CouponUpdateManyWithoutListingNestedInput = {
-    create?: XOR<Enumerable<CouponCreateWithoutListingInput>, Enumerable<CouponUncheckedCreateWithoutListingInput>>
-    connectOrCreate?: Enumerable<CouponCreateOrConnectWithoutListingInput>
-    upsert?: Enumerable<CouponUpsertWithWhereUniqueWithoutListingInput>
-    set?: Enumerable<CouponWhereUniqueInput>
-    disconnect?: Enumerable<CouponWhereUniqueInput>
-    delete?: Enumerable<CouponWhereUniqueInput>
-    connect?: Enumerable<CouponWhereUniqueInput>
-    update?: Enumerable<CouponUpdateWithWhereUniqueWithoutListingInput>
-    updateMany?: Enumerable<CouponUpdateManyWithWhereWithoutListingInput>
-    deleteMany?: Enumerable<CouponScalarWhereInput>
-  }
-
-  export type PinnedUserListingUpdateManyWithoutListingNestedInput = {
-    create?: XOR<Enumerable<PinnedUserListingCreateWithoutListingInput>, Enumerable<PinnedUserListingUncheckedCreateWithoutListingInput>>
-    connectOrCreate?: Enumerable<PinnedUserListingCreateOrConnectWithoutListingInput>
-    upsert?: Enumerable<PinnedUserListingUpsertWithWhereUniqueWithoutListingInput>
-    set?: Enumerable<PinnedUserListingWhereUniqueInput>
-    disconnect?: Enumerable<PinnedUserListingWhereUniqueInput>
-    delete?: Enumerable<PinnedUserListingWhereUniqueInput>
-    connect?: Enumerable<PinnedUserListingWhereUniqueInput>
-    update?: Enumerable<PinnedUserListingUpdateWithWhereUniqueWithoutListingInput>
-    updateMany?: Enumerable<PinnedUserListingUpdateManyWithWhereWithoutListingInput>
-    deleteMany?: Enumerable<PinnedUserListingScalarWhereInput>
-  }
-
-  export type CouponUncheckedUpdateManyWithoutListingNestedInput = {
-    create?: XOR<Enumerable<CouponCreateWithoutListingInput>, Enumerable<CouponUncheckedCreateWithoutListingInput>>
-    connectOrCreate?: Enumerable<CouponCreateOrConnectWithoutListingInput>
-    upsert?: Enumerable<CouponUpsertWithWhereUniqueWithoutListingInput>
-    set?: Enumerable<CouponWhereUniqueInput>
-    disconnect?: Enumerable<CouponWhereUniqueInput>
-    delete?: Enumerable<CouponWhereUniqueInput>
-    connect?: Enumerable<CouponWhereUniqueInput>
-    update?: Enumerable<CouponUpdateWithWhereUniqueWithoutListingInput>
-    updateMany?: Enumerable<CouponUpdateManyWithWhereWithoutListingInput>
-    deleteMany?: Enumerable<CouponScalarWhereInput>
-  }
-
-  export type PinnedUserListingUncheckedUpdateManyWithoutListingNestedInput = {
-    create?: XOR<Enumerable<PinnedUserListingCreateWithoutListingInput>, Enumerable<PinnedUserListingUncheckedCreateWithoutListingInput>>
-    connectOrCreate?: Enumerable<PinnedUserListingCreateOrConnectWithoutListingInput>
-    upsert?: Enumerable<PinnedUserListingUpsertWithWhereUniqueWithoutListingInput>
-    set?: Enumerable<PinnedUserListingWhereUniqueInput>
-    disconnect?: Enumerable<PinnedUserListingWhereUniqueInput>
-    delete?: Enumerable<PinnedUserListingWhereUniqueInput>
-    connect?: Enumerable<PinnedUserListingWhereUniqueInput>
-    update?: Enumerable<PinnedUserListingUpdateWithWhereUniqueWithoutListingInput>
-    updateMany?: Enumerable<PinnedUserListingUpdateManyWithWhereWithoutListingInput>
-    deleteMany?: Enumerable<PinnedUserListingScalarWhereInput>
   }
 
   export type NestedIntFilter = {
@@ -8929,876 +7763,6 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedFloatNullableFilter | number | null
-  }
-
-  export type CouponsForUserCreateWithoutUserInput = {
-    userEmail?: string
-    Coupons?: CouponCreateNestedOneWithoutCouponsUsedByUserInput
-    used?: boolean
-  }
-
-  export type CouponsForUserUncheckedCreateWithoutUserInput = {
-    id?: number
-    userEmail?: string
-    couponId: number
-    used?: boolean
-  }
-
-  export type CouponsForUserCreateOrConnectWithoutUserInput = {
-    where: CouponsForUserWhereUniqueInput
-    create: XOR<CouponsForUserCreateWithoutUserInput, CouponsForUserUncheckedCreateWithoutUserInput>
-  }
-
-  export type PinnedUserListingCreateWithoutUserInput = {
-    listing: ListingCreateNestedOneWithoutPinnedUserListingInput
-  }
-
-  export type PinnedUserListingUncheckedCreateWithoutUserInput = {
-    id?: number
-    listingId: number
-  }
-
-  export type PinnedUserListingCreateOrConnectWithoutUserInput = {
-    where: PinnedUserListingWhereUniqueInput
-    create: XOR<PinnedUserListingCreateWithoutUserInput, PinnedUserListingUncheckedCreateWithoutUserInput>
-  }
-
-  export type GroupsCreateWithoutUsersInput = {
-    groupName: string
-    coupons?: CouponCreateNestedManyWithoutGroupInput
-  }
-
-  export type GroupsUncheckedCreateWithoutUsersInput = {
-    groupName: string
-    coupons?: CouponUncheckedCreateNestedManyWithoutGroupInput
-  }
-
-  export type GroupsCreateOrConnectWithoutUsersInput = {
-    where: GroupsWhereUniqueInput
-    create: XOR<GroupsCreateWithoutUsersInput, GroupsUncheckedCreateWithoutUsersInput>
-  }
-
-  export type CouponsForUserUpsertWithWhereUniqueWithoutUserInput = {
-    where: CouponsForUserWhereUniqueInput
-    update: XOR<CouponsForUserUpdateWithoutUserInput, CouponsForUserUncheckedUpdateWithoutUserInput>
-    create: XOR<CouponsForUserCreateWithoutUserInput, CouponsForUserUncheckedCreateWithoutUserInput>
-  }
-
-  export type CouponsForUserUpdateWithWhereUniqueWithoutUserInput = {
-    where: CouponsForUserWhereUniqueInput
-    data: XOR<CouponsForUserUpdateWithoutUserInput, CouponsForUserUncheckedUpdateWithoutUserInput>
-  }
-
-  export type CouponsForUserUpdateManyWithWhereWithoutUserInput = {
-    where: CouponsForUserScalarWhereInput
-    data: XOR<CouponsForUserUpdateManyMutationInput, CouponsForUserUncheckedUpdateManyWithoutCouponsForUserInput>
-  }
-
-  export type CouponsForUserScalarWhereInput = {
-    AND?: Enumerable<CouponsForUserScalarWhereInput>
-    OR?: Enumerable<CouponsForUserScalarWhereInput>
-    NOT?: Enumerable<CouponsForUserScalarWhereInput>
-    id?: IntFilter | number
-    userId?: IntFilter | number
-    userEmail?: StringFilter | string
-    couponId?: IntFilter | number
-    used?: BoolFilter | boolean
-  }
-
-  export type PinnedUserListingUpsertWithWhereUniqueWithoutUserInput = {
-    where: PinnedUserListingWhereUniqueInput
-    update: XOR<PinnedUserListingUpdateWithoutUserInput, PinnedUserListingUncheckedUpdateWithoutUserInput>
-    create: XOR<PinnedUserListingCreateWithoutUserInput, PinnedUserListingUncheckedCreateWithoutUserInput>
-  }
-
-  export type PinnedUserListingUpdateWithWhereUniqueWithoutUserInput = {
-    where: PinnedUserListingWhereUniqueInput
-    data: XOR<PinnedUserListingUpdateWithoutUserInput, PinnedUserListingUncheckedUpdateWithoutUserInput>
-  }
-
-  export type PinnedUserListingUpdateManyWithWhereWithoutUserInput = {
-    where: PinnedUserListingScalarWhereInput
-    data: XOR<PinnedUserListingUpdateManyMutationInput, PinnedUserListingUncheckedUpdateManyWithoutPinnedUserListingInput>
-  }
-
-  export type PinnedUserListingScalarWhereInput = {
-    AND?: Enumerable<PinnedUserListingScalarWhereInput>
-    OR?: Enumerable<PinnedUserListingScalarWhereInput>
-    NOT?: Enumerable<PinnedUserListingScalarWhereInput>
-    id?: IntFilter | number
-    userId?: IntFilter | number
-    listingId?: IntFilter | number
-  }
-
-  export type GroupsUpsertWithoutUsersInput = {
-    update: XOR<GroupsUpdateWithoutUsersInput, GroupsUncheckedUpdateWithoutUsersInput>
-    create: XOR<GroupsCreateWithoutUsersInput, GroupsUncheckedCreateWithoutUsersInput>
-  }
-
-  export type GroupsUpdateWithoutUsersInput = {
-    groupName?: StringFieldUpdateOperationsInput | string
-    coupons?: CouponUpdateManyWithoutGroupNestedInput
-  }
-
-  export type GroupsUncheckedUpdateWithoutUsersInput = {
-    groupName?: StringFieldUpdateOperationsInput | string
-    coupons?: CouponUncheckedUpdateManyWithoutGroupNestedInput
-  }
-
-  export type UserCreateWithoutPinnedUserListingInput = {
-    createdAt?: Date | string
-    email: string
-    firstName?: string | null
-    lastName?: string | null
-    password: string
-    role?: string
-    couponsForUser?: CouponsForUserCreateNestedManyWithoutUserInput
-    Groups?: GroupsCreateNestedOneWithoutUsersInput
-  }
-
-  export type UserUncheckedCreateWithoutPinnedUserListingInput = {
-    id?: number
-    createdAt?: Date | string
-    email: string
-    firstName?: string | null
-    lastName?: string | null
-    password: string
-    role?: string
-    couponsForUser?: CouponsForUserUncheckedCreateNestedManyWithoutUserInput
-    groupsGroupName?: string | null
-  }
-
-  export type UserCreateOrConnectWithoutPinnedUserListingInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutPinnedUserListingInput, UserUncheckedCreateWithoutPinnedUserListingInput>
-  }
-
-  export type ListingCreateWithoutPinnedUserListingInput = {
-    name: string
-    address: string
-    city: string
-    zipcode: string
-    displayTitle: string
-    subTitle?: string | null
-    category?: string | null
-    experience1?: string | null
-    experience2?: string | null
-    experience3?: string | null
-    experience4?: string | null
-    description: string
-    email: string
-    phone: string
-    website: string
-    image1: string
-    image2?: string | null
-    image3?: string | null
-    image4?: string | null
-    coupons?: CouponCreateNestedManyWithoutListingInput
-  }
-
-  export type ListingUncheckedCreateWithoutPinnedUserListingInput = {
-    id?: number
-    name: string
-    address: string
-    city: string
-    zipcode: string
-    displayTitle: string
-    subTitle?: string | null
-    category?: string | null
-    experience1?: string | null
-    experience2?: string | null
-    experience3?: string | null
-    experience4?: string | null
-    description: string
-    email: string
-    phone: string
-    website: string
-    image1: string
-    image2?: string | null
-    image3?: string | null
-    image4?: string | null
-    coupons?: CouponUncheckedCreateNestedManyWithoutListingInput
-  }
-
-  export type ListingCreateOrConnectWithoutPinnedUserListingInput = {
-    where: ListingWhereUniqueInput
-    create: XOR<ListingCreateWithoutPinnedUserListingInput, ListingUncheckedCreateWithoutPinnedUserListingInput>
-  }
-
-  export type UserUpsertWithoutPinnedUserListingInput = {
-    update: XOR<UserUpdateWithoutPinnedUserListingInput, UserUncheckedUpdateWithoutPinnedUserListingInput>
-    create: XOR<UserCreateWithoutPinnedUserListingInput, UserUncheckedCreateWithoutPinnedUserListingInput>
-  }
-
-  export type UserUpdateWithoutPinnedUserListingInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    couponsForUser?: CouponsForUserUpdateManyWithoutUserNestedInput
-    Groups?: GroupsUpdateOneWithoutUsersNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutPinnedUserListingInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    couponsForUser?: CouponsForUserUncheckedUpdateManyWithoutUserNestedInput
-    groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type ListingUpsertWithoutPinnedUserListingInput = {
-    update: XOR<ListingUpdateWithoutPinnedUserListingInput, ListingUncheckedUpdateWithoutPinnedUserListingInput>
-    create: XOR<ListingCreateWithoutPinnedUserListingInput, ListingUncheckedCreateWithoutPinnedUserListingInput>
-  }
-
-  export type ListingUpdateWithoutPinnedUserListingInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    zipcode?: StringFieldUpdateOperationsInput | string
-    displayTitle?: StringFieldUpdateOperationsInput | string
-    subTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    category?: NullableStringFieldUpdateOperationsInput | string | null
-    experience1?: NullableStringFieldUpdateOperationsInput | string | null
-    experience2?: NullableStringFieldUpdateOperationsInput | string | null
-    experience3?: NullableStringFieldUpdateOperationsInput | string | null
-    experience4?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    website?: StringFieldUpdateOperationsInput | string
-    image1?: StringFieldUpdateOperationsInput | string
-    image2?: NullableStringFieldUpdateOperationsInput | string | null
-    image3?: NullableStringFieldUpdateOperationsInput | string | null
-    image4?: NullableStringFieldUpdateOperationsInput | string | null
-    coupons?: CouponUpdateManyWithoutListingNestedInput
-  }
-
-  export type ListingUncheckedUpdateWithoutPinnedUserListingInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    zipcode?: StringFieldUpdateOperationsInput | string
-    displayTitle?: StringFieldUpdateOperationsInput | string
-    subTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    category?: NullableStringFieldUpdateOperationsInput | string | null
-    experience1?: NullableStringFieldUpdateOperationsInput | string | null
-    experience2?: NullableStringFieldUpdateOperationsInput | string | null
-    experience3?: NullableStringFieldUpdateOperationsInput | string | null
-    experience4?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    website?: StringFieldUpdateOperationsInput | string
-    image1?: StringFieldUpdateOperationsInput | string
-    image2?: NullableStringFieldUpdateOperationsInput | string | null
-    image3?: NullableStringFieldUpdateOperationsInput | string | null
-    image4?: NullableStringFieldUpdateOperationsInput | string | null
-    coupons?: CouponUncheckedUpdateManyWithoutListingNestedInput
-  }
-
-  export type UserCreateWithoutCouponsForUserInput = {
-    createdAt?: Date | string
-    email: string
-    firstName?: string | null
-    lastName?: string | null
-    password: string
-    role?: string
-    PinnedUserListing?: PinnedUserListingCreateNestedManyWithoutUserInput
-    Groups?: GroupsCreateNestedOneWithoutUsersInput
-  }
-
-  export type UserUncheckedCreateWithoutCouponsForUserInput = {
-    id?: number
-    createdAt?: Date | string
-    email: string
-    firstName?: string | null
-    lastName?: string | null
-    password: string
-    role?: string
-    PinnedUserListing?: PinnedUserListingUncheckedCreateNestedManyWithoutUserInput
-    groupsGroupName?: string | null
-  }
-
-  export type UserCreateOrConnectWithoutCouponsForUserInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutCouponsForUserInput, UserUncheckedCreateWithoutCouponsForUserInput>
-  }
-
-  export type CouponCreateWithoutCouponsUsedByUserInput = {
-    name: string
-    listing?: ListingCreateNestedOneWithoutCouponsInput
-    description: string
-    expired?: boolean
-    email: string
-    Group?: GroupsCreateNestedOneWithoutCouponsInput
-  }
-
-  export type CouponUncheckedCreateWithoutCouponsUsedByUserInput = {
-    id?: number
-    name: string
-    listingId?: number | null
-    description: string
-    expired?: boolean
-    email: string
-    groupName?: string | null
-  }
-
-  export type CouponCreateOrConnectWithoutCouponsUsedByUserInput = {
-    where: CouponWhereUniqueInput
-    create: XOR<CouponCreateWithoutCouponsUsedByUserInput, CouponUncheckedCreateWithoutCouponsUsedByUserInput>
-  }
-
-  export type UserUpsertWithoutCouponsForUserInput = {
-    update: XOR<UserUpdateWithoutCouponsForUserInput, UserUncheckedUpdateWithoutCouponsForUserInput>
-    create: XOR<UserCreateWithoutCouponsForUserInput, UserUncheckedCreateWithoutCouponsForUserInput>
-  }
-
-  export type UserUpdateWithoutCouponsForUserInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    PinnedUserListing?: PinnedUserListingUpdateManyWithoutUserNestedInput
-    Groups?: GroupsUpdateOneWithoutUsersNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutCouponsForUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    PinnedUserListing?: PinnedUserListingUncheckedUpdateManyWithoutUserNestedInput
-    groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type CouponUpsertWithoutCouponsUsedByUserInput = {
-    update: XOR<CouponUpdateWithoutCouponsUsedByUserInput, CouponUncheckedUpdateWithoutCouponsUsedByUserInput>
-    create: XOR<CouponCreateWithoutCouponsUsedByUserInput, CouponUncheckedCreateWithoutCouponsUsedByUserInput>
-  }
-
-  export type CouponUpdateWithoutCouponsUsedByUserInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    listing?: ListingUpdateOneWithoutCouponsNestedInput
-    description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
-    email?: StringFieldUpdateOperationsInput | string
-    Group?: GroupsUpdateOneWithoutCouponsNestedInput
-  }
-
-  export type CouponUncheckedUpdateWithoutCouponsUsedByUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    listingId?: NullableIntFieldUpdateOperationsInput | number | null
-    description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
-    email?: StringFieldUpdateOperationsInput | string
-    groupName?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type CouponCreateWithoutGroupInput = {
-    name: string
-    listing?: ListingCreateNestedOneWithoutCouponsInput
-    description: string
-    expired?: boolean
-    email: string
-    couponsUsedByUser?: CouponsForUserCreateNestedManyWithoutCouponsInput
-  }
-
-  export type CouponUncheckedCreateWithoutGroupInput = {
-    id?: number
-    name: string
-    listingId?: number | null
-    description: string
-    expired?: boolean
-    email: string
-    couponsUsedByUser?: CouponsForUserUncheckedCreateNestedManyWithoutCouponsInput
-  }
-
-  export type CouponCreateOrConnectWithoutGroupInput = {
-    where: CouponWhereUniqueInput
-    create: XOR<CouponCreateWithoutGroupInput, CouponUncheckedCreateWithoutGroupInput>
-  }
-
-  export type UserCreateWithoutGroupsInput = {
-    createdAt?: Date | string
-    email: string
-    firstName?: string | null
-    lastName?: string | null
-    password: string
-    role?: string
-    couponsForUser?: CouponsForUserCreateNestedManyWithoutUserInput
-    PinnedUserListing?: PinnedUserListingCreateNestedManyWithoutUserInput
-  }
-
-  export type UserUncheckedCreateWithoutGroupsInput = {
-    id?: number
-    createdAt?: Date | string
-    email: string
-    firstName?: string | null
-    lastName?: string | null
-    password: string
-    role?: string
-    couponsForUser?: CouponsForUserUncheckedCreateNestedManyWithoutUserInput
-    PinnedUserListing?: PinnedUserListingUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type UserCreateOrConnectWithoutGroupsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutGroupsInput, UserUncheckedCreateWithoutGroupsInput>
-  }
-
-  export type CouponUpsertWithWhereUniqueWithoutGroupInput = {
-    where: CouponWhereUniqueInput
-    update: XOR<CouponUpdateWithoutGroupInput, CouponUncheckedUpdateWithoutGroupInput>
-    create: XOR<CouponCreateWithoutGroupInput, CouponUncheckedCreateWithoutGroupInput>
-  }
-
-  export type CouponUpdateWithWhereUniqueWithoutGroupInput = {
-    where: CouponWhereUniqueInput
-    data: XOR<CouponUpdateWithoutGroupInput, CouponUncheckedUpdateWithoutGroupInput>
-  }
-
-  export type CouponUpdateManyWithWhereWithoutGroupInput = {
-    where: CouponScalarWhereInput
-    data: XOR<CouponUpdateManyMutationInput, CouponUncheckedUpdateManyWithoutCouponsInput>
-  }
-
-  export type CouponScalarWhereInput = {
-    AND?: Enumerable<CouponScalarWhereInput>
-    OR?: Enumerable<CouponScalarWhereInput>
-    NOT?: Enumerable<CouponScalarWhereInput>
-    id?: IntFilter | number
-    name?: StringFilter | string
-    listingId?: IntNullableFilter | number | null
-    description?: StringFilter | string
-    expired?: BoolFilter | boolean
-    email?: StringFilter | string
-    groupName?: StringNullableFilter | string | null
-  }
-
-  export type UserUpsertWithWhereUniqueWithoutGroupsInput = {
-    where: UserWhereUniqueInput
-    update: XOR<UserUpdateWithoutGroupsInput, UserUncheckedUpdateWithoutGroupsInput>
-    create: XOR<UserCreateWithoutGroupsInput, UserUncheckedCreateWithoutGroupsInput>
-  }
-
-  export type UserUpdateWithWhereUniqueWithoutGroupsInput = {
-    where: UserWhereUniqueInput
-    data: XOR<UserUpdateWithoutGroupsInput, UserUncheckedUpdateWithoutGroupsInput>
-  }
-
-  export type UserUpdateManyWithWhereWithoutGroupsInput = {
-    where: UserScalarWhereInput
-    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutUsersInput>
-  }
-
-  export type UserScalarWhereInput = {
-    AND?: Enumerable<UserScalarWhereInput>
-    OR?: Enumerable<UserScalarWhereInput>
-    NOT?: Enumerable<UserScalarWhereInput>
-    id?: IntFilter | number
-    createdAt?: DateTimeFilter | Date | string
-    email?: StringFilter | string
-    firstName?: StringNullableFilter | string | null
-    lastName?: StringNullableFilter | string | null
-    password?: StringFilter | string
-    role?: StringFilter | string
-    groupsGroupName?: StringNullableFilter | string | null
-  }
-
-  export type ListingCreateWithoutCouponsInput = {
-    name: string
-    address: string
-    city: string
-    zipcode: string
-    displayTitle: string
-    subTitle?: string | null
-    category?: string | null
-    experience1?: string | null
-    experience2?: string | null
-    experience3?: string | null
-    experience4?: string | null
-    description: string
-    email: string
-    phone: string
-    website: string
-    image1: string
-    image2?: string | null
-    image3?: string | null
-    image4?: string | null
-    PinnedUserListing?: PinnedUserListingCreateNestedManyWithoutListingInput
-  }
-
-  export type ListingUncheckedCreateWithoutCouponsInput = {
-    id?: number
-    name: string
-    address: string
-    city: string
-    zipcode: string
-    displayTitle: string
-    subTitle?: string | null
-    category?: string | null
-    experience1?: string | null
-    experience2?: string | null
-    experience3?: string | null
-    experience4?: string | null
-    description: string
-    email: string
-    phone: string
-    website: string
-    image1: string
-    image2?: string | null
-    image3?: string | null
-    image4?: string | null
-    PinnedUserListing?: PinnedUserListingUncheckedCreateNestedManyWithoutListingInput
-  }
-
-  export type ListingCreateOrConnectWithoutCouponsInput = {
-    where: ListingWhereUniqueInput
-    create: XOR<ListingCreateWithoutCouponsInput, ListingUncheckedCreateWithoutCouponsInput>
-  }
-
-  export type CouponsForUserCreateWithoutCouponsInput = {
-    User?: UserCreateNestedOneWithoutCouponsForUserInput
-    userEmail?: string
-    used?: boolean
-  }
-
-  export type CouponsForUserUncheckedCreateWithoutCouponsInput = {
-    id?: number
-    userId: number
-    userEmail?: string
-    used?: boolean
-  }
-
-  export type CouponsForUserCreateOrConnectWithoutCouponsInput = {
-    where: CouponsForUserWhereUniqueInput
-    create: XOR<CouponsForUserCreateWithoutCouponsInput, CouponsForUserUncheckedCreateWithoutCouponsInput>
-  }
-
-  export type GroupsCreateWithoutCouponsInput = {
-    groupName: string
-    users?: UserCreateNestedManyWithoutGroupsInput
-  }
-
-  export type GroupsUncheckedCreateWithoutCouponsInput = {
-    groupName: string
-    users?: UserUncheckedCreateNestedManyWithoutGroupsInput
-  }
-
-  export type GroupsCreateOrConnectWithoutCouponsInput = {
-    where: GroupsWhereUniqueInput
-    create: XOR<GroupsCreateWithoutCouponsInput, GroupsUncheckedCreateWithoutCouponsInput>
-  }
-
-  export type ListingUpsertWithoutCouponsInput = {
-    update: XOR<ListingUpdateWithoutCouponsInput, ListingUncheckedUpdateWithoutCouponsInput>
-    create: XOR<ListingCreateWithoutCouponsInput, ListingUncheckedCreateWithoutCouponsInput>
-  }
-
-  export type ListingUpdateWithoutCouponsInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    zipcode?: StringFieldUpdateOperationsInput | string
-    displayTitle?: StringFieldUpdateOperationsInput | string
-    subTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    category?: NullableStringFieldUpdateOperationsInput | string | null
-    experience1?: NullableStringFieldUpdateOperationsInput | string | null
-    experience2?: NullableStringFieldUpdateOperationsInput | string | null
-    experience3?: NullableStringFieldUpdateOperationsInput | string | null
-    experience4?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    website?: StringFieldUpdateOperationsInput | string
-    image1?: StringFieldUpdateOperationsInput | string
-    image2?: NullableStringFieldUpdateOperationsInput | string | null
-    image3?: NullableStringFieldUpdateOperationsInput | string | null
-    image4?: NullableStringFieldUpdateOperationsInput | string | null
-    PinnedUserListing?: PinnedUserListingUpdateManyWithoutListingNestedInput
-  }
-
-  export type ListingUncheckedUpdateWithoutCouponsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    address?: StringFieldUpdateOperationsInput | string
-    city?: StringFieldUpdateOperationsInput | string
-    zipcode?: StringFieldUpdateOperationsInput | string
-    displayTitle?: StringFieldUpdateOperationsInput | string
-    subTitle?: NullableStringFieldUpdateOperationsInput | string | null
-    category?: NullableStringFieldUpdateOperationsInput | string | null
-    experience1?: NullableStringFieldUpdateOperationsInput | string | null
-    experience2?: NullableStringFieldUpdateOperationsInput | string | null
-    experience3?: NullableStringFieldUpdateOperationsInput | string | null
-    experience4?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    phone?: StringFieldUpdateOperationsInput | string
-    website?: StringFieldUpdateOperationsInput | string
-    image1?: StringFieldUpdateOperationsInput | string
-    image2?: NullableStringFieldUpdateOperationsInput | string | null
-    image3?: NullableStringFieldUpdateOperationsInput | string | null
-    image4?: NullableStringFieldUpdateOperationsInput | string | null
-    PinnedUserListing?: PinnedUserListingUncheckedUpdateManyWithoutListingNestedInput
-  }
-
-  export type CouponsForUserUpsertWithWhereUniqueWithoutCouponsInput = {
-    where: CouponsForUserWhereUniqueInput
-    update: XOR<CouponsForUserUpdateWithoutCouponsInput, CouponsForUserUncheckedUpdateWithoutCouponsInput>
-    create: XOR<CouponsForUserCreateWithoutCouponsInput, CouponsForUserUncheckedCreateWithoutCouponsInput>
-  }
-
-  export type CouponsForUserUpdateWithWhereUniqueWithoutCouponsInput = {
-    where: CouponsForUserWhereUniqueInput
-    data: XOR<CouponsForUserUpdateWithoutCouponsInput, CouponsForUserUncheckedUpdateWithoutCouponsInput>
-  }
-
-  export type CouponsForUserUpdateManyWithWhereWithoutCouponsInput = {
-    where: CouponsForUserScalarWhereInput
-    data: XOR<CouponsForUserUpdateManyMutationInput, CouponsForUserUncheckedUpdateManyWithoutCouponsUsedByUserInput>
-  }
-
-  export type GroupsUpsertWithoutCouponsInput = {
-    update: XOR<GroupsUpdateWithoutCouponsInput, GroupsUncheckedUpdateWithoutCouponsInput>
-    create: XOR<GroupsCreateWithoutCouponsInput, GroupsUncheckedCreateWithoutCouponsInput>
-  }
-
-  export type GroupsUpdateWithoutCouponsInput = {
-    groupName?: StringFieldUpdateOperationsInput | string
-    users?: UserUpdateManyWithoutGroupsNestedInput
-  }
-
-  export type GroupsUncheckedUpdateWithoutCouponsInput = {
-    groupName?: StringFieldUpdateOperationsInput | string
-    users?: UserUncheckedUpdateManyWithoutGroupsNestedInput
-  }
-
-  export type CouponCreateWithoutListingInput = {
-    name: string
-    description: string
-    expired?: boolean
-    email: string
-    couponsUsedByUser?: CouponsForUserCreateNestedManyWithoutCouponsInput
-    Group?: GroupsCreateNestedOneWithoutCouponsInput
-  }
-
-  export type CouponUncheckedCreateWithoutListingInput = {
-    id?: number
-    name: string
-    description: string
-    expired?: boolean
-    email: string
-    couponsUsedByUser?: CouponsForUserUncheckedCreateNestedManyWithoutCouponsInput
-    groupName?: string | null
-  }
-
-  export type CouponCreateOrConnectWithoutListingInput = {
-    where: CouponWhereUniqueInput
-    create: XOR<CouponCreateWithoutListingInput, CouponUncheckedCreateWithoutListingInput>
-  }
-
-  export type PinnedUserListingCreateWithoutListingInput = {
-    user: UserCreateNestedOneWithoutPinnedUserListingInput
-  }
-
-  export type PinnedUserListingUncheckedCreateWithoutListingInput = {
-    id?: number
-    userId: number
-  }
-
-  export type PinnedUserListingCreateOrConnectWithoutListingInput = {
-    where: PinnedUserListingWhereUniqueInput
-    create: XOR<PinnedUserListingCreateWithoutListingInput, PinnedUserListingUncheckedCreateWithoutListingInput>
-  }
-
-  export type CouponUpsertWithWhereUniqueWithoutListingInput = {
-    where: CouponWhereUniqueInput
-    update: XOR<CouponUpdateWithoutListingInput, CouponUncheckedUpdateWithoutListingInput>
-    create: XOR<CouponCreateWithoutListingInput, CouponUncheckedCreateWithoutListingInput>
-  }
-
-  export type CouponUpdateWithWhereUniqueWithoutListingInput = {
-    where: CouponWhereUniqueInput
-    data: XOR<CouponUpdateWithoutListingInput, CouponUncheckedUpdateWithoutListingInput>
-  }
-
-  export type CouponUpdateManyWithWhereWithoutListingInput = {
-    where: CouponScalarWhereInput
-    data: XOR<CouponUpdateManyMutationInput, CouponUncheckedUpdateManyWithoutCouponsInput>
-  }
-
-  export type PinnedUserListingUpsertWithWhereUniqueWithoutListingInput = {
-    where: PinnedUserListingWhereUniqueInput
-    update: XOR<PinnedUserListingUpdateWithoutListingInput, PinnedUserListingUncheckedUpdateWithoutListingInput>
-    create: XOR<PinnedUserListingCreateWithoutListingInput, PinnedUserListingUncheckedCreateWithoutListingInput>
-  }
-
-  export type PinnedUserListingUpdateWithWhereUniqueWithoutListingInput = {
-    where: PinnedUserListingWhereUniqueInput
-    data: XOR<PinnedUserListingUpdateWithoutListingInput, PinnedUserListingUncheckedUpdateWithoutListingInput>
-  }
-
-  export type PinnedUserListingUpdateManyWithWhereWithoutListingInput = {
-    where: PinnedUserListingScalarWhereInput
-    data: XOR<PinnedUserListingUpdateManyMutationInput, PinnedUserListingUncheckedUpdateManyWithoutPinnedUserListingInput>
-  }
-
-  export type CouponsForUserUpdateWithoutUserInput = {
-    userEmail?: StringFieldUpdateOperationsInput | string
-    Coupons?: CouponUpdateOneWithoutCouponsUsedByUserNestedInput
-    used?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type CouponsForUserUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userEmail?: StringFieldUpdateOperationsInput | string
-    couponId?: IntFieldUpdateOperationsInput | number
-    used?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type CouponsForUserUncheckedUpdateManyWithoutCouponsForUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userEmail?: StringFieldUpdateOperationsInput | string
-    couponId?: IntFieldUpdateOperationsInput | number
-    used?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type PinnedUserListingUpdateWithoutUserInput = {
-    listing?: ListingUpdateOneRequiredWithoutPinnedUserListingNestedInput
-  }
-
-  export type PinnedUserListingUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    listingId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type PinnedUserListingUncheckedUpdateManyWithoutPinnedUserListingInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    listingId?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type CouponUpdateWithoutGroupInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    listing?: ListingUpdateOneWithoutCouponsNestedInput
-    description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
-    email?: StringFieldUpdateOperationsInput | string
-    couponsUsedByUser?: CouponsForUserUpdateManyWithoutCouponsNestedInput
-  }
-
-  export type CouponUncheckedUpdateWithoutGroupInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    listingId?: NullableIntFieldUpdateOperationsInput | number | null
-    description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
-    email?: StringFieldUpdateOperationsInput | string
-    couponsUsedByUser?: CouponsForUserUncheckedUpdateManyWithoutCouponsNestedInput
-  }
-
-  export type CouponUncheckedUpdateManyWithoutCouponsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    listingId?: NullableIntFieldUpdateOperationsInput | number | null
-    description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
-    email?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type UserUpdateWithoutGroupsInput = {
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    couponsForUser?: CouponsForUserUpdateManyWithoutUserNestedInput
-    PinnedUserListing?: PinnedUserListingUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutGroupsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-    couponsForUser?: CouponsForUserUncheckedUpdateManyWithoutUserNestedInput
-    PinnedUserListing?: PinnedUserListingUncheckedUpdateManyWithoutUserNestedInput
-  }
-
-  export type UserUncheckedUpdateManyWithoutUsersInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    email?: StringFieldUpdateOperationsInput | string
-    firstName?: NullableStringFieldUpdateOperationsInput | string | null
-    lastName?: NullableStringFieldUpdateOperationsInput | string | null
-    password?: StringFieldUpdateOperationsInput | string
-    role?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type CouponsForUserUpdateWithoutCouponsInput = {
-    User?: UserUpdateOneWithoutCouponsForUserNestedInput
-    userEmail?: StringFieldUpdateOperationsInput | string
-    used?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type CouponsForUserUncheckedUpdateWithoutCouponsInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    userEmail?: StringFieldUpdateOperationsInput | string
-    used?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type CouponsForUserUncheckedUpdateManyWithoutCouponsUsedByUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
-    userEmail?: StringFieldUpdateOperationsInput | string
-    used?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type CouponUpdateWithoutListingInput = {
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
-    email?: StringFieldUpdateOperationsInput | string
-    couponsUsedByUser?: CouponsForUserUpdateManyWithoutCouponsNestedInput
-    Group?: GroupsUpdateOneWithoutCouponsNestedInput
-  }
-
-  export type CouponUncheckedUpdateWithoutListingInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    name?: StringFieldUpdateOperationsInput | string
-    description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
-    email?: StringFieldUpdateOperationsInput | string
-    couponsUsedByUser?: CouponsForUserUncheckedUpdateManyWithoutCouponsNestedInput
-    groupName?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type PinnedUserListingUpdateWithoutListingInput = {
-    user?: UserUpdateOneRequiredWithoutPinnedUserListingNestedInput
-  }
-
-  export type PinnedUserListingUncheckedUpdateWithoutListingInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
   }
 
 

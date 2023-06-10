@@ -14,11 +14,11 @@ exports.Prisma = Prisma
 
 /**
  * Prisma Client JS version: 4.9.0
- * Query Engine version: d6e67a83f971b175a593ccc12e15c4a757f93ffe
+ * Query Engine version: d9a4c5988f480fa576d43970d5a23641aa77bc9c
  */
 Prisma.prismaVersion = {
   client: "4.9.0",
-  engine: "d6e67a83f971b175a593ccc12e15c4a757f93ffe"
+  engine: "d9a4c5988f480fa576d43970d5a23641aa77bc9c"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -94,21 +94,27 @@ exports.Prisma.CouponScalarFieldEnum = makeEnum({
   name: 'name',
   listingId: 'listingId',
   description: 'description',
-  expired: 'expired',
+  expirationDate: 'expirationDate',
   email: 'email',
-  groupName: 'groupName'
+  groupName: 'groupName',
+  dollarsOff: 'dollarsOff',
+  amountRequiredToQualify: 'amountRequiredToQualify',
+  percentOff: 'percentOff',
+  itemName: 'itemName',
+  percentOffFor: 'percentOffFor',
+  couponType: 'couponType'
 });
 
 exports.Prisma.CouponsForUserScalarFieldEnum = makeEnum({
   id: 'id',
-  userId: 'userId',
   userEmail: 'userEmail',
   couponId: 'couponId',
   used: 'used'
 });
 
 exports.Prisma.GroupsScalarFieldEnum = makeEnum({
-  groupName: 'groupName'
+  groupName: 'groupName',
+  activationCode: 'activationCode'
 });
 
 exports.Prisma.ListingScalarFieldEnum = makeEnum({

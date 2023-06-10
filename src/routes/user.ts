@@ -1,4 +1,3 @@
-import { Prisma, PrismaClient } from "@prisma/client";
 import {
   ProcedureBuilder,
   RootConfig,
@@ -16,6 +15,7 @@ import {
 import { z } from "zod";
 import bCrypt from "bcrypt";
 import { USER_ROLE } from "../consts";
+import { PrismaClient, Prisma } from "../../prisma/prisma/output";
 
 export const UserRoutes = (
   prisma: PrismaClient<
@@ -23,30 +23,25 @@ export const UserRoutes = (
     never,
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >,
-  publicProcedure:
-    | ProcedureBuilder<{
-        _config: RootConfig<{
-          ctx: object;
-          meta: object;
-          errorShape: DefaultErrorShape;
-          transformer: DefaultDataTransformer;
-        }>;
-        _ctx_out: object;
-        _input_in: typeof unsetMarker;
-        _input_out: typeof unsetMarker;
-        _output_in: typeof unsetMarker;
-        _output_out: typeof unsetMarker;
-        _meta: object;
-      }>
-    | undefined
+  publicProcedure: ProcedureBuilder<{
+    _config: RootConfig<{
+      ctx: object;
+      meta: object;
+      errorShape: DefaultErrorShape;
+      transformer: DefaultDataTransformer;
+    }>;
+    _ctx_out: object;
+    _input_in: typeof unsetMarker;
+    _input_out: typeof unsetMarker;
+    _output_in: typeof unsetMarker;
+    _output_out: typeof unsetMarker;
+    _meta: object;
+  }>
 ) => {
   if (!publicProcedure) {
     throw Error("public Procedure not found");
   }
-  const validateUserPermission = async (
-    session: string,
-    expectedRole: USER_ROLE
-  ) => {
+  const validateUserPermission = async (session: string, expectedRole: USER_ROLE) => {
     const user = await prisma.user.findFirst({
       where: { password: session },
     });
@@ -68,7 +63,13 @@ export const UserRoutes = (
       const user = await prisma.user.create({
         data: { ...input, password: hashedPassword, role },
       });
-      return { ...user, session: user.password, role: user.role };
+      return {
+        ...user,
+        session: user.password,
+        role: user.role,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      };
     });
 
   const getByUnique = publicProcedure
@@ -138,15 +139,24 @@ export const UserRoutes = (
       if (user === null) {
         return false;
       }
-      const isCorrectLogin = await bCrypt.compare(
-        input.password,
-        user.password
-      );
 
+      const isCorrectLogin = await bCrypt.compare(input.password, user.password);
       if (isCorrectLogin) {
-        return { email: user.email, session: user.password, role: user.role };
+        return {
+          email: user.email,
+          session: user.password,
+          role: user.role,
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
       } else {
-        return { email: null, session: null, role: null };
+        return {
+          email: null,
+          session: null,
+          role: null,
+          firstName: null,
+          lastName: null,
+        };
       }
     });
 
@@ -205,7 +215,7 @@ export const UserRoutes = (
         const pins = await prisma.pinnedUserListing.findMany({
           where: { userId: user.id },
         });
-        const pinnedIds = pins.map((p) => p.listingId);
+        const pinnedIds = pins.map((p: { listingId: any }) => p.listingId);
         const pinnedListing = await prisma.listing.findMany({
           where: { id: { in: pinnedIds } },
         });

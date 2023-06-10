@@ -37,9 +37,15 @@ CREATE TABLE "Coupon" (
     "name" TEXT NOT NULL,
     "listingId" INTEGER,
     "description" TEXT NOT NULL,
-    "expired" BOOLEAN NOT NULL DEFAULT false,
+    "expirationDate" DATETIME NOT NULL DEFAULT '2019-10-12 07:20:50.520 +00:00',
     "email" TEXT NOT NULL,
-    "groupName" TEXT
+    "groupName" TEXT,
+    "dollarsOff" TEXT,
+    "amountRequiredToQualify" TEXT,
+    "percentOff" TEXT,
+    "itemName" TEXT,
+    "percentOffFor" TEXT,
+    "couponType" TEXT
 );
 
 -- CreateTable

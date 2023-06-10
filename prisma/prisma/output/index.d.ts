@@ -43,7 +43,6 @@ export type PinnedUserListing = {
  */
 export type CouponsForUser = {
   id: number
-  userId: number
   userEmail: string
   couponId: number
   used: boolean
@@ -55,6 +54,7 @@ export type CouponsForUser = {
  */
 export type Groups = {
   groupName: string
+  activationCode: string
 }
 
 /**
@@ -66,9 +66,15 @@ export type Coupon = {
   name: string
   listingId: number | null
   description: string
-  expired: boolean
+  expirationDate: Date
   email: string
   groupName: string | null
+  dollarsOff: string | null
+  amountRequiredToQualify: string | null
+  percentOff: string | null
+  itemName: string | null
+  percentOffFor: string | null
+  couponType: string | null
 }
 
 /**
@@ -317,7 +323,7 @@ export namespace Prisma {
 
   /**
    * Prisma Client JS version: 4.9.0
-   * Query Engine version: d6e67a83f971b175a593ccc12e15c4a757f93ffe
+   * Query Engine version: d9a4c5988f480fa576d43970d5a23641aa77bc9c
    */
   export type PrismaVersion = {
     client: string
@@ -2737,19 +2743,16 @@ export namespace Prisma {
 
   export type CouponsForUserAvgAggregateOutputType = {
     id: number | null
-    userId: number | null
     couponId: number | null
   }
 
   export type CouponsForUserSumAggregateOutputType = {
     id: number | null
-    userId: number | null
     couponId: number | null
   }
 
   export type CouponsForUserMinAggregateOutputType = {
     id: number | null
-    userId: number | null
     userEmail: string | null
     couponId: number | null
     used: boolean | null
@@ -2757,7 +2760,6 @@ export namespace Prisma {
 
   export type CouponsForUserMaxAggregateOutputType = {
     id: number | null
-    userId: number | null
     userEmail: string | null
     couponId: number | null
     used: boolean | null
@@ -2765,7 +2767,6 @@ export namespace Prisma {
 
   export type CouponsForUserCountAggregateOutputType = {
     id: number
-    userId: number
     userEmail: number
     couponId: number
     used: number
@@ -2775,19 +2776,16 @@ export namespace Prisma {
 
   export type CouponsForUserAvgAggregateInputType = {
     id?: true
-    userId?: true
     couponId?: true
   }
 
   export type CouponsForUserSumAggregateInputType = {
     id?: true
-    userId?: true
     couponId?: true
   }
 
   export type CouponsForUserMinAggregateInputType = {
     id?: true
-    userId?: true
     userEmail?: true
     couponId?: true
     used?: true
@@ -2795,7 +2793,6 @@ export namespace Prisma {
 
   export type CouponsForUserMaxAggregateInputType = {
     id?: true
-    userId?: true
     userEmail?: true
     couponId?: true
     used?: true
@@ -2803,7 +2800,6 @@ export namespace Prisma {
 
   export type CouponsForUserCountAggregateInputType = {
     id?: true
-    userId?: true
     userEmail?: true
     couponId?: true
     used?: true
@@ -2899,7 +2895,6 @@ export namespace Prisma {
 
   export type CouponsForUserGroupByOutputType = {
     id: number
-    userId: number
     userEmail: string
     couponId: number
     used: boolean
@@ -2926,7 +2921,6 @@ export namespace Prisma {
 
   export type CouponsForUserSelect = {
     id?: boolean
-    userId?: boolean
     userEmail?: boolean
     couponId?: boolean
     used?: boolean
@@ -3633,28 +3627,34 @@ export namespace Prisma {
 
   export type GroupsMinAggregateOutputType = {
     groupName: string | null
+    activationCode: string | null
   }
 
   export type GroupsMaxAggregateOutputType = {
     groupName: string | null
+    activationCode: string | null
   }
 
   export type GroupsCountAggregateOutputType = {
     groupName: number
+    activationCode: number
     _all: number
   }
 
 
   export type GroupsMinAggregateInputType = {
     groupName?: true
+    activationCode?: true
   }
 
   export type GroupsMaxAggregateInputType = {
     groupName?: true
+    activationCode?: true
   }
 
   export type GroupsCountAggregateInputType = {
     groupName?: true
+    activationCode?: true
     _all?: true
   }
 
@@ -3733,6 +3733,7 @@ export namespace Prisma {
 
   export type GroupsGroupByOutputType = {
     groupName: string
+    activationCode: string
     _count: GroupsCountAggregateOutputType | null
     _min: GroupsMinAggregateOutputType | null
     _max: GroupsMaxAggregateOutputType | null
@@ -3754,6 +3755,7 @@ export namespace Prisma {
 
   export type GroupsSelect = {
     groupName?: boolean
+    activationCode?: boolean
   }
 
 
@@ -4472,9 +4474,15 @@ export namespace Prisma {
     name: string | null
     listingId: number | null
     description: string | null
-    expired: boolean | null
+    expirationDate: Date | null
     email: string | null
     groupName: string | null
+    dollarsOff: string | null
+    amountRequiredToQualify: string | null
+    percentOff: string | null
+    itemName: string | null
+    percentOffFor: string | null
+    couponType: string | null
   }
 
   export type CouponMaxAggregateOutputType = {
@@ -4482,9 +4490,15 @@ export namespace Prisma {
     name: string | null
     listingId: number | null
     description: string | null
-    expired: boolean | null
+    expirationDate: Date | null
     email: string | null
     groupName: string | null
+    dollarsOff: string | null
+    amountRequiredToQualify: string | null
+    percentOff: string | null
+    itemName: string | null
+    percentOffFor: string | null
+    couponType: string | null
   }
 
   export type CouponCountAggregateOutputType = {
@@ -4492,9 +4506,15 @@ export namespace Prisma {
     name: number
     listingId: number
     description: number
-    expired: number
+    expirationDate: number
     email: number
     groupName: number
+    dollarsOff: number
+    amountRequiredToQualify: number
+    percentOff: number
+    itemName: number
+    percentOffFor: number
+    couponType: number
     _all: number
   }
 
@@ -4514,9 +4534,15 @@ export namespace Prisma {
     name?: true
     listingId?: true
     description?: true
-    expired?: true
+    expirationDate?: true
     email?: true
     groupName?: true
+    dollarsOff?: true
+    amountRequiredToQualify?: true
+    percentOff?: true
+    itemName?: true
+    percentOffFor?: true
+    couponType?: true
   }
 
   export type CouponMaxAggregateInputType = {
@@ -4524,9 +4550,15 @@ export namespace Prisma {
     name?: true
     listingId?: true
     description?: true
-    expired?: true
+    expirationDate?: true
     email?: true
     groupName?: true
+    dollarsOff?: true
+    amountRequiredToQualify?: true
+    percentOff?: true
+    itemName?: true
+    percentOffFor?: true
+    couponType?: true
   }
 
   export type CouponCountAggregateInputType = {
@@ -4534,9 +4566,15 @@ export namespace Prisma {
     name?: true
     listingId?: true
     description?: true
-    expired?: true
+    expirationDate?: true
     email?: true
     groupName?: true
+    dollarsOff?: true
+    amountRequiredToQualify?: true
+    percentOff?: true
+    itemName?: true
+    percentOffFor?: true
+    couponType?: true
     _all?: true
   }
 
@@ -4632,9 +4670,15 @@ export namespace Prisma {
     name: string
     listingId: number | null
     description: string
-    expired: boolean
+    expirationDate: Date
     email: string
     groupName: string | null
+    dollarsOff: string | null
+    amountRequiredToQualify: string | null
+    percentOff: string | null
+    itemName: string | null
+    percentOffFor: string | null
+    couponType: string | null
     _count: CouponCountAggregateOutputType | null
     _avg: CouponAvgAggregateOutputType | null
     _sum: CouponSumAggregateOutputType | null
@@ -4661,9 +4705,15 @@ export namespace Prisma {
     name?: boolean
     listingId?: boolean
     description?: boolean
-    expired?: boolean
+    expirationDate?: boolean
     email?: boolean
     groupName?: boolean
+    dollarsOff?: boolean
+    amountRequiredToQualify?: boolean
+    percentOff?: boolean
+    itemName?: boolean
+    percentOffFor?: boolean
+    couponType?: boolean
   }
 
 
@@ -6376,9 +6426,15 @@ export namespace Prisma {
     name: 'name',
     listingId: 'listingId',
     description: 'description',
-    expired: 'expired',
+    expirationDate: 'expirationDate',
     email: 'email',
-    groupName: 'groupName'
+    groupName: 'groupName',
+    dollarsOff: 'dollarsOff',
+    amountRequiredToQualify: 'amountRequiredToQualify',
+    percentOff: 'percentOff',
+    itemName: 'itemName',
+    percentOffFor: 'percentOffFor',
+    couponType: 'couponType'
   };
 
   export type CouponScalarFieldEnum = (typeof CouponScalarFieldEnum)[keyof typeof CouponScalarFieldEnum]
@@ -6386,7 +6442,6 @@ export namespace Prisma {
 
   export const CouponsForUserScalarFieldEnum: {
     id: 'id',
-    userId: 'userId',
     userEmail: 'userEmail',
     couponId: 'couponId',
     used: 'used'
@@ -6396,7 +6451,8 @@ export namespace Prisma {
 
 
   export const GroupsScalarFieldEnum: {
-    groupName: 'groupName'
+    groupName: 'groupName',
+    activationCode: 'activationCode'
   };
 
   export type GroupsScalarFieldEnum = (typeof GroupsScalarFieldEnum)[keyof typeof GroupsScalarFieldEnum]
@@ -6575,7 +6631,6 @@ export namespace Prisma {
     OR?: Enumerable<CouponsForUserWhereInput>
     NOT?: Enumerable<CouponsForUserWhereInput>
     id?: IntFilter | number
-    userId?: IntFilter | number
     userEmail?: StringFilter | string
     couponId?: IntFilter | number
     used?: BoolFilter | boolean
@@ -6583,7 +6638,6 @@ export namespace Prisma {
 
   export type CouponsForUserOrderByWithRelationInput = {
     id?: SortOrder
-    userId?: SortOrder
     userEmail?: SortOrder
     couponId?: SortOrder
     used?: SortOrder
@@ -6595,7 +6649,6 @@ export namespace Prisma {
 
   export type CouponsForUserOrderByWithAggregationInput = {
     id?: SortOrder
-    userId?: SortOrder
     userEmail?: SortOrder
     couponId?: SortOrder
     used?: SortOrder
@@ -6611,7 +6664,6 @@ export namespace Prisma {
     OR?: Enumerable<CouponsForUserScalarWhereWithAggregatesInput>
     NOT?: Enumerable<CouponsForUserScalarWhereWithAggregatesInput>
     id?: IntWithAggregatesFilter | number
-    userId?: IntWithAggregatesFilter | number
     userEmail?: StringWithAggregatesFilter | string
     couponId?: IntWithAggregatesFilter | number
     used?: BoolWithAggregatesFilter | boolean
@@ -6622,10 +6674,12 @@ export namespace Prisma {
     OR?: Enumerable<GroupsWhereInput>
     NOT?: Enumerable<GroupsWhereInput>
     groupName?: StringFilter | string
+    activationCode?: StringFilter | string
   }
 
   export type GroupsOrderByWithRelationInput = {
     groupName?: SortOrder
+    activationCode?: SortOrder
   }
 
   export type GroupsWhereUniqueInput = {
@@ -6634,6 +6688,7 @@ export namespace Prisma {
 
   export type GroupsOrderByWithAggregationInput = {
     groupName?: SortOrder
+    activationCode?: SortOrder
     _count?: GroupsCountOrderByAggregateInput
     _max?: GroupsMaxOrderByAggregateInput
     _min?: GroupsMinOrderByAggregateInput
@@ -6644,6 +6699,7 @@ export namespace Prisma {
     OR?: Enumerable<GroupsScalarWhereWithAggregatesInput>
     NOT?: Enumerable<GroupsScalarWhereWithAggregatesInput>
     groupName?: StringWithAggregatesFilter | string
+    activationCode?: StringWithAggregatesFilter | string
   }
 
   export type CouponWhereInput = {
@@ -6654,9 +6710,15 @@ export namespace Prisma {
     name?: StringFilter | string
     listingId?: IntNullableFilter | number | null
     description?: StringFilter | string
-    expired?: BoolFilter | boolean
+    expirationDate?: DateTimeFilter | Date | string
     email?: StringFilter | string
     groupName?: StringNullableFilter | string | null
+    dollarsOff?: StringNullableFilter | string | null
+    amountRequiredToQualify?: StringNullableFilter | string | null
+    percentOff?: StringNullableFilter | string | null
+    itemName?: StringNullableFilter | string | null
+    percentOffFor?: StringNullableFilter | string | null
+    couponType?: StringNullableFilter | string | null
   }
 
   export type CouponOrderByWithRelationInput = {
@@ -6664,9 +6726,15 @@ export namespace Prisma {
     name?: SortOrder
     listingId?: SortOrder
     description?: SortOrder
-    expired?: SortOrder
+    expirationDate?: SortOrder
     email?: SortOrder
     groupName?: SortOrder
+    dollarsOff?: SortOrder
+    amountRequiredToQualify?: SortOrder
+    percentOff?: SortOrder
+    itemName?: SortOrder
+    percentOffFor?: SortOrder
+    couponType?: SortOrder
   }
 
   export type CouponWhereUniqueInput = {
@@ -6679,9 +6747,15 @@ export namespace Prisma {
     name?: SortOrder
     listingId?: SortOrder
     description?: SortOrder
-    expired?: SortOrder
+    expirationDate?: SortOrder
     email?: SortOrder
     groupName?: SortOrder
+    dollarsOff?: SortOrder
+    amountRequiredToQualify?: SortOrder
+    percentOff?: SortOrder
+    itemName?: SortOrder
+    percentOffFor?: SortOrder
+    couponType?: SortOrder
     _count?: CouponCountOrderByAggregateInput
     _avg?: CouponAvgOrderByAggregateInput
     _max?: CouponMaxOrderByAggregateInput
@@ -6697,9 +6771,15 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter | string
     listingId?: IntNullableWithAggregatesFilter | number | null
     description?: StringWithAggregatesFilter | string
-    expired?: BoolWithAggregatesFilter | boolean
+    expirationDate?: DateTimeWithAggregatesFilter | Date | string
     email?: StringWithAggregatesFilter | string
     groupName?: StringNullableWithAggregatesFilter | string | null
+    dollarsOff?: StringNullableWithAggregatesFilter | string | null
+    amountRequiredToQualify?: StringNullableWithAggregatesFilter | string | null
+    percentOff?: StringNullableWithAggregatesFilter | string | null
+    itemName?: StringNullableWithAggregatesFilter | string | null
+    percentOffFor?: StringNullableWithAggregatesFilter | string | null
+    couponType?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type ListingWhereInput = {
@@ -6907,7 +6987,6 @@ export namespace Prisma {
   }
 
   export type CouponsForUserCreateInput = {
-    userId: number
     userEmail?: string
     couponId: number
     used?: boolean
@@ -6915,14 +6994,12 @@ export namespace Prisma {
 
   export type CouponsForUserUncheckedCreateInput = {
     id?: number
-    userId: number
     userEmail?: string
     couponId: number
     used?: boolean
   }
 
   export type CouponsForUserUpdateInput = {
-    userId?: IntFieldUpdateOperationsInput | number
     userEmail?: StringFieldUpdateOperationsInput | string
     couponId?: IntFieldUpdateOperationsInput | number
     used?: BoolFieldUpdateOperationsInput | boolean
@@ -6930,14 +7007,12 @@ export namespace Prisma {
 
   export type CouponsForUserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
     userEmail?: StringFieldUpdateOperationsInput | string
     couponId?: IntFieldUpdateOperationsInput | number
     used?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type CouponsForUserUpdateManyMutationInput = {
-    userId?: IntFieldUpdateOperationsInput | number
     userEmail?: StringFieldUpdateOperationsInput | string
     couponId?: IntFieldUpdateOperationsInput | number
     used?: BoolFieldUpdateOperationsInput | boolean
@@ -6945,7 +7020,6 @@ export namespace Prisma {
 
   export type CouponsForUserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    userId?: IntFieldUpdateOperationsInput | number
     userEmail?: StringFieldUpdateOperationsInput | string
     couponId?: IntFieldUpdateOperationsInput | number
     used?: BoolFieldUpdateOperationsInput | boolean
@@ -6953,35 +7027,47 @@ export namespace Prisma {
 
   export type GroupsCreateInput = {
     groupName: string
+    activationCode?: string
   }
 
   export type GroupsUncheckedCreateInput = {
     groupName: string
+    activationCode?: string
   }
 
   export type GroupsUpdateInput = {
     groupName?: StringFieldUpdateOperationsInput | string
+    activationCode?: StringFieldUpdateOperationsInput | string
   }
 
   export type GroupsUncheckedUpdateInput = {
     groupName?: StringFieldUpdateOperationsInput | string
+    activationCode?: StringFieldUpdateOperationsInput | string
   }
 
   export type GroupsUpdateManyMutationInput = {
     groupName?: StringFieldUpdateOperationsInput | string
+    activationCode?: StringFieldUpdateOperationsInput | string
   }
 
   export type GroupsUncheckedUpdateManyInput = {
     groupName?: StringFieldUpdateOperationsInput | string
+    activationCode?: StringFieldUpdateOperationsInput | string
   }
 
   export type CouponCreateInput = {
     name: string
     listingId?: number | null
     description: string
-    expired?: boolean
+    expirationDate?: Date | string
     email: string
     groupName?: string | null
+    dollarsOff?: string | null
+    amountRequiredToQualify?: string | null
+    percentOff?: string | null
+    itemName?: string | null
+    percentOffFor?: string | null
+    couponType?: string | null
   }
 
   export type CouponUncheckedCreateInput = {
@@ -6989,18 +7075,30 @@ export namespace Prisma {
     name: string
     listingId?: number | null
     description: string
-    expired?: boolean
+    expirationDate?: Date | string
     email: string
     groupName?: string | null
+    dollarsOff?: string | null
+    amountRequiredToQualify?: string | null
+    percentOff?: string | null
+    itemName?: string | null
+    percentOffFor?: string | null
+    couponType?: string | null
   }
 
   export type CouponUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     listingId?: NullableIntFieldUpdateOperationsInput | number | null
     description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
+    expirationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     groupName?: NullableStringFieldUpdateOperationsInput | string | null
+    dollarsOff?: NullableStringFieldUpdateOperationsInput | string | null
+    amountRequiredToQualify?: NullableStringFieldUpdateOperationsInput | string | null
+    percentOff?: NullableStringFieldUpdateOperationsInput | string | null
+    itemName?: NullableStringFieldUpdateOperationsInput | string | null
+    percentOffFor?: NullableStringFieldUpdateOperationsInput | string | null
+    couponType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CouponUncheckedUpdateInput = {
@@ -7008,18 +7106,30 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     listingId?: NullableIntFieldUpdateOperationsInput | number | null
     description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
+    expirationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     groupName?: NullableStringFieldUpdateOperationsInput | string | null
+    dollarsOff?: NullableStringFieldUpdateOperationsInput | string | null
+    amountRequiredToQualify?: NullableStringFieldUpdateOperationsInput | string | null
+    percentOff?: NullableStringFieldUpdateOperationsInput | string | null
+    itemName?: NullableStringFieldUpdateOperationsInput | string | null
+    percentOffFor?: NullableStringFieldUpdateOperationsInput | string | null
+    couponType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CouponUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     listingId?: NullableIntFieldUpdateOperationsInput | number | null
     description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
+    expirationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     groupName?: NullableStringFieldUpdateOperationsInput | string | null
+    dollarsOff?: NullableStringFieldUpdateOperationsInput | string | null
+    amountRequiredToQualify?: NullableStringFieldUpdateOperationsInput | string | null
+    percentOff?: NullableStringFieldUpdateOperationsInput | string | null
+    itemName?: NullableStringFieldUpdateOperationsInput | string | null
+    percentOffFor?: NullableStringFieldUpdateOperationsInput | string | null
+    couponType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CouponUncheckedUpdateManyInput = {
@@ -7027,9 +7137,15 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     listingId?: NullableIntFieldUpdateOperationsInput | number | null
     description?: StringFieldUpdateOperationsInput | string
-    expired?: BoolFieldUpdateOperationsInput | boolean
+    expirationDate?: DateTimeFieldUpdateOperationsInput | Date | string
     email?: StringFieldUpdateOperationsInput | string
     groupName?: NullableStringFieldUpdateOperationsInput | string | null
+    dollarsOff?: NullableStringFieldUpdateOperationsInput | string | null
+    amountRequiredToQualify?: NullableStringFieldUpdateOperationsInput | string | null
+    percentOff?: NullableStringFieldUpdateOperationsInput | string | null
+    itemName?: NullableStringFieldUpdateOperationsInput | string | null
+    percentOffFor?: NullableStringFieldUpdateOperationsInput | string | null
+    couponType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ListingCreateInput = {
@@ -7169,8 +7285,8 @@ export namespace Prisma {
 
   export type IntFilter = {
     equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
+    in?: Enumerable<number> | number
+    notIn?: Enumerable<number> | number
     lt?: number
     lte?: number
     gt?: number
@@ -7180,8 +7296,8 @@ export namespace Prisma {
 
   export type DateTimeFilter = {
     equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
     lt?: Date | string
     lte?: Date | string
     gt?: Date | string
@@ -7191,8 +7307,8 @@ export namespace Prisma {
 
   export type StringFilter = {
     equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
+    in?: Enumerable<string> | string
+    notIn?: Enumerable<string> | string
     lt?: string
     lte?: string
     gt?: string
@@ -7205,8 +7321,8 @@ export namespace Prisma {
 
   export type StringNullableFilter = {
     equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
     lt?: string
     lte?: string
     gt?: string
@@ -7260,8 +7376,8 @@ export namespace Prisma {
 
   export type IntWithAggregatesFilter = {
     equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
+    in?: Enumerable<number> | number
+    notIn?: Enumerable<number> | number
     lt?: number
     lte?: number
     gt?: number
@@ -7276,8 +7392,8 @@ export namespace Prisma {
 
   export type DateTimeWithAggregatesFilter = {
     equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
     lt?: Date | string
     lte?: Date | string
     gt?: Date | string
@@ -7290,8 +7406,8 @@ export namespace Prisma {
 
   export type StringWithAggregatesFilter = {
     equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
+    in?: Enumerable<string> | string
+    notIn?: Enumerable<string> | string
     lt?: string
     lte?: string
     gt?: string
@@ -7307,8 +7423,8 @@ export namespace Prisma {
 
   export type StringNullableWithAggregatesFilter = {
     equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
     lt?: string
     lte?: string
     gt?: string
@@ -7359,7 +7475,6 @@ export namespace Prisma {
 
   export type CouponsForUserCountOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
     userEmail?: SortOrder
     couponId?: SortOrder
     used?: SortOrder
@@ -7367,13 +7482,11 @@ export namespace Prisma {
 
   export type CouponsForUserAvgOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
     couponId?: SortOrder
   }
 
   export type CouponsForUserMaxOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
     userEmail?: SortOrder
     couponId?: SortOrder
     used?: SortOrder
@@ -7381,7 +7494,6 @@ export namespace Prisma {
 
   export type CouponsForUserMinOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
     userEmail?: SortOrder
     couponId?: SortOrder
     used?: SortOrder
@@ -7389,7 +7501,6 @@ export namespace Prisma {
 
   export type CouponsForUserSumOrderByAggregateInput = {
     id?: SortOrder
-    userId?: SortOrder
     couponId?: SortOrder
   }
 
@@ -7403,20 +7514,23 @@ export namespace Prisma {
 
   export type GroupsCountOrderByAggregateInput = {
     groupName?: SortOrder
+    activationCode?: SortOrder
   }
 
   export type GroupsMaxOrderByAggregateInput = {
     groupName?: SortOrder
+    activationCode?: SortOrder
   }
 
   export type GroupsMinOrderByAggregateInput = {
     groupName?: SortOrder
+    activationCode?: SortOrder
   }
 
   export type IntNullableFilter = {
     equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
     lt?: number
     lte?: number
     gt?: number
@@ -7429,9 +7543,15 @@ export namespace Prisma {
     name?: SortOrder
     listingId?: SortOrder
     description?: SortOrder
-    expired?: SortOrder
+    expirationDate?: SortOrder
     email?: SortOrder
     groupName?: SortOrder
+    dollarsOff?: SortOrder
+    amountRequiredToQualify?: SortOrder
+    percentOff?: SortOrder
+    itemName?: SortOrder
+    percentOffFor?: SortOrder
+    couponType?: SortOrder
   }
 
   export type CouponAvgOrderByAggregateInput = {
@@ -7444,9 +7564,15 @@ export namespace Prisma {
     name?: SortOrder
     listingId?: SortOrder
     description?: SortOrder
-    expired?: SortOrder
+    expirationDate?: SortOrder
     email?: SortOrder
     groupName?: SortOrder
+    dollarsOff?: SortOrder
+    amountRequiredToQualify?: SortOrder
+    percentOff?: SortOrder
+    itemName?: SortOrder
+    percentOffFor?: SortOrder
+    couponType?: SortOrder
   }
 
   export type CouponMinOrderByAggregateInput = {
@@ -7454,9 +7580,15 @@ export namespace Prisma {
     name?: SortOrder
     listingId?: SortOrder
     description?: SortOrder
-    expired?: SortOrder
+    expirationDate?: SortOrder
     email?: SortOrder
     groupName?: SortOrder
+    dollarsOff?: SortOrder
+    amountRequiredToQualify?: SortOrder
+    percentOff?: SortOrder
+    itemName?: SortOrder
+    percentOffFor?: SortOrder
+    couponType?: SortOrder
   }
 
   export type CouponSumOrderByAggregateInput = {
@@ -7466,8 +7598,8 @@ export namespace Prisma {
 
   export type IntNullableWithAggregatesFilter = {
     equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
     lt?: number
     lte?: number
     gt?: number
@@ -7591,8 +7723,8 @@ export namespace Prisma {
 
   export type NestedIntFilter = {
     equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
+    in?: Enumerable<number> | number
+    notIn?: Enumerable<number> | number
     lt?: number
     lte?: number
     gt?: number
@@ -7602,8 +7734,8 @@ export namespace Prisma {
 
   export type NestedDateTimeFilter = {
     equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
     lt?: Date | string
     lte?: Date | string
     gt?: Date | string
@@ -7613,8 +7745,8 @@ export namespace Prisma {
 
   export type NestedStringFilter = {
     equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
+    in?: Enumerable<string> | string
+    notIn?: Enumerable<string> | string
     lt?: string
     lte?: string
     gt?: string
@@ -7627,8 +7759,8 @@ export namespace Prisma {
 
   export type NestedStringNullableFilter = {
     equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
     lt?: string
     lte?: string
     gt?: string
@@ -7641,8 +7773,8 @@ export namespace Prisma {
 
   export type NestedIntWithAggregatesFilter = {
     equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
+    in?: Enumerable<number> | number
+    notIn?: Enumerable<number> | number
     lt?: number
     lte?: number
     gt?: number
@@ -7657,8 +7789,8 @@ export namespace Prisma {
 
   export type NestedFloatFilter = {
     equals?: number
-    in?: Enumerable<number>
-    notIn?: Enumerable<number>
+    in?: Enumerable<number> | number
+    notIn?: Enumerable<number> | number
     lt?: number
     lte?: number
     gt?: number
@@ -7668,8 +7800,8 @@ export namespace Prisma {
 
   export type NestedDateTimeWithAggregatesFilter = {
     equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
+    in?: Enumerable<Date> | Enumerable<string> | Date | string
+    notIn?: Enumerable<Date> | Enumerable<string> | Date | string
     lt?: Date | string
     lte?: Date | string
     gt?: Date | string
@@ -7682,8 +7814,8 @@ export namespace Prisma {
 
   export type NestedStringWithAggregatesFilter = {
     equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
+    in?: Enumerable<string> | string
+    notIn?: Enumerable<string> | string
     lt?: string
     lte?: string
     gt?: string
@@ -7699,8 +7831,8 @@ export namespace Prisma {
 
   export type NestedStringNullableWithAggregatesFilter = {
     equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
+    in?: Enumerable<string> | string | null
+    notIn?: Enumerable<string> | string | null
     lt?: string
     lte?: string
     gt?: string
@@ -7716,8 +7848,8 @@ export namespace Prisma {
 
   export type NestedIntNullableFilter = {
     equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
     lt?: number
     lte?: number
     gt?: number
@@ -7740,8 +7872,8 @@ export namespace Prisma {
 
   export type NestedIntNullableWithAggregatesFilter = {
     equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
     lt?: number
     lte?: number
     gt?: number
@@ -7756,8 +7888,8 @@ export namespace Prisma {
 
   export type NestedFloatNullableFilter = {
     equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
+    in?: Enumerable<number> | number | null
+    notIn?: Enumerable<number> | number | null
     lt?: number
     lte?: number
     gt?: number

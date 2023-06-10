@@ -1,5 +1,3 @@
-import { PrismaClient, Prisma } from "@prisma/client";
-
 import {
   DefaultDataTransformer,
   DefaultErrorShape,
@@ -13,6 +11,7 @@ import {
   getAllListingsParams,
   getListingSchema,
 } from "../shared";
+import { PrismaClient, Prisma } from "../../prisma/prisma/output";
 
 export interface GetAllListingsParams {
   namePrefix?: string;
@@ -24,22 +23,20 @@ export const ListingsRoutes = (
     never,
     Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
   >,
-  publicProcedure:
-    | ProcedureBuilder<{
-        _config: RootConfig<{
-          ctx: object;
-          meta: object;
-          errorShape: DefaultErrorShape;
-          transformer: DefaultDataTransformer;
-        }>;
-        _ctx_out: object;
-        _input_in: typeof unsetMarker;
-        _input_out: typeof unsetMarker;
-        _output_in: typeof unsetMarker;
-        _output_out: typeof unsetMarker;
-        _meta: object;
-      }>
-    | undefined
+  publicProcedure: ProcedureBuilder<{
+    _config: RootConfig<{
+      ctx: object;
+      meta: object;
+      errorShape: DefaultErrorShape;
+      transformer: DefaultDataTransformer;
+    }>;
+    _ctx_out: object;
+    _input_in: typeof unsetMarker;
+    _input_out: typeof unsetMarker;
+    _output_in: typeof unsetMarker;
+    _output_out: typeof unsetMarker;
+    _meta: object;
+  }>
 ) => {
   if (!publicProcedure) {
     throw Error("public Procedure not found");
@@ -55,7 +52,6 @@ export const ListingsRoutes = (
       });
       return listing;
     });
-
   const getByUnique = publicProcedure
     .input((payload: unknown) => {
       const parsedName = getListingSchema.parse(name); //validate the incoming object
@@ -71,7 +67,6 @@ export const ListingsRoutes = (
       }
       return listing;
     });
-
   const getAll = publicProcedure
     .input((payload: unknown) => {
       const res = getAllListingsParams.parse(payload);
@@ -79,7 +74,7 @@ export const ListingsRoutes = (
     })
     .query(async ({ input }) => {
       const listings = await prisma.listing.findMany({
-        where: { name: { startsWith: input.name } },
+        where: { name: { startsWith: input.name }, email: { startsWith: input.email } },
       });
       return listings;
     });

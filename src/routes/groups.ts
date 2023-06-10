@@ -1,4 +1,3 @@
-import { Prisma, PrismaClient } from "@prisma/client";
 import {
   DefaultDataTransformer,
   DefaultErrorShape,
@@ -6,6 +5,7 @@ import {
   RootConfig,
   unsetMarker,
 } from "@trpc/server";
+import { PrismaClient, Prisma } from "../../prisma/prisma/output";
 
 export const GroupsRoutes = (
   prisma: PrismaClient<
@@ -34,8 +34,13 @@ export const GroupsRoutes = (
     throw Error("public Procedure not found");
   }
   const getAll = publicProcedure.query(async () => {
-    const groupName = await prisma.groups.findMany({});
-    return groupName;
+    const groupName = await prisma.groups.findMany();
+    return groupName.map((g) => {
+      return {
+        groupName: g.groupName,
+        hasActivationCode: g.activationCode !== "NotRequired",
+      };
+    });
   });
   return { getAllGroups: getAll };
 };

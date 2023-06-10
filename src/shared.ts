@@ -26,30 +26,49 @@ export const getListingSchema = z.string();
 
 export const getAllListingsParams = z.object({
   name: z.string().default(""),
+  email: z.string().default(""),
 });
 
 export const deleteListingSchema = z.string(); //validate the incoming object
 export const getAllCouponsSchema = z.string().optional();
+
+export enum CouponTypes {
+  percent = "% off",
+  offers = "offers",
+  dollar = "$ off",
+}
+type CouponRequest = {
+  couponType: CouponTypes;
+  listingId?: number;
+  name?: string;
+  description?: string;
+  email?: string;
+  dollarsOff?: string;
+  expirationDate?: string;
+  amountRequiredToQualify?: string;
+  percentOff?: string;
+  itemName?: string;
+  percentOffFor?: string;
+};
 export const createCouponSchema = z.object({
-  name: z.string(),
-  listingId: z.number().int().optional(),
-  description: z.string(),
-  email: z.string(),
-  groupName: z.string(),
-});
-
-export const getCouponSchema = z.string();
-
-export const updateCouponSchema = z.object({
-  id: z.number(),
   name: z.string(),
   listingId: z.number().int(),
   description: z.string(),
-  expired: z.boolean().optional(),
-  groupName: z.string(),
+  email: z.string(),
+  expirationDate: z.string(),
+  groupName: z.string().optional().nullable(),
+  dollarsOff: z.string().optional().nullable(),
+  amountRequiredToQualify: z.string().optional().nullable(),
+  percentOff: z.string().optional().nullable(),
+  itemName: z.string().optional().nullable(),
+  percentOffFor: z.string().optional().nullable(),
+  couponType: z.string(),
 });
-
-export const deleteCouponSchema = z.string(); //validate the incoming object
+export const getCouponSchema = z.string();
+export const couponIdSchema = z.object({
+  id: z.number(),
+});
+export const updateCouponSchema = createCouponSchema.merge(couponIdSchema);
 export const useCouponSchema = z.object({
   email: z.string().email(),
   couponId: z.number(),
@@ -76,6 +95,15 @@ export const pinListingSchema = z.object({
 
 export const createGroupSchema = z.object({
   groupName: z.string(),
+});
+export const addCouponForUserByGroupSchema = z.object({
+  userEmail: z.string().email(),
+  groupName: z.string(),
+  code: z.string().min(6),
+});
+
+export const GetCouponForUserBySchema = z.object({
+  userEmail: z.string().email(),
 });
 
 export const deleteUserSchema = z.string(); //validate the incoming object

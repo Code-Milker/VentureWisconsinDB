@@ -28,15 +28,16 @@ createHTTPServer({
   },
 }).listen(3000);
 
-export const addCouponGroups = async () => {
-  await prisma.groups.create({ data: { groupName: "Venture 2023" } });
-  await prisma.groups.create({ data: { groupName: "Brew Deck" } });
-  await prisma.groups.create({ data: { groupName: "Wine Tags" } });
-};
-export const updateCouponGroups = async () => {
-  await prisma.groups.update({
-    where: { groupName: "Wine Tags" },
-    data: { activationCode: "qwerty" },
-  });
-};
+// export const addCouponGroups = async () => {
+//   await prisma.groups.create({ data: { groupName: "Venture 2023" } });
+//   await prisma.groups.create({ data: { groupName: "Brew Deck" } });
+//   await prisma.groups.create({ data: { groupName: "Wine Tags" } });
+// };
+// export const updateCouponGroups = async () => {
+//   await prisma.groups.update({
+//     where: { groupName: "Wine Tags" },
+//     data: { activationCode: "qwerty" },
+//   });
+// };
+// export const getCouponUserRelation = async () => {};
 // updateCouponGroups();

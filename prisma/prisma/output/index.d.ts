@@ -55,6 +55,7 @@ export type CouponsForUser = {
 export type Groups = {
   groupName: string
   activationCode: string
+  description: string
 }
 
 /**
@@ -3628,16 +3629,19 @@ export namespace Prisma {
   export type GroupsMinAggregateOutputType = {
     groupName: string | null
     activationCode: string | null
+    description: string | null
   }
 
   export type GroupsMaxAggregateOutputType = {
     groupName: string | null
     activationCode: string | null
+    description: string | null
   }
 
   export type GroupsCountAggregateOutputType = {
     groupName: number
     activationCode: number
+    description: number
     _all: number
   }
 
@@ -3645,16 +3649,19 @@ export namespace Prisma {
   export type GroupsMinAggregateInputType = {
     groupName?: true
     activationCode?: true
+    description?: true
   }
 
   export type GroupsMaxAggregateInputType = {
     groupName?: true
     activationCode?: true
+    description?: true
   }
 
   export type GroupsCountAggregateInputType = {
     groupName?: true
     activationCode?: true
+    description?: true
     _all?: true
   }
 
@@ -3734,6 +3741,7 @@ export namespace Prisma {
   export type GroupsGroupByOutputType = {
     groupName: string
     activationCode: string
+    description: string
     _count: GroupsCountAggregateOutputType | null
     _min: GroupsMinAggregateOutputType | null
     _max: GroupsMaxAggregateOutputType | null
@@ -3756,6 +3764,7 @@ export namespace Prisma {
   export type GroupsSelect = {
     groupName?: boolean
     activationCode?: boolean
+    description?: boolean
   }
 
 
@@ -6452,7 +6461,8 @@ export namespace Prisma {
 
   export const GroupsScalarFieldEnum: {
     groupName: 'groupName',
-    activationCode: 'activationCode'
+    activationCode: 'activationCode',
+    description: 'description'
   };
 
   export type GroupsScalarFieldEnum = (typeof GroupsScalarFieldEnum)[keyof typeof GroupsScalarFieldEnum]
@@ -6675,11 +6685,13 @@ export namespace Prisma {
     NOT?: Enumerable<GroupsWhereInput>
     groupName?: StringFilter | string
     activationCode?: StringFilter | string
+    description?: StringFilter | string
   }
 
   export type GroupsOrderByWithRelationInput = {
     groupName?: SortOrder
     activationCode?: SortOrder
+    description?: SortOrder
   }
 
   export type GroupsWhereUniqueInput = {
@@ -6689,6 +6701,7 @@ export namespace Prisma {
   export type GroupsOrderByWithAggregationInput = {
     groupName?: SortOrder
     activationCode?: SortOrder
+    description?: SortOrder
     _count?: GroupsCountOrderByAggregateInput
     _max?: GroupsMaxOrderByAggregateInput
     _min?: GroupsMinOrderByAggregateInput
@@ -6700,6 +6713,7 @@ export namespace Prisma {
     NOT?: Enumerable<GroupsScalarWhereWithAggregatesInput>
     groupName?: StringWithAggregatesFilter | string
     activationCode?: StringWithAggregatesFilter | string
+    description?: StringWithAggregatesFilter | string
   }
 
   export type CouponWhereInput = {
@@ -7028,31 +7042,37 @@ export namespace Prisma {
   export type GroupsCreateInput = {
     groupName: string
     activationCode?: string
+    description?: string
   }
 
   export type GroupsUncheckedCreateInput = {
     groupName: string
     activationCode?: string
+    description?: string
   }
 
   export type GroupsUpdateInput = {
     groupName?: StringFieldUpdateOperationsInput | string
     activationCode?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
   }
 
   export type GroupsUncheckedUpdateInput = {
     groupName?: StringFieldUpdateOperationsInput | string
     activationCode?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
   }
 
   export type GroupsUpdateManyMutationInput = {
     groupName?: StringFieldUpdateOperationsInput | string
     activationCode?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
   }
 
   export type GroupsUncheckedUpdateManyInput = {
     groupName?: StringFieldUpdateOperationsInput | string
     activationCode?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
   }
 
   export type CouponCreateInput = {
@@ -7515,16 +7535,19 @@ export namespace Prisma {
   export type GroupsCountOrderByAggregateInput = {
     groupName?: SortOrder
     activationCode?: SortOrder
+    description?: SortOrder
   }
 
   export type GroupsMaxOrderByAggregateInput = {
     groupName?: SortOrder
     activationCode?: SortOrder
+    description?: SortOrder
   }
 
   export type GroupsMinOrderByAggregateInput = {
     groupName?: SortOrder
     activationCode?: SortOrder
+    description?: SortOrder
   }
 
   export type IntNullableFilter = {

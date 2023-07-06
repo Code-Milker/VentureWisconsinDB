@@ -33,6 +33,7 @@ export const GroupsRoutes = (
       return {
         groupName: g.groupName,
         hasActivationCode: g.activationCode !== "NotRequired",
+        description: g.description,
       };
     });
   });

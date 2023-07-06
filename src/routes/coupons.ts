@@ -311,6 +311,17 @@ export const CouponRoutes = (
       return { couponsForListing, couponAvailability };
     });
 
+  const getCouponsForGroup = publicProcedure
+    .input((payload: unknown) => {
+      const parsedPayload = z.object({ groupName: z.string().min(1) }).parse(payload);
+      return parsedPayload;
+    })
+    .mutation(async ({ input }) => {
+      const couponsByGroup = await prisma.coupon.findMany({ where: { groupName: input.groupName } });
+      console.log(couponsByGroup);
+      return couponsByGroup;
+    });
+
   const couponRoutes = {
     couponCreate: create,
     couponGetByUnique: getByUnique,
@@ -322,6 +333,7 @@ export const CouponRoutes = (
     hasCouponBeenUsed,
     getUserCouponRelation,
     getCouponsForListing,
+    getCouponsForGroup,
   };
   return couponRoutes;
 };

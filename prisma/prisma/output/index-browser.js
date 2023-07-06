@@ -114,7 +114,8 @@ exports.Prisma.CouponsForUserScalarFieldEnum = makeEnum({
 
 exports.Prisma.GroupsScalarFieldEnum = makeEnum({
   groupName: 'groupName',
-  activationCode: 'activationCode'
+  activationCode: 'activationCode',
+  description: 'description'
 });
 
 exports.Prisma.ListingScalarFieldEnum = makeEnum({

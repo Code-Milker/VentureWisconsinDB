@@ -143,6 +143,7 @@ export const CouponRoutes = (
       const removedCoupon = await prisma.coupon.delete({
         where: { id: input.id },
       });
+      await prisma.couponsForUser.deleteMany({ where: { couponId: removedCoupon.id } });
       return removedCoupon.id;
     });
 

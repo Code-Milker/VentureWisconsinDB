@@ -1,16 +1,5 @@
-import {
-  DefaultDataTransformer,
-  DefaultErrorShape,
-  ProcedureBuilder,
-  RootConfig,
-  unsetMarker,
-} from "@trpc/server";
-import {
-  listingSchema,
-  deleteListingSchema,
-  getAllListingsParams,
-  getListingSchema,
-} from "../shared";
+import { DefaultDataTransformer, DefaultErrorShape, ProcedureBuilder, RootConfig, unsetMarker } from "@trpc/server";
+import { listingSchema, deleteListingSchema, getAllListingsParams, getListingSchema } from "../shared";
 import { PrismaClient, Prisma } from "../../prisma/prisma/output";
 
 export interface GetAllListingsParams {
@@ -101,6 +90,11 @@ export const ListingsRoutes = (
       const deletedListing = await prisma.listing.delete({
         where: { name: input },
       });
+      const couponsAssociatedWithListing = await prisma.coupon.findMany({ where: { listingId: deletedListing.id } });
+      await prisma.couponsForUser.deleteMany({
+        where: { couponId: { in: couponsAssociatedWithListing.map((c) => c.id) } },
+      });
+      await prisma.coupon.deleteMany({ where: { listingId: deletedListing.id } });
       return deletedListing;
     });
 

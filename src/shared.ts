@@ -82,11 +82,11 @@ export const createNewUserSchema = z.object({
 export const getUserSchema = z.string();
 
 export const updatedUserSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   email: z.string(),
   role: z.string(),
-  session: z.string(),
+  session: z.string().optional(),
 });
 export const pinListingSchema = z.object({
   listingName: z.string(),

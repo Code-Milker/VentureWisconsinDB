@@ -1,17 +1,5 @@
-import {
-  ProcedureBuilder,
-  RootConfig,
-  DefaultErrorShape,
-  DefaultDataTransformer,
-  unsetMarker,
-} from "@trpc/server";
-import {
-  createNewUserSchema,
-  deleteUserSchema,
-  getUserSchema,
-  pinListingSchema,
-  updatedUserSchema,
-} from "../shared";
+import { ProcedureBuilder, RootConfig, DefaultErrorShape, DefaultDataTransformer, unsetMarker } from "@trpc/server";
+import { createNewUserSchema, deleteUserSchema, getUserSchema, pinListingSchema, updatedUserSchema } from "../shared";
 import { z } from "zod";
 import bCrypt from "bcrypt";
 import { USER_ROLE } from "../consts";
@@ -95,13 +83,10 @@ export const UserRoutes = (
   const update = publicProcedure
     .input(async (payload: unknown) => {
       const parsedPayload = updatedUserSchema.parse(payload); //validate the incoming object
-      const hasCorrectPermissions = validateUserPermission(
-        parsedPayload.session,
-        USER_ROLE.ADMIN
-      );
-      if (!hasCorrectPermissions) {
-        throw Error("invalid permissions");
-      }
+      // const hasCorrectPermissions = validateUserPermission(parsedPayload.session, USER_ROLE.ADMIN);
+      // if (!hasCorrectPermissions) {
+      //   throw Error("invalid permissions");
+      // }
       return { ...parsedPayload, email: parsedPayload.email.toLowerCase() };
     })
     .mutation(async ({ input }) => {
@@ -224,6 +209,50 @@ export const UserRoutes = (
         return [];
       }
     });
+  const getUserInfo = publicProcedure
+    .input((payload: unknown) => {
+      const parsedPayload = z.object({ email: z.string().email() }).parse(payload);
+      return parsedPayload;
+    })
+    .mutation(async ({ input }) => {
+      const userCouponsAndListings = await Promise.all([
+        prisma.listing.findMany({ where: { email: input.email } }),
+        prisma.coupon.findMany({ where: { email: input.email } }),
+      ]).then((res) => {
+        return { coupons: res[1], listings: res[0] };
+      });
+      return userCouponsAndListings;
+    });
+
+  const getUserListerRequesters = publicProcedure.mutation(async () => {
+    const listings = await prisma.listing.findMany();
+    const usersWaitingToBeListers = await prisma.user
+      .findMany({
+        where: {
+          email: {
+            in: listings.map((listing) => {
+              return listing.email; // find all users who have created a listing
+            }),
+          },
+        },
+      })
+      .then((users) => {
+        return users
+          .filter((user) => {
+            return user.role === USER_ROLE.USER; // filter to USER role only
+          })
+          .map((user) => {
+            const listing = listings.find((l) => {
+              return l.email === user.email;
+            });
+            return {
+              email: user.email,
+              listing: listing ?? {},
+            };
+          });
+      });
+    return usersWaitingToBeListers;
+  });
 
   const userRoutes = {
     userCreate: create,
@@ -235,6 +264,8 @@ export const UserRoutes = (
     userPinListing,
     userUnPinListing,
     getUserPins,
+    getUserInfo,
+    getUserListerRequesters,
   };
   return userRoutes;
 };

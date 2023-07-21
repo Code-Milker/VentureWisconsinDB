@@ -25,6 +25,7 @@ export type User = {
   password: string
   role: string
   groupsGroupName: string | null
+  pendingAccountChange: boolean
 }
 
 /**
@@ -963,6 +964,7 @@ export namespace Prisma {
     password: string | null
     role: string | null
     groupsGroupName: string | null
+    pendingAccountChange: boolean | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -974,6 +976,7 @@ export namespace Prisma {
     password: string | null
     role: string | null
     groupsGroupName: string | null
+    pendingAccountChange: boolean | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -985,6 +988,7 @@ export namespace Prisma {
     password: number
     role: number
     groupsGroupName: number
+    pendingAccountChange: number
     _all: number
   }
 
@@ -1006,6 +1010,7 @@ export namespace Prisma {
     password?: true
     role?: true
     groupsGroupName?: true
+    pendingAccountChange?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1017,6 +1022,7 @@ export namespace Prisma {
     password?: true
     role?: true
     groupsGroupName?: true
+    pendingAccountChange?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1028,6 +1034,7 @@ export namespace Prisma {
     password?: true
     role?: true
     groupsGroupName?: true
+    pendingAccountChange?: true
     _all?: true
   }
 
@@ -1127,6 +1134,7 @@ export namespace Prisma {
     password: string
     role: string
     groupsGroupName: string | null
+    pendingAccountChange: boolean
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1157,6 +1165,7 @@ export namespace Prisma {
     password?: boolean
     role?: boolean
     groupsGroupName?: boolean
+    pendingAccountChange?: boolean
   }
 
 
@@ -6526,7 +6535,8 @@ export namespace Prisma {
     lastName: 'lastName',
     password: 'password',
     role: 'role',
-    groupsGroupName: 'groupsGroupName'
+    groupsGroupName: 'groupsGroupName',
+    pendingAccountChange: 'pendingAccountChange'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -6549,6 +6559,7 @@ export namespace Prisma {
     password?: StringFilter | string
     role?: StringFilter | string
     groupsGroupName?: StringNullableFilter | string | null
+    pendingAccountChange?: BoolFilter | boolean
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6560,6 +6571,7 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     groupsGroupName?: SortOrder
+    pendingAccountChange?: SortOrder
   }
 
   export type UserWhereUniqueInput = {
@@ -6576,6 +6588,7 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     groupsGroupName?: SortOrder
+    pendingAccountChange?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -6595,6 +6608,7 @@ export namespace Prisma {
     password?: StringWithAggregatesFilter | string
     role?: StringWithAggregatesFilter | string
     groupsGroupName?: StringNullableWithAggregatesFilter | string | null
+    pendingAccountChange?: BoolWithAggregatesFilter | boolean
   }
 
   export type PinnedUserListingWhereInput = {
@@ -6912,6 +6926,7 @@ export namespace Prisma {
     password: string
     role?: string
     groupsGroupName?: string | null
+    pendingAccountChange?: boolean
   }
 
   export type UserUncheckedCreateInput = {
@@ -6923,6 +6938,7 @@ export namespace Prisma {
     password: string
     role?: string
     groupsGroupName?: string | null
+    pendingAccountChange?: boolean
   }
 
   export type UserUpdateInput = {
@@ -6933,6 +6949,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
+    pendingAccountChange?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6944,6 +6961,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
+    pendingAccountChange?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUpdateManyMutationInput = {
@@ -6954,6 +6972,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
+    pendingAccountChange?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -6965,6 +6984,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     role?: StringFieldUpdateOperationsInput | string
     groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
+    pendingAccountChange?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type PinnedUserListingCreateInput = {
@@ -7353,6 +7373,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter | string | null
   }
 
+  export type BoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     createdAt?: SortOrder
@@ -7362,6 +7387,7 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     groupsGroupName?: SortOrder
+    pendingAccountChange?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -7377,6 +7403,7 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     groupsGroupName?: SortOrder
+    pendingAccountChange?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -7388,6 +7415,7 @@ export namespace Prisma {
     password?: SortOrder
     role?: SortOrder
     groupsGroupName?: SortOrder
+    pendingAccountChange?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -7458,6 +7486,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter
   }
 
+  export type BoolWithAggregatesFilter = {
+    equals?: boolean
+    not?: NestedBoolWithAggregatesFilter | boolean
+    _count?: NestedIntFilter
+    _min?: NestedBoolFilter
+    _max?: NestedBoolFilter
+  }
+
   export type PinnedUserListingCountOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
@@ -7486,11 +7522,6 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     listingId?: SortOrder
-  }
-
-  export type BoolFilter = {
-    equals?: boolean
-    not?: NestedBoolFilter | boolean
   }
 
   export type CouponsForUserCountOrderByAggregateInput = {
@@ -7522,14 +7553,6 @@ export namespace Prisma {
   export type CouponsForUserSumOrderByAggregateInput = {
     id?: SortOrder
     couponId?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter = {
-    equals?: boolean
-    not?: NestedBoolWithAggregatesFilter | boolean
-    _count?: NestedIntFilter
-    _min?: NestedBoolFilter
-    _max?: NestedBoolFilter
   }
 
   export type GroupsCountOrderByAggregateInput = {
@@ -7724,16 +7747,16 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
     decrement?: number
     multiply?: number
     divide?: number
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
   }
 
   export type NullableIntFieldUpdateOperationsInput = {
@@ -7792,6 +7815,11 @@ export namespace Prisma {
     startsWith?: string
     endsWith?: string
     not?: NestedStringNullableFilter | string | null
+  }
+
+  export type NestedBoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
   }
 
   export type NestedIntWithAggregatesFilter = {
@@ -7878,11 +7906,6 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedIntNullableFilter | number | null
-  }
-
-  export type NestedBoolFilter = {
-    equals?: boolean
-    not?: NestedBoolFilter | boolean
   }
 
   export type NestedBoolWithAggregatesFilter = {

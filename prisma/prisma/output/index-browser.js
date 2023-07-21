@@ -164,7 +164,8 @@ exports.Prisma.UserScalarFieldEnum = makeEnum({
   lastName: 'lastName',
   password: 'password',
   role: 'role',
-  groupsGroupName: 'groupsGroupName'
+  groupsGroupName: 'groupsGroupName',
+  pendingAccountChange: 'pendingAccountChange'
 });
 
 

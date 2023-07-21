@@ -229,11 +229,7 @@ export const UserRoutes = (
     const usersWaitingToBeListers = await prisma.user
       .findMany({
         where: {
-          email: {
-            in: listings.map((listing) => {
-              return listing.email; // find all users who have created a listing
-            }),
-          },
+          pendingAccountChange: true,
         },
       })
       .then((users) => {
@@ -254,6 +250,33 @@ export const UserRoutes = (
     return usersWaitingToBeListers;
   });
 
+  const manageUserApprovalRequest = publicProcedure
+    .input((payload: unknown) => {
+      const parsedPayload = z.object({ email: z.string().email(), accepted: z.boolean() }).parse(payload);
+      return parsedPayload;
+    })
+    .mutation(async ({ input }) => {
+      await prisma.user.update({
+        where: { email: input.email },
+        data: { pendingAccountChange: false, role: input.accepted ? "LISTER" : "USER" },
+      });
+      if (!input.accepted) {
+        await prisma.listing.deleteMany({ where: { email: input.email } });
+      }
+    });
+  const userApprovalRequestPending = publicProcedure
+    .input((payload: unknown) => {
+      const parsedPayload = z.object({ email: z.string().email() }).parse(payload);
+      return parsedPayload;
+    })
+    .query(async ({ input }) => {
+      return await prisma.user
+        .findUnique({
+          where: { email: input.email },
+        })
+        .then((u) => u?.pendingAccountChange);
+    });
+
   const userRoutes = {
     userCreate: create,
     userGetByUnique: getByUnique,
@@ -266,6 +289,8 @@ export const UserRoutes = (
     getUserPins,
     getUserInfo,
     getUserListerRequesters,
+    manageUserApprovalRequest,
+    userApprovalRequestPending,
   };
   return userRoutes;
 };

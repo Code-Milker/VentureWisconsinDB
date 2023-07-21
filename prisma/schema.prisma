@@ -12,14 +12,15 @@ datasource db {
 }
 
 model User {
-  id              Int      @id @default(autoincrement())
-  createdAt       DateTime @default(now())
-  email           String   @unique
-  firstName       String?
-  lastName        String?
-  password        String
-  role            String   @default("USER") // alternative being "ADMIN"
-  groupsGroupName String?
+  id                   Int      @id @default(autoincrement())
+  createdAt            DateTime @default(now())
+  email                String   @unique
+  firstName            String?
+  lastName             String?
+  password             String
+  role                 String   @default("USER") // alternative being "ADMIN"
+  groupsGroupName      String?
+  pendingAccountChange Boolean  @default(false)
 }
 
 model PinnedUserListing {

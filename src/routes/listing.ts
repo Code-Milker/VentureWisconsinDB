@@ -1,6 +1,7 @@
 import { DefaultDataTransformer, DefaultErrorShape, ProcedureBuilder, RootConfig, unsetMarker } from "@trpc/server";
 import { listingSchema, deleteListingSchema, getAllListingsParams, getListingSchema } from "../shared";
 import { PrismaClient, Prisma } from "../../prisma/prisma/output";
+import { USER_ROLE } from "../consts";
 
 export interface GetAllListingsParams {
   namePrefix?: string;
@@ -36,9 +37,15 @@ export const ListingsRoutes = (
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
-      const listing = await prisma.listing.create({
-        data: { ...input },
-      });
+      const listing = await prisma.listing
+        .create({
+          data: { ...input },
+        })
+        .then(async (listing) => {
+          await prisma.user.findUnique({ where: { email: listing.email } });
+          await prisma.user.update({ where: { email: listing.email }, data: { pendingAccountChange: true } });
+          return listing;
+        });
       return listing;
     });
   const getByUnique = publicProcedure
@@ -66,6 +73,31 @@ export const ListingsRoutes = (
         where: { name: { startsWith: input.name }, email: { startsWith: input.email } },
       });
       return listings;
+    });
+  const getAllApprovedListings = publicProcedure
+    .input((payload: unknown) => {
+      const res = getAllListingsParams.parse(payload);
+      return res;
+    })
+    .query(async ({ input }) => {
+      const listings = await prisma.listing.findMany({
+        where: { name: { startsWith: input.name }, email: { startsWith: input.email } },
+      });
+      console.log(listings.map((l) => l.email));
+      const approvedListings = await prisma.user
+        .findMany({
+          where: {
+            AND: {
+              email: { in: listings.map((l) => l.email) },
+              NOT: { role: USER_ROLE.USER },
+            },
+          },
+        })
+        .then((approvedUsers) => {
+          console.log(approvedUsers);
+          return listings.filter((l) => approvedUsers.map((u) => u.email).includes(l.email));
+        });
+      return approvedListings;
     });
 
   const update = publicProcedure
@@ -104,6 +136,7 @@ export const ListingsRoutes = (
     listingUpdate: update,
     listingRemove: remove,
     listingGetAll: getAll,
+    getAllApprovedListings,
   };
   return listingRoutes;
 };

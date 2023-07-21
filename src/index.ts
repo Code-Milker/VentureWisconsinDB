@@ -1,10 +1,13 @@
 import { initTRPC } from "@trpc/server";
-import { createHTTPServer } from "@trpc/server/adapters/standalone";
+import { CreateHTTPContextOptions, createHTTPServer } from "@trpc/server/adapters/standalone";
 import { CouponRoutes } from "./routes/coupons";
 import { ListingsRoutes } from "./routes/listing";
 import { UserRoutes } from "./routes/user";
 import { GroupsRoutes } from "./routes/groups";
 import { PrismaClient, Prisma } from "../prisma/prisma/output";
+import * as trpcExpress from "@trpc/server/adapters/express";
+import express from "express";
+
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
 const t = initTRPC.create();
@@ -23,7 +26,7 @@ const appRouter = router({
 
 createHTTPServer({
   router: appRouter,
-  createContext() {
+  createContext(opts: CreateHTTPContextOptions) {
     return {};
   },
 }).listen(3000);

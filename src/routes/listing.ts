@@ -83,7 +83,6 @@ export const ListingsRoutes = (
       const listings = await prisma.listing.findMany({
         where: { name: { startsWith: input.name }, email: { startsWith: input.email } },
       });
-      console.log(listings.map((l) => l.email));
       const approvedListings = await prisma.user
         .findMany({
           where: {
@@ -94,7 +93,6 @@ export const ListingsRoutes = (
           },
         })
         .then((approvedUsers) => {
-          console.log(approvedUsers);
           return listings.filter((l) => approvedUsers.map((u) => u.email).includes(l.email));
         });
       return approvedListings;

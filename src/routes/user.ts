@@ -124,7 +124,6 @@ export const UserRoutes = (
       if (user === null) {
         return false;
       }
-
       const isCorrectLogin = await bCrypt.compare(input.password, user.password);
       if (isCorrectLogin) {
         return {

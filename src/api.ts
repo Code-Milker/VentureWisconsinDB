@@ -26,9 +26,6 @@ async function postData(endpoint: string, data = {}) {
   return response.result.data;
 }
 
-// GET http://localhost:4000/trpc/getUser?input=INPUT
-
-// where INPUT is a URI-encoded JSON string.
 export async function getData(path: string, data?: any) {
   const params = data ? `?input=${encodeURI(JSON.stringify(data))}` : "";
   let response = await fetch(`${baseUrl}/${path}${params}`);

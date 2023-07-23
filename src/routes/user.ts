@@ -30,6 +30,7 @@ export const UserRoutes = (
     throw Error("public Procedure not found");
   }
   const validateUserPermission = async (session: string, expectedRole: USER_ROLE) => {
+    console.log("h");
     const user = await prisma.user.findFirst({
       where: { password: session },
     });

@@ -33,6 +33,7 @@ const UserRoutes = (prisma, publicProcedure) => {
         throw Error("public Procedure not found");
     }
     const validateUserPermission = (session, expectedRole) => __awaiter(void 0, void 0, void 0, function* () {
+        console.log("h");
         const user = yield prisma.user.findFirst({
             where: { password: session },
         });
@@ -54,7 +55,7 @@ const UserRoutes = (prisma, publicProcedure) => {
         const user = yield prisma.user.create({
             data: Object.assign(Object.assign({}, input), { password: hashedPassword, role }),
         });
-        return Object.assign(Object.assign({}, user), { session: user.password, role: user.role });
+        return Object.assign(Object.assign({}, user), { session: user.password, role: user.role, firstName: user.firstName, lastName: user.lastName });
     }));
     const getByUnique = publicProcedure
         .input((payload) => {
@@ -77,10 +78,10 @@ const UserRoutes = (prisma, publicProcedure) => {
     const update = publicProcedure
         .input((payload) => __awaiter(void 0, void 0, void 0, function* () {
         const parsedPayload = shared_1.updatedUserSchema.parse(payload); //validate the incoming object
-        const hasCorrectPermissions = validateUserPermission(parsedPayload.session, consts_1.USER_ROLE.ADMIN);
-        if (!hasCorrectPermissions) {
-            throw Error("invalid permissions");
-        }
+        // const hasCorrectPermissions = validateUserPermission(parsedPayload.session, USER_ROLE.ADMIN);
+        // if (!hasCorrectPermissions) {
+        //   throw Error("invalid permissions");
+        // }
         return Object.assign(Object.assign({}, parsedPayload), { email: parsedPayload.email.toLowerCase() });
     }))
         .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
@@ -118,10 +119,22 @@ const UserRoutes = (prisma, publicProcedure) => {
         }
         const isCorrectLogin = yield bcrypt_1.default.compare(input.password, user.password);
         if (isCorrectLogin) {
-            return { email: user.email, session: user.password, role: user.role };
+            return {
+                email: user.email,
+                session: user.password,
+                role: user.role,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            };
         }
         else {
-            return { email: null, session: null, role: null };
+            return {
+                email: null,
+                session: null,
+                role: null,
+                firstName: null,
+                lastName: null,
+            };
         }
     }));
     const userUnPinListing = publicProcedure
@@ -149,9 +162,11 @@ const UserRoutes = (prisma, publicProcedure) => {
         const user = yield prisma.user.findUnique({
             where: { email: input.userEmail },
         });
+        console.log(user);
         const listing = yield prisma.listing.findUnique({
             where: { name: input.listingName },
         });
+        console.log(listing);
         if (listing && user) {
             const res = yield prisma.pinnedUserListing.create({
                 data: { userId: user.id, listingId: listing.id },
@@ -180,6 +195,71 @@ const UserRoutes = (prisma, publicProcedure) => {
             return [];
         }
     }));
+    const getUserInfo = publicProcedure
+        .input((payload) => {
+        const parsedPayload = zod_1.z.object({ email: zod_1.z.string().email() }).parse(payload);
+        return parsedPayload;
+    })
+        .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
+        const userCouponsAndListings = yield Promise.all([
+            prisma.listing.findMany({ where: { email: input.email } }),
+            prisma.coupon.findMany({ where: { email: input.email } }),
+        ]).then((res) => {
+            return { coupons: res[1], listings: res[0] };
+        });
+        return userCouponsAndListings;
+    }));
+    const getUserListerRequesters = publicProcedure.mutation(() => __awaiter(void 0, void 0, void 0, function* () {
+        const listings = yield prisma.listing.findMany();
+        const usersWaitingToBeListers = yield prisma.user
+            .findMany({
+            where: {
+                pendingAccountChange: true,
+            },
+        })
+            .then((users) => {
+            return users
+                .filter((user) => {
+                return user.role === consts_1.USER_ROLE.USER; // filter to USER role only
+            })
+                .map((user) => {
+                const listing = listings.find((l) => {
+                    return l.email === user.email;
+                });
+                return {
+                    email: user.email,
+                    listing: listing !== null && listing !== void 0 ? listing : {},
+                };
+            });
+        });
+        return usersWaitingToBeListers;
+    }));
+    const manageUserApprovalRequest = publicProcedure
+        .input((payload) => {
+        const parsedPayload = zod_1.z.object({ email: zod_1.z.string().email(), accepted: zod_1.z.boolean() }).parse(payload);
+        return parsedPayload;
+    })
+        .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
+        yield prisma.user.update({
+            where: { email: input.email },
+            data: { pendingAccountChange: false, role: input.accepted ? "LISTER" : "USER" },
+        });
+        if (!input.accepted) {
+            yield prisma.listing.deleteMany({ where: { email: input.email } });
+        }
+    }));
+    const userApprovalRequestPending = publicProcedure
+        .input((payload) => {
+        const parsedPayload = zod_1.z.object({ email: zod_1.z.string().email() }).parse(payload);
+        return parsedPayload;
+    })
+        .query(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
+        return yield prisma.user
+            .findUnique({
+            where: { email: input.email },
+        })
+            .then((u) => u === null || u === void 0 ? void 0 : u.pendingAccountChange);
+    }));
     const userRoutes = {
         userCreate: create,
         userGetByUnique: getByUnique,
@@ -190,6 +270,10 @@ const UserRoutes = (prisma, publicProcedure) => {
         userPinListing,
         userUnPinListing,
         getUserPins,
+        getUserInfo,
+        getUserListerRequesters,
+        manageUserApprovalRequest,
+        userApprovalRequestPending,
     };
     return userRoutes;
 };

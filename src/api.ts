@@ -1,4 +1,5 @@
-const baseUrl = "http://localhost:3001/trpc";
+// const baseUrl = "http://localhost:3001/trpc";
+const baseUrl = "https://venture-wisconsin-f695fbca93bb.herokuapp.com/trpc";
 export const post = async (endpoint: string, payload: any = {}) => {
   const res = await postData(`${baseUrl}/${endpoint}`, payload);
   if (!res) throw Error("Data not found");
@@ -26,7 +27,7 @@ async function postData(endpoint: string, data = {}) {
   return response.result.data;
 }
 
-export async function getData(path: string, data?: any) {
+export async function get(path: string, data?: any) {
   const params = data ? `?input=${encodeURI(JSON.stringify(data))}` : "";
   let response = await fetch(`${baseUrl}/${path}${params}`);
   response = await response.json();

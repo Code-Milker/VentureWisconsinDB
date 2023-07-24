@@ -25,6 +25,8 @@ async function ls(path) {
     copyFile(`./dist/${dirent.name}`, `../../db-dist/`);
   }
   copyFile("./package.json", "../../db-dist/");
+  copyFile("./procfile", "../../db-dist/");
+  copyFile("./src/prisma/schema.prisma", "../../db-dist/");
   fs.cp("./node_modules", "../../db-dist/node_modules", { recursive: true }, (err) => {
     if (err) {
       console.error(err);

@@ -29,7 +29,6 @@ const appRouter = router({
   ...userRoutes,
   ...groupRoutes,
 });
-
 const app = express();
 app.use(
   "/trpc",

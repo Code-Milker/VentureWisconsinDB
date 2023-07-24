@@ -52,6 +52,7 @@ app.use("/trpc", trpcExpress.createExpressMiddleware({
     router: appRouter,
     createContext,
 }));
+app.get("/", (req, res) => res.send("Venture Wisconsin API"));
 app.listen(PORT, () => {
     console.log("listening on", PORT);
 });

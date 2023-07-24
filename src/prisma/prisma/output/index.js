@@ -197,7 +197,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/tylerfischer/Projects/Evan/VentureWisconsinMobile/backend/VentureWisconsinDB/prisma/prisma/output",
+      "value": "/Users/tylerfischer/Projects/Evan/VentureWisconsinMobile/backend/VentureWisconsinDB/src/prisma/prisma/output",
       "fromEnvVar": null
     },
     "config": {
@@ -208,7 +208,7 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../.env"
+    "rootEnvPath": "../../../../.env"
   },
   "relativePath": "../..",
   "clientVersion": "4.9.0",

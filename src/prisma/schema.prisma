@@ -1,9 +1,9 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
+// 2
 generator client {
   provider = "prisma-client-js"
-  output   = "./prisma/output"
+  // output   = "./prisma/output"
 }
 
 datasource db {
@@ -18,7 +18,7 @@ model User {
   firstName            String?
   lastName             String?
   password             String
-  role                 String   @default("USER") // alternative being "ADMIN" "LISTER"
+  role                 String   @default("USER") // alternative being "ADMIN"
   groupsGroupName      String?
   pendingAccountChange Boolean  @default(false)
 }

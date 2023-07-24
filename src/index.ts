@@ -6,7 +6,7 @@ import { GroupsRoutes } from "./routes/groups";
 import { PrismaClient } from "@prisma/client";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
-
+const PORT = process.env.PORT || 80;
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
 const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
@@ -17,6 +17,7 @@ type Context = inferAsyncReturnType<typeof createContext>;
 const t = initTRPC.context<Context>().create();
 
 const publicProcedure = t.procedure;
+
 const router = t.router;
 const listingRoutes = ListingsRoutes(prisma, publicProcedure);
 const couponRoutes = CouponRoutes(prisma, publicProcedure);
@@ -37,7 +38,7 @@ app.use(
     createContext,
   })
 );
-app.listen(80);
+app.listen(PORT);
 // createHTTPServer({
 //   router: appRouter,
 //   createContext(opts: CreateHTTPContextOptions) {

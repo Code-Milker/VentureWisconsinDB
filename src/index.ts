@@ -1,10 +1,9 @@
 import { inferAsyncReturnType, initTRPC } from "@trpc/server";
-// import { CreateHTTPContextOptions, createHTTPServer } from "@trpc/server/adapters/standalone";
 import { CouponRoutes } from "./routes/coupons";
 import { ListingsRoutes } from "./routes/listing";
 import { UserRoutes } from "./routes/user";
 import { GroupsRoutes } from "./routes/groups";
-import { PrismaClient } from "./prisma/prisma/output";
+import { PrismaClient } from "@prisma/client";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
 

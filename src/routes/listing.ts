@@ -1,7 +1,7 @@
 import { DefaultDataTransformer, DefaultErrorShape, ProcedureBuilder, RootConfig, unsetMarker } from "@trpc/server";
 import { listingSchema, deleteListingSchema, getAllListingsParams, getListingSchema } from "../shared";
-import { PrismaClient, Prisma } from "../prisma/prisma/output";
 import { USER_ROLE } from "../consts";
+import { PrismaClient, Prisma } from "@prisma/client";
 
 export interface GetAllListingsParams {
   namePrefix?: string;

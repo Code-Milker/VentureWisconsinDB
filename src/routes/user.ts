@@ -3,8 +3,7 @@ import { createNewUserSchema, deleteUserSchema, getUserSchema, pinListingSchema,
 import { z } from "zod";
 import bCrypt from "bcrypt";
 import { USER_ROLE } from "../consts";
-import { PrismaClient, Prisma } from "../prisma/prisma/output";
-
+import { PrismaClient, Prisma } from "@prisma/client";
 export const UserRoutes = (
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,

@@ -9,7 +9,7 @@ import {
   addCouponForUserByGroupSchema,
   GetCouponForUserBySchema,
 } from "../shared";
-import { PrismaClient, Prisma, Listing, CouponsForUser, Coupon } from "../prisma/prisma/output";
+import { PrismaClient, Prisma, Coupon, CouponsForUser, Listing } from "@prisma/client";
 import { z } from "zod";
 
 export const couponIsExpired = (date: string | undefined): boolean => {

@@ -1,8 +1,7 @@
-// const baseUrl = "http://localhost:3001/trpc";
-const baseUrl = "https://venture-wisconsin-f695fbca93bb.herokuapp.com/trpc";
+const baseUrl = "http://localhost:3001/trpc";
+// const baseUrl = "https://venture-wisconsin-f695fbca93bb.herokuapp.com/trpc";
 export const post = async (endpoint: string, payload: any = {}) => {
   const res = await postData(`${baseUrl}/${endpoint}`, payload);
-  if (!res) throw Error("Data not found");
   return res;
 };
 

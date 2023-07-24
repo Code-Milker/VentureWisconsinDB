@@ -1,11 +1,11 @@
 import { inferAsyncReturnType, initTRPC } from "@trpc/server";
-import { CouponRoutes } from "./routes/coupons";
-import { ListingsRoutes } from "./routes/listing";
-import { UserRoutes } from "./routes/user";
-import { GroupsRoutes } from "./routes/groups";
+import { CouponRoutes } from "./coupons";
 import { PrismaClient } from "@prisma/client";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import express from "express";
+import { GroupsRoutes } from "./groups";
+import { ListingsRoutes } from "./listing";
+import { UserRoutes } from "./user";
 const PORT = process.env.PORT || 80;
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
@@ -38,13 +38,9 @@ app.use(
     createContext,
   })
 );
-app.listen(PORT);
-// createHTTPServer({
-//   router: appRouter,
-//   createContext(opts: CreateHTTPContextOptions) {
-//     return {};
-//   },
-// }).listen(3000);
+app.listen(PORT, () => {
+  console.log("listening on", PORT);
+});
 
 // export const addCouponGroups = async () => {
 //   await prisma.groups.create({ data: { groupName: "Venture 2023" } });

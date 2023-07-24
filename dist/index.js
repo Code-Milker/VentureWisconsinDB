@@ -27,13 +27,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const server_1 = require("@trpc/server");
-const coupons_1 = require("./routes/coupons");
-const listing_1 = require("./routes/listing");
-const user_1 = require("./routes/user");
-const groups_1 = require("./routes/groups");
+const coupons_1 = require("./coupons");
 const client_1 = require("@prisma/client");
 const trpcExpress = __importStar(require("@trpc/server/adapters/express"));
 const express_1 = __importDefault(require("express"));
+const groups_1 = require("./groups");
+const listing_1 = require("./listing");
+const user_1 = require("./user");
+const PORT = process.env.PORT || 80;
 const prisma = new client_1.PrismaClient();
 const createContext = ({ req, res }) => {
     return {};
@@ -51,13 +52,9 @@ app.use("/trpc", trpcExpress.createExpressMiddleware({
     router: appRouter,
     createContext,
 }));
-app.listen(3001);
-// createHTTPServer({
-//   router: appRouter,
-//   createContext(opts: CreateHTTPContextOptions) {
-//     return {};
-//   },
-// }).listen(3000);
+app.listen(PORT, () => {
+    console.log("listening on", PORT);
+});
 // export const addCouponGroups = async () => {
 //   await prisma.groups.create({ data: { groupName: "Venture 2023" } });
 //   await prisma.groups.create({ data: { groupName: "Brew Deck" } });

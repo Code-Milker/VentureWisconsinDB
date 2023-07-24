@@ -1,9 +1,9 @@
 import { ProcedureBuilder, RootConfig, DefaultErrorShape, DefaultDataTransformer, unsetMarker } from "@trpc/server";
-import { createNewUserSchema, deleteUserSchema, getUserSchema, pinListingSchema, updatedUserSchema } from "../shared";
+import { createNewUserSchema, deleteUserSchema, getUserSchema, pinListingSchema, updatedUserSchema } from "./shared";
 import { z } from "zod";
 import bCrypt from "bcrypt";
-import { USER_ROLE } from "../consts";
 import { PrismaClient, Prisma } from "@prisma/client";
+import { USER_ROLE } from "./consts";
 export const UserRoutes = (
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,

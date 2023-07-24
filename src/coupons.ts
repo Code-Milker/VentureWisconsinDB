@@ -8,7 +8,7 @@ import {
   useCouponSchema,
   addCouponForUserByGroupSchema,
   GetCouponForUserBySchema,
-} from "../shared";
+} from "./shared";
 import { PrismaClient, Prisma, Coupon, CouponsForUser, Listing } from "@prisma/client";
 import { z } from "zod";
 

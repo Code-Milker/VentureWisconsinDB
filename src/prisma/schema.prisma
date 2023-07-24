@@ -4,9 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://bakotigaaim1w2ckat6x:pscale_pw_fNwFyaN3Q6fShwBk5eU650kU15HQwjDVF0ybnjiLCug@aws.connect.psdb.cloud/venture-wisconsin?sslaccept=strict"
-  // provider = "sqlite"
-  // url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 model User {

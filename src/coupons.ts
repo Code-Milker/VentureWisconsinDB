@@ -11,7 +11,6 @@ import {
 } from "./shared";
 import { PrismaClient, Prisma, Coupon, CouponsForUser, Listing } from "@prisma/client";
 import { z } from "zod";
-
 export const couponIsExpired = (date: string | undefined): boolean => {
   if (!date) {
     // throw Error("invalid date");
@@ -268,7 +267,6 @@ export const CouponRoutes = (
     ) {
       couponUsedState = "VALID";
     }
-    console.log(couponUsedState);
     return { couponId: selectedCoupon.id, couponUsedState };
   };
   type COUPON_USED_STATE = "USED" | "EXPIRED" | "VALID" | "INVALID";

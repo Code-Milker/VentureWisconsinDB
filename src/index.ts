@@ -6,6 +6,7 @@ import express from "express";
 import { GroupsRoutes } from "./groups";
 import { ListingsRoutes } from "./listing";
 import { UserRoutes } from "./user";
+import { createData } from "../scripts/insertData";
 const PORT = process.env.PORT || 80;
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
@@ -39,19 +40,11 @@ app.use(
 );
 app.get("/", (req, res) => res.send("Venture Wisconsin API"));
 app.listen(PORT, () => {
-  console.log("listening on", PORT);
+  // createData(prisma)
+  //   .then(() => {
+  //     console.log("success");
+  //   })
+  //   .catch((e) => {
+  //     console.log(e);
+  //   });
 });
-
-// export const addCouponGroups = async () => {
-//   await prisma.groups.create({ data: { groupName: "Venture 2023" } });
-//   await prisma.groups.create({ data: { groupName: "Brew Deck" } });
-//   await prisma.groups.create({ data: { groupName: "Wine Tags" } });
-// };
-// export const updateCouponGroups = async () => {
-//   await prisma.groups.update({
-//     where: { groupName: "Wine Tags" },
-//     data: { activationCode: "qwerty" },
-//   });
-// };
-// export const getCouponUserRelation = async () => {};
-// updateCouponGroups();

@@ -1,5 +1,4 @@
 import { Coupon, Groups, Listing, User } from "@prisma/client";
-import bCrypt from "bcrypt";
 const addDays = (date, days) => {
   var result = new Date(date);
   result.setDate(result.getDate() + days);
@@ -23,7 +22,7 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     email: "kyguy6969@gmail.com",
     firstName: "Kyle",
     lastName: "Esser",
-    password: "TODO",
+    password: "password123",
     role: "LISTER",
     pendingAccountChange: false,
   },
@@ -31,7 +30,7 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     email: "daves66@gmail.com",
     firstName: "Dave",
     lastName: "Shuma",
-    password: "TODO",
+    password: "password123",
     role: "USER",
     pendingAccountChange: true,
   },

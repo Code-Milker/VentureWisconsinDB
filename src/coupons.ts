@@ -17,19 +17,18 @@ export const couponIsExpired = (date: string | undefined): boolean => {
     return false;
   }
   //prisma likes to return the date as a string :(
-  console.log(new Date(date).toDateString());
-  console.log(new Date().getTime() > new Date(date as unknown as string).getTime());
   return new Date().getTime() > new Date(date as unknown as string).getTime();
 };
 
 const getDefaultCouponGroupName = (listingForCoupon: Listing | null | undefined) => {
+  console.log({});
   if (!listingForCoupon) {
     return "";
   }
   // alright so if a coupon doesn't have a group name explicitly given then assign it
   // the display title and id
   // listing can only have one default coupon
-  return `${listingForCoupon?.displayTitle}`;
+  return `${listingForCoupon?.name}`;
 };
 
 export const CouponRoutes = (
@@ -260,9 +259,6 @@ export const CouponRoutes = (
       .findUnique({ where: { groupName: selectedCoupon?.groupName ?? "" } })
       .then((g) => !!g);
     const couponAvailableToUser = couponsForUser.find((c) => c.couponId === selectedCoupon.id);
-    if (listing?.name === "Molly McGuires'") {
-      console.log(couponAvailableToUser === undefined, selectedCoupon.groupName, listing?.name);
-    }
     if (couponAvailableToUser === undefined && selectedCoupon.groupName !== listing?.name) {
       // needs to enroll in group
       couponUsedState = "NEEDS_GROUP";
@@ -322,7 +318,6 @@ export const CouponRoutes = (
     })
     .mutation(async ({ input }) => {
       const couponsByGroup = await prisma.coupon.findMany({ where: { groupName: input.groupName } });
-      console.log(couponsByGroup);
       return couponsByGroup;
     });
 

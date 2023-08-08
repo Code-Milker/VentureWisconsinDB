@@ -1,3 +1,4 @@
+const fs = require("fs");
 const copyFile = (file, dir2) => {
   //include the fs, path modules
   var fs = require("fs");
@@ -17,7 +18,6 @@ const copyFile = (file, dir2) => {
   });
 };
 
-const fs = require("fs");
 async function ls(path) {
   const dir = await fs.promises.opendir(path);
   fs.rmSync("../../db-dist/node_modules", { recursive: true, force: true });

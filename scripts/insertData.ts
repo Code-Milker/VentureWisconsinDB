@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { mockGroups, getCoupons, getMockListings, getMockUsers, mockUsers } from "./data";
+import { mockGroups, getCoupons, getMockListings, mockUsers } from "./data";
 import bCrypt from "bcrypt";
 const prisma = new PrismaClient();
 export const createData = async () => {
@@ -15,10 +15,11 @@ export const createData = async () => {
     const listings = await prisma.listing.findMany();
     const users = await prisma.user.findMany();
     const groups = await prisma.groups.findMany();
-    const coupons = getCoupons(listings, groups, users);
+    const { bar430, dPub, mollys } = getCoupons(listings, groups, users);
     await prisma.coupon.createMany({
-      data: [...coupons.bar430, ...coupons.dPub, ...coupons.mollys],
+      data: [...bar430, ...dPub, ...mollys],
     });
+    users.forEach((u) => {});
   } catch (e) {
     console.log("failed on create data");
     console.log(e);
@@ -39,7 +40,7 @@ export const deleteAllData = async () => {
     // delete all groups
     const groups = await prisma.groups.findMany();
     await prisma.groups.deleteMany({ where: { groupName: { in: groups.map((g) => g.groupName) } } });
-    // delete all groups
+    // delete all pins
     const userPins = await prisma.pinnedUserListing.findMany();
     await prisma.pinnedUserListing.deleteMany({ where: { id: { in: userPins.map((p) => p.id) } } });
     // delete all users

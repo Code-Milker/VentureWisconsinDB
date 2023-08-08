@@ -20,7 +20,7 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     pendingAccountChange: false,
   },
   {
-    email: "kylee66@gmail.com",
+    email: "kyguy6969@gmail.com",
     firstName: "Kyle",
     lastName: "Esser",
     password: "TODO",
@@ -74,7 +74,7 @@ export const mockListings = {
     displayTitle: "Mollys",
     subTitle: "asdf",
     zipcode: "53209",
-    email: "kyguy6969@gmail.com ",
+    email: "kyguy6969@gmail.com",
     website: "mollymcguiresoshkosh.com",
     phone: "(920) 233-3301",
     address: "539 Campus Pl, Oshkosh, WI 54901",
@@ -98,7 +98,7 @@ export const mockListings = {
     address: "515 N Main St, Oshkosh, WI 54901",
     name: "d pub",
     website: "https://www.facebook.com/DistilleryPub/",
-    email: "daveDiddler35@gmail.com",
+    email: "daves66@gmail.com",
     phone: "(920) 233-2565",
     category: "bars",
     description:
@@ -272,7 +272,7 @@ export const getCoupons = (listings: Listing[], groups: Groups[], users: User[])
     return {
       ...c,
       listingId: listing?.id as number,
-      expirationDate: addDays(new Date(), i),
+      expirationDate: addDays(new Date(), i + 3),
       groupName: groupName as string,
     };
   };
@@ -283,9 +283,3 @@ export const getCoupons = (listings: Listing[], groups: Groups[], users: User[])
   return { mollys, bar430, dPub };
 };
 export const getMockListings = () => [mockListings.BAR_430, mockListings.D_PUB, mockListings.MOLLYS];
-export const getMockUsers = () => {
-  const u = mockUsers.map(async (u) => {
-    return { ...u, password: await bCrypt.hash(u.password, 0) };
-  });
-  return u;
-};

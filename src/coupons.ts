@@ -31,6 +31,7 @@ const getDefaultCouponGroupName = (listingForCoupon: Listing | null | undefined)
   // listing can only have one default coupon
   return `${listingForCoupon?.displayTitle}`;
 };
+
 export const CouponRoutes = (
   prisma: PrismaClient<
     Prisma.PrismaClientOptions,
@@ -69,7 +70,6 @@ export const CouponRoutes = (
       if (listingAlreadyHasCoupon && !admin) {
         throw Error("Listing already has coupon and User do not have admin permissions ");
       }
-
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
@@ -155,7 +155,6 @@ export const CouponRoutes = (
       const user = await prisma.user.findUnique({
         where: { email: input.email },
       });
-
       if (user?.id && input.email) {
         const couponExistsForUser = await prisma.couponsForUser.findFirst({
           where: {
@@ -166,6 +165,7 @@ export const CouponRoutes = (
           },
         });
         if (!couponExistsForUser) {
+          // if the coupon does not exist for a user it may be the listing coupon
           const isCouponForListing = await prisma.coupon
             .findUnique({
               where: { id: input.couponId },
@@ -178,6 +178,7 @@ export const CouponRoutes = (
             })
             .then(({ listing, coupon }) => getDefaultCouponGroupName(listing) === coupon?.groupName);
           if (isCouponForListing) {
+            // if it is the coupon for listing adding it as a coupon for the user. this way we can track that they used it
             const response = await prisma.couponsForUser.create({
               data: { couponId: input.couponId, used: true, userEmail: input.email },
             });
@@ -239,6 +240,7 @@ export const CouponRoutes = (
       // add all coupons that the user is elidible for
       return await Promise.all(couponsPromises);
     });
+
   const hasCouponBeenUsed = publicProcedure
     .input((payload: unknown) => {
       const parsedPayload = z.object({ couponId: z.number() }).parse(payload); //validate the incoming object
@@ -253,23 +255,26 @@ export const CouponRoutes = (
 
   const getCouponsValidity = async (selectedCoupon: Coupon, couponsForUser: CouponsForUser[], listings: Listing[]) => {
     let couponUsedState: COUPON_USED_STATE = "INVALID";
-
+    const listing = listings.find((l) => l.id === selectedCoupon?.listingId ?? "");
     const groupExists = await prisma.groups
       .findUnique({ where: { groupName: selectedCoupon?.groupName ?? "" } })
       .then((g) => !!g);
     const couponAvailableToUser = couponsForUser.find((c) => c.couponId === selectedCoupon.id);
-    if (couponAvailableToUser?.used) couponUsedState = "USED";
+    if (listing?.name === "Molly McGuires'") {
+      console.log(couponAvailableToUser === undefined, selectedCoupon.groupName, listing?.name);
+    }
+    if (couponAvailableToUser === undefined && selectedCoupon.groupName !== listing?.name) {
+      // needs to enroll in group
+      couponUsedState = "NEEDS_GROUP";
+    } else if (couponAvailableToUser?.used) couponUsedState = "USED";
     else if (couponIsExpired(selectedCoupon?.expirationDate as unknown as string)) couponUsedState = "EXPIRED";
-    else if (
-      getDefaultCouponGroupName(listings.find((l) => l.id === selectedCoupon?.listingId ?? "")) ===
-        selectedCoupon?.groupName ||
-      groupExists
-    ) {
+    else if (getDefaultCouponGroupName(listing) === selectedCoupon?.groupName || groupExists) {
       couponUsedState = "VALID";
     }
     return { couponId: selectedCoupon.id, couponUsedState };
   };
-  type COUPON_USED_STATE = "USED" | "EXPIRED" | "VALID" | "INVALID";
+
+  type COUPON_USED_STATE = "USED" | "EXPIRED" | "VALID" | "INVALID" | "NEEDS_GROUP";
   const getUserCouponRelation = publicProcedure
     .input((payload: unknown) => {
       const parsedPayload = GetCouponForUserBySchema.parse(payload); //validate the incoming object

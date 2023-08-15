@@ -21,7 +21,6 @@ export const couponIsExpired = (date: string | undefined): boolean => {
 };
 
 const getDefaultCouponGroupName = (listingForCoupon: Listing | null | undefined) => {
-  console.log({});
   if (!listingForCoupon) {
     return "";
   }

@@ -6,7 +6,6 @@ import express from "express";
 import { GroupsRoutes } from "./groups";
 import { ListingsRoutes } from "./listing";
 import { UserRoutes } from "./user";
-import { createData } from "../scripts/insertData";
 const PORT = process.env.PORT || 80;
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
@@ -41,7 +40,7 @@ app.use(
 app.get("/", (req, res) => res.send("Venture Wisconsin API"));
 
 app.get("/privacy-policy", function (req, res) {
-  res.sendFile(__dirname + "/privacy-policy.html");
+  res.sendFile(__dirname + "/public/privacy-policy.html");
 });
 app.listen(PORT, () => {
   console.log(PORT);

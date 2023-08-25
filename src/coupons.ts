@@ -11,6 +11,7 @@ import {
 } from "./shared";
 import { PrismaClient, Prisma, Coupon, CouponsForUser, Listing } from "@prisma/client";
 import { z } from "zod";
+import { DefaultArgs } from "@prisma/client/runtime/library";
 export const couponIsExpired = (date: string | undefined): boolean => {
   if (!date) {
     // throw Error("invalid date");
@@ -31,11 +32,7 @@ const getDefaultCouponGroupName = (listingForCoupon: Listing | null | undefined)
 };
 
 export const CouponRoutes = (
-  prisma: PrismaClient<
-    Prisma.PrismaClientOptions,
-    never,
-    Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
-  >,
+  prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
   publicProcedure: ProcedureBuilder<{
     _config: RootConfig<{
       ctx: object;

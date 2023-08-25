@@ -11,7 +11,7 @@ var CouponTypes;
     CouponTypes["percent"] = "% off";
     CouponTypes["offers"] = "offers";
     CouponTypes["dollar"] = "$ off";
-})(CouponTypes = exports.CouponTypes || (exports.CouponTypes = {}));
+})(CouponTypes || (exports.CouponTypes = CouponTypes = {}));
 exports.mockUsers = [
     {
         email: "tylerf66@gmail.com",

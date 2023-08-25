@@ -53,7 +53,11 @@ app.use("/trpc", trpcExpress.createExpressMiddleware({
     createContext,
 }));
 app.get("/", (req, res) => res.send("Venture Wisconsin API"));
+app.get("/privacy-policy", function (req, res) {
+    res.sendFile(__dirname + "/privacy-policy.html");
+});
 app.listen(PORT, () => {
+    console.log(PORT);
     // createData(prisma)
     //   .then(() => {
     //     console.log("success");

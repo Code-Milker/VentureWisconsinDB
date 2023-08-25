@@ -1,13 +1,10 @@
 import { DefaultDataTransformer, DefaultErrorShape, ProcedureBuilder, RootConfig, unsetMarker } from "@trpc/server";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { z } from "zod";
+import { DefaultArgs } from "@prisma/client/runtime/library";
 
 export const GroupsRoutes = (
-  prisma: PrismaClient<
-    Prisma.PrismaClientOptions,
-    never,
-    Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
-  >,
+  prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
   publicProcedure:
     | ProcedureBuilder<{
         _config: RootConfig<{

@@ -8,31 +8,44 @@ const copyFile = (file, dir2) => {
   var f = path.basename(file);
   var source = fs.createReadStream(file);
   var dest = fs.createWriteStream(path.resolve(dir2, f));
-
   source.pipe(dest);
   source.on("end", function () {
-    console.log("Succesfully copied");
+    // console.log("Succesfully copied");
   });
   source.on("error", function (err) {
     console.log(err);
   });
 };
 
-async function ls(path) {
+async function moveFiles(path) {
   const dir = await fs.promises.opendir(path);
   fs.rmSync("../../db-dist/node_modules", { recursive: true, force: true });
   for await (const dirent of dir) {
-    copyFile(`./dist/${dirent.name}`, `../../db-dist/`);
+    if (!(dirent.name === "src" || dirent.name === "scripts")) {
+      copyFile(`./dist/${dirent.name}`, `../../db-dist/`);
+    }
   }
   copyFile("./package.json", "../../db-dist/");
+  copyFile("./.gitignore", "../../db-dist/");
   copyFile("./procfile", "../../db-dist/");
+  // copyFile("./privacy-policy.html", "../../db-dist/");
   copyFile("./src/prisma/schema.prisma", "../../db-dist/");
+  copyFile("./src/public/privacy-policy.html", "../../db-dist/");
   fs.cp("./node_modules", "../../db-dist/node_modules", { recursive: true }, (err) => {
     if (err) {
       console.error(err);
     }
   });
-  //   copyFile("./node_modules", "../../db-dist/");
-}
+  fs.cp("./dist/src", "../../db-dist/", { recursive: true }, (err) => {
+    if (err) {
+      console.error(err);
+    }
+  });
 
-ls("./dist").catch(console.error);
+  // fs.cp("./public", "../../db-dist/public", { recursive: true }, (err) => {
+  //   if (err) {
+  //     console.error(err);
+  //   }
+  // });
+}
+moveFiles("./dist").catch(console.error);

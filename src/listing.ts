@@ -2,17 +2,14 @@ import { DefaultDataTransformer, DefaultErrorShape, ProcedureBuilder, RootConfig
 import { PrismaClient, Prisma } from "@prisma/client";
 import { USER_ROLE } from "./consts";
 import { listingSchema, getListingSchema, getAllListingsParams, deleteListingSchema } from "./shared";
+import { DefaultArgs } from "@prisma/client/runtime/library";
 
 export interface GetAllListingsParams {
   namePrefix?: string;
 }
 
 export const ListingsRoutes = (
-  prisma: PrismaClient<
-    Prisma.PrismaClientOptions,
-    never,
-    Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined
-  >,
+  prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
   publicProcedure: ProcedureBuilder<{
     _config: RootConfig<{
       ctx: object;

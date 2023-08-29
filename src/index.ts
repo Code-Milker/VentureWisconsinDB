@@ -44,11 +44,4 @@ app.get("/privacy-policy", function (req, res) {
 });
 app.listen(PORT, () => {
   console.log(PORT);
-  // createData(prisma)
-  //   .then(() => {
-  //     console.log("success");
-  //   })
-  //   .catch((e) => {
-  //     console.log(e);
-  //   });
 });

@@ -9,10 +9,10 @@ const copyFile = (file, dir2) => {
   var source = fs.createReadStream(file);
   var dest = fs.createWriteStream(path.resolve(dir2, f));
   source.pipe(dest);
-  source.on("end", function () {
+  source.on("end", function() {
     // console.log("Succesfully copied");
   });
-  source.on("error", function (err) {
+  source.on("error", function(err) {
     console.log(err);
   });
 };
@@ -28,9 +28,12 @@ async function moveFiles(path) {
   copyFile("./package.json", "../../db-dist/");
   copyFile("./.gitignore", "../../db-dist/");
   copyFile("./procfile", "../../db-dist/");
-  // copyFile("./privacy-policy.html", "../../db-dist/");
   copyFile("./src/prisma/schema.prisma", "../../db-dist/");
+
+  copyFile("./src/public/android.png", "../../db-dist/");
+  copyFile("./src/public/ture-banner.png", "../../db-dist/");
   copyFile("./src/public/privacy-policy.html", "../../db-dist/");
+  copyFile("./src/public/download-app.html", "../../db-dist/");
   fs.cp("./node_modules", "../../db-dist/node_modules", { recursive: true }, (err) => {
     if (err) {
       console.error(err);

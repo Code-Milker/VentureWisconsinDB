@@ -30,6 +30,8 @@ const appRouter = router({
   ...groupRoutes,
 });
 const app = express();
+
+app.use(express.static(__dirname + '/public'));
 app.use(
   "/trpc",
   trpcExpress.createExpressMiddleware({
@@ -39,9 +41,13 @@ app.use(
 );
 app.get("/", (req, res) => res.send("Venture Wisconsin API"));
 
-app.get("/privacy-policy", function (req, res) {
+app.get("/privacy-policy", function(req, res) {
   res.sendFile(__dirname + "/public/privacy-policy.html");
+});
+app.get("/download-app", function(req, res) {
+  res.sendFile(__dirname + "/public/download-app.html");
 });
 app.listen(PORT, () => {
   console.log(PORT);
+  console.log(__dirname)
 });

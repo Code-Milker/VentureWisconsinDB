@@ -70,7 +70,7 @@ export const UserRoutes = (
     });
 
   const getAll = publicProcedure
-    .input((payload: unknown) => {})
+    .input((payload: unknown) => { })
     .query(async ({ input }) => {
       const users = await prisma.user.findMany();
       return users;
@@ -114,13 +114,22 @@ export const UserRoutes = (
       return { ...parsedPayload, email: parsedPayload.email.toLowerCase() };
     })
     .mutation(async ({ input }) => {
-      const user = await prisma.user.findUnique({
-        where: { email: input.email },
-      });
+      console.log(input);
+      let user;
+      try {
+        user = await prisma.user.findUnique({
+          where: { email: input.email },
+        });
+      } catch (e) {
+        console.log(e)
+      }
+      console.log('user', user);
       if (user === null) {
         return false;
       }
       const isCorrectLogin = await bCrypt.compare(input.password, user.password);
+      console.log(isCorrectLogin)
+      console.log('here?')
       if (isCorrectLogin) {
         return {
           email: user.email,

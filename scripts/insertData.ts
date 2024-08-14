@@ -4,25 +4,46 @@ import bCrypt from "bcrypt";
 const prisma = new PrismaClient();
 export const createData = async () => {
   try {
-    await prisma.listing.createMany({ data: getMockListings() });
-    await prisma.groups.createMany({ data: mockGroups });
+    // Create listings one by one
+    const mockListings = getMockListings();
+    for (const listing of mockListings) {
+      await prisma.listing.create({ data: listing });
+    }
+
+    // Create groups one by one
+    for (const group of mockGroups) {
+      await prisma.groups.create({ data: group });
+    }
+
+    // Hash user passwords and create users one by one
     const mockUsersWithHashedPassword = await Promise.all(
       mockUsers.map(async (u) => {
-        return { ...u, password: await bCrypt.hash(u.password, 0) };
+        return { ...u, password: await bCrypt.hash(u.password, 10) };
       })
     );
-    await prisma.user.createMany({ data: mockUsersWithHashedPassword });
+
+    for (const user of mockUsersWithHashedPassword) {
+      await prisma.user.create({ data: user });
+    }
+
+    // Get all necessary data to create coupons
     const listings = await prisma.listing.findMany();
     const users = await prisma.user.findMany();
     const groups = await prisma.groups.findMany();
     const { bar430, dPub, mollys } = getCoupons(listings, groups, users);
-    await prisma.coupon.createMany({
-      data: [...bar430, ...dPub, ...mollys],
-    });
-    users.forEach((u) => {});
+
+    // Create coupons one by one
+    const allCoupons = [...bar430, ...dPub, ...mollys];
+    for (const coupon of allCoupons) {
+      await prisma.coupon.create({ data: coupon });
+    }
+
+    console.log("Data creation succeeded");
   } catch (e) {
-    console.log("failed on create data");
-    console.log(e);
+    console.log("Failed on create data");
+    console.error(e);
+  } finally {
+    await prisma.$disconnect();
   }
 };
 

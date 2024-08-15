@@ -1,4 +1,3 @@
-
 import AWS from 'aws-sdk';
 import multer from 'multer';
 import dotenv from 'dotenv';
@@ -19,21 +18,21 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 export const S3Routes = {
   uploadImage: async (req: any, res: any) => {
-    const file = req.file;
-
-    const params = {
-      Bucket: 'venture-wisconsin-test', // Replace with your S3 bucket name
-      Key: file.originalname, // The file name you want to save in S3
-      Body: file.buffer,
-      ContentType: file.mimetype,
-    };
-
-    try {
-      const data = await s3.upload(params).promise();
-      res.json({ message: 'File uploaded successfully', location: data.Location });
-    } catch (err) {
-      console.error('Error uploading file:', err);
-      res.status(500).send('Error uploading file');
+    const uploadedFiles: any = [];
+    for (const file of req.files.images) {
+      const params = {
+        Bucket: 'venture-wisconsin-test', // Replace with your S3 bucket name
+        Key: `${req.body.listingId}_${Date.now()}_${file.originalname}`, // Create a unique file name in S3
+        Body: file.buffer,
+        ContentType: file.mimetype,
+      };
+      try {
+        const data = await s3.upload(params).promise();
+        uploadedFiles.push({ filename: file.originalname, location: data.Location });
+      } catch (err) {
+        console.error('Error uploading file:', file.originalname, err);
+        return res.status(500).json({ message: `Error uploading file: ${file.originalname}` });
+      }
     }
   },
 

@@ -9,6 +9,7 @@ import { UserRoutes } from "./user";
 import { CouponRoutes } from "./coupons";
 import { S3Routes } from './image';  // Import the S3 routes
 
+import multer from 'multer';
 const PORT = process.env.PORT || 80;
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
@@ -38,8 +39,14 @@ app.use(cors());
 app.use(express.static(__dirname + '/public'));
 
 // Use the S3 routes
-app.post('/upload-image', S3Routes.upload.single('image'), S3Routes.uploadImage);
-app.get('/fetch-image/:key', S3Routes.fetchImage);
+//
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+app.post('/uploadImage', upload.fields([
+  { name: 'images', maxCount: 4 },
+  { name: 'listingId', maxCount: 1 } // if listingId is a file; otherwise, it's accessed via req.body
+]), S3Routes.uploadImage);
+app.get('/fetchImage/:key', S3Routes.fetchImage);
 
 app.use(
   "/trpc",

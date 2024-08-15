@@ -11,7 +11,7 @@ export const listingSchema = z.object({
   description: z.string().min(1),
   displayTitle: z.string().min(1),
   email: z.string().email().min(1),
-  image1: z.string().min(1),
+  image1: z.string().min(1).optional().nullable(),
   image2: z.string().min(1).optional().nullable(),
   image3: z.string().min(1).optional().nullable(),
   image4: z.string().min(1).optional().nullable(),

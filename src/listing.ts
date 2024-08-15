@@ -31,6 +31,7 @@ export const ListingsRoutes = (
   const create = publicProcedure
     .input((payload: unknown) => {
       const parsedPayload = listingSchema.parse(payload); //validate the incoming object
+
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
@@ -39,6 +40,7 @@ export const ListingsRoutes = (
           data: { ...input },
         })
         .then(async (listing) => {
+
           await prisma.user.findUnique({ where: { email: listing.email } });
           await prisma.user.update({ where: { email: listing.email }, data: { pendingAccountChange: true } });
           return listing;

@@ -41,11 +41,22 @@ app.use(express.static(__dirname + '/public'));
 // Use the S3 routes
 //
 const storage = multer.memoryStorage();
+
 const upload = multer({ storage: storage });
+// app.post('/uploadImage', upload.fields([
+//   { name: 'images', maxCount: 4 },
+//   { name: 'listingId', maxCount: 1 } // if listingId is a file; otherwise, it's accessed via req.body
+// ]), S3Routes.uploadImage);
 app.post('/uploadImage', upload.fields([
   { name: 'images', maxCount: 4 },
   { name: 'listingId', maxCount: 1 } // if listingId is a file; otherwise, it's accessed via req.body
-]), S3Routes.uploadImage);
+]), async (req, res, next) => {
+
+  // @ts-ignore
+  await S3Routes.uploadImage(req.files.images, req.body.listingId, res, prisma);
+
+  res.status(500).json({ success: false, message: 'images uploaded successfully' })
+});
 app.get('/fetchImage/:key', S3Routes.fetchImage);
 
 app.use(

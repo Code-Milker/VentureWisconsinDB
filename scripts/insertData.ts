@@ -30,10 +30,10 @@ export const createData = async () => {
     const listings = await prisma.listing.findMany();
     const users = await prisma.user.findMany();
     const groups = await prisma.groups.findMany();
-    const { bar430, dPub, mollys } = getCoupons(listings, groups, users);
+    const { dPub } = getCoupons(listings, groups, users);
 
     // Create coupons one by one
-    const allCoupons = [...bar430, ...dPub, ...mollys];
+    const allCoupons = [...dPub];
     for (const coupon of allCoupons) {
       await prisma.coupon.create({ data: coupon });
     }

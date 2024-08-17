@@ -35,7 +35,7 @@ const appRouter = router({
 
 const app = express();
 app.use(cors());
-
+app.use(express.json())
 app.use(express.static(__dirname + '/public'));
 
 // Use the S3 routes
@@ -43,29 +43,18 @@ app.use(express.static(__dirname + '/public'));
 const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
-// app.post('/uploadImage', upload.fields([
-//   { name: 'images', maxCount: 4 },
-//   { name: 'listingId', maxCount: 1 } // if listingId is a file; otherwise, it's accessed via req.body
-// ]), S3Routes.uploadImage);
+
 app.post('/uploadImage', upload.fields([
   { name: 'images', maxCount: 4 },
   { name: 'listingId', maxCount: 1 } // if listingId is a file; otherwise, it's accessed via req.body
 ]), async (req, res, next) => {
-
   // @ts-ignore
   await S3Routes.uploadImage(req.files.images, req.body.listingId, res, prisma);
-
-  res.status(500).json({ success: false, message: 'images uploaded successfully' })
+  res.status(200).json({ success: true, message: 'images uploaded successfully' })
 });
-app.get('/fetchImage/:key', S3Routes.fetchImage);
+// app.get('/fetchImage/:key', S3Routes.fetchImage);
+// app.post('/fetchImages', S3Routes.fetchImages);
 
-app.use(
-  "/trpc",
-  trpcExpress.createExpressMiddleware({
-    router: appRouter,
-    createContext,
-  })
-);
 
 app.get("/", (req, res) => res.send("Venture Wisconsin API"));
 
@@ -76,3 +65,11 @@ app.get("/download-app", function(req, res) {
 app.listen(PORT, () => {
   console.log('Server running on port', PORT);
 });
+
+app.use(
+  "/trpc",
+  trpcExpress.createExpressMiddleware({
+    router: appRouter,
+    createContext,
+  })
+);

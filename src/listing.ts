@@ -1,7 +1,7 @@
 import { DefaultDataTransformer, DefaultErrorShape, ProcedureBuilder, RootConfig, unsetMarker } from "@trpc/server";
 import { PrismaClient, Prisma } from "@prisma/client";
 import { USER_ROLE } from "./consts";
-import { listingSchema, getListingSchema, getAllListingsParams, deleteListingSchema } from "./shared";
+import { listingSchema, getListingSchema, getAllListingsParams, deleteListingSchema, getListingByIdSchema } from "./shared";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
 export interface GetAllListingsParams {
@@ -47,14 +47,15 @@ export const ListingsRoutes = (
         });
       return listing;
     });
-  const getByUnique = publicProcedure
+
+  const getListingById = publicProcedure
     .input((payload: unknown) => {
-      const parsedName = getListingSchema.parse(name); //validate the incoming object
-      return parsedName;
+      const parsedId = getListingByIdSchema.parse(payload); //validate the incoming object
+      return parsedId;
     })
     .query(async ({ input }) => {
       const listing = await prisma.listing.findUnique({
-        where: { name: input },
+        where: { id: input },
       });
 
       if (listing === null) {
@@ -71,6 +72,7 @@ export const ListingsRoutes = (
       const listings = await prisma.listing.findMany({
         where: { name: { startsWith: input.name }, email: { startsWith: input.email } },
       });
+
       return listings;
     });
   const getAllApprovedListings = publicProcedure
@@ -129,7 +131,7 @@ export const ListingsRoutes = (
 
   const listingRoutes = {
     listingCreate: create,
-    listingGetByUnique: getByUnique,
+    getListingById,
     listingUpdate: update,
     listingRemove: remove,
     listingGetAll: getAll,

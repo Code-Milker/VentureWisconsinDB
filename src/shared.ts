@@ -23,6 +23,7 @@ export const listingSchema = z.object({
 });
 
 export const getListingSchema = z.string();
+export const getListingByIdSchema = z.number();
 
 export const getAllListingsParams = z.object({
   name: z.string().default(""),

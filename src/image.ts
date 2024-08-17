@@ -3,6 +3,7 @@ import multer from 'multer';
 import dotenv from 'dotenv';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+import sharp from 'sharp';
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ const s3 = new AWS.S3();
 const upload = multer({ storage: multer.memoryStorage() });
 
 export const S3Routes = {
-  uploadImage: async (images: any, listingId: string, res: any, prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,) => {
+  uploadImages: async (images: any, listingId: string, res: any, prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,) => {
     const uploadedFiles: any = [];
     let index = 1
     await prisma.listing.update({ where: { id: Number(listingId) }, data: { image1: null, image2: null, image3: null, image4: null, } })
@@ -27,10 +28,14 @@ export const S3Routes = {
       return;
     }
     for (const file of images) {
+      const processedImageBuffer = await sharp(file.buffer)
+        .resize(1080, 720) // Resize to 360x240 pixels
+        .jpeg({ quality: 80 }) // Compress the image with 80% quality
+        .toBuffer();
       const params = {
         Bucket: 'venture-wisconsin-test', // Replace with your S3 bucket name
         Key: file.originalname, // Create a unique file name in S3
-        Body: file.buffer,
+        Body: processedImageBuffer,
         ContentType: file.mimetype,
       };
       try {

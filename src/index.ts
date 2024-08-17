@@ -44,16 +44,14 @@ const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });
 
-app.post('/uploadImage', upload.fields([
+app.post('/uploadImages', upload.fields([
   { name: 'images', maxCount: 4 },
   { name: 'listingId', maxCount: 1 } // if listingId is a file; otherwise, it's accessed via req.body
 ]), async (req, res, next) => {
   // @ts-ignore
-  await S3Routes.uploadImage(req.files.images, req.body.listingId, res, prisma);
+  await S3Routes.uploadImages(req.files.images, req.body.listingId, res, prisma);
   res.status(200).json({ success: true, message: 'images uploaded successfully' })
 });
-// app.get('/fetchImage/:key', S3Routes.fetchImage);
-// app.post('/fetchImages', S3Routes.fetchImages);
 
 
 app.get("/", (req, res) => res.send("Venture Wisconsin API"));

@@ -71,3 +71,34 @@ app.use(
     createContext,
   })
 );
+app.get('/redeem', (req, res) => {
+  // Extract and parse the JSON from the query parameter
+  const data: any = req.query.data;
+  if (data) {
+    try {
+      const parsedData = JSON.parse(decodeURIComponent(data));
+      const { couponId, email, listingName } = parsedData;
+
+      // Generate the HTML response
+      const htmlResponse = `
+        <html>
+          <head>
+            <title>Coupon Redemption</title>
+          </head>
+          <body>
+            <h1>Coupon Redemption</h1>
+            <p><strong>Coupon ID:</strong> ${couponId}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Listing Name:</strong> ${listingName}</p>
+          </body>
+        </html>
+      `;
+
+      res.send(htmlResponse);
+    } catch (error) {
+      res.status(400).send('Invalid data parameter');
+    }
+  } else {
+    res.status(400).send('Missing data parameter');
+  }
+});

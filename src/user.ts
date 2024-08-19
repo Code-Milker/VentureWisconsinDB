@@ -2,9 +2,9 @@ import { ProcedureBuilder, RootConfig, DefaultErrorShape, DefaultDataTransformer
 import { createNewUserSchema, deleteUserSchema, getUserSchema, pinListingSchema, updatedUserSchema } from "./shared";
 import { z } from "zod";
 import bCrypt from "bcrypt";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, Prisma } from "../prisma";
 import { USER_ROLE } from "./consts";
-import { DefaultArgs } from "@prisma/client/runtime/library";
+import { DefaultArgs } from "../prisma/runtime/library";
 export const UserRoutes = (
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
   publicProcedure) => {

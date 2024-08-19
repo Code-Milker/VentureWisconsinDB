@@ -1,7 +1,7 @@
 import { DefaultDataTransformer, DefaultErrorShape, ProcedureBuilder, RootConfig, unsetMarker } from "@trpc/server";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, Prisma } from "../prisma";
 import { z } from "zod";
-import { DefaultArgs } from "@prisma/client/runtime/library";
+import { DefaultArgs } from "../prisma/runtime/library";
 
 export const GroupsRoutes = (
   prisma: PrismaClient,

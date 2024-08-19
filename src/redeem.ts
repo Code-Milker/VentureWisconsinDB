@@ -2,7 +2,7 @@
 
 import express from 'express';
 const router = express.Router();
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../prisma";
 const prisma = new PrismaClient();
 
 export const redeem = router.get('/redeem', async (req, res) => {

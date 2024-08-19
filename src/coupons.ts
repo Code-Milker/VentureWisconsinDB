@@ -9,9 +9,9 @@ import {
   addCouponForUserByGroupSchema,
   GetCouponForUserBySchema,
 } from "./shared";
-import { PrismaClient, Prisma, Coupon, CouponsForUser, Listing } from "@prisma/client";
+import { PrismaClient, Prisma, Coupon, CouponsForUser, Listing } from "../prisma";
 import { z } from "zod";
-import { DefaultArgs } from "@prisma/client/runtime/library";
+import { DefaultArgs } from "../prisma/runtime/library";
 export const couponIsExpired = (date: string | undefined): boolean => {
   if (!date) {
     // throw Error("invalid date");

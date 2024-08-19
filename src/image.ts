@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk';
 import multer from 'multer';
 import dotenv from 'dotenv';
-import { Prisma, PrismaClient } from '@prisma/client';
-import { DefaultArgs } from '@prisma/client/runtime/library';
+import { Prisma, PrismaClient } from '../prisma';
+import { DefaultArgs } from '../prisma/runtime/library';
 import sharp from 'sharp';
 
 dotenv.config();

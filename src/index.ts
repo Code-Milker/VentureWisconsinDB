@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { inferAsyncReturnType, initTRPC } from "@trpc/server";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../prisma";
 import * as trpcExpress from "@trpc/server/adapters/express";
 import { GroupsRoutes } from "./groups";
 import { ListingsRoutes } from "./listing";

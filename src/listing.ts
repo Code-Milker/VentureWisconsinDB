@@ -10,21 +10,7 @@ export interface GetAllListingsParams {
 
 export const ListingsRoutes = (
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
-  publicProcedure: ProcedureBuilder<{
-    _config: RootConfig<{
-      ctx: object;
-      meta: object;
-      errorShape: DefaultErrorShape;
-      transformer: DefaultDataTransformer;
-    }>;
-    _ctx_out: object;
-    _input_in: typeof unsetMarker;
-    _input_out: typeof unsetMarker;
-    _output_in: typeof unsetMarker;
-    _output_out: typeof unsetMarker;
-    _meta: object;
-  }>
-) => {
+  publicProcedure) => {
   if (!publicProcedure) {
     throw Error("public Procedure not found");
   }

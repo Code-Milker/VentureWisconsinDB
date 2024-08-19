@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:prisma/dev.db"
+}
+
+model User {
+  id                   Int      @id @default(autoincrement())
+  createdAt            DateTime @default(now())
+  email                String   @unique
+  firstName            String?
+  lastName             String?
+  password             String
+  role                 String   @default("USER")
+  groupsGroupName      String?
+  pendingAccountChange Boolean  @default(false)
+}
+
+model PinnedUserListing {
+  id        Int @id @default(autoincrement())
+  userId    Int
+  listingId Int
+}
+
+model CouponsForUser {
+  id        Int     @id @default(autoincrement())
+  userEmail String  @default("")
+  couponId  Int
+  used      Boolean @default(false)
+}
+
+model Groups {
+  groupName      String @id
+  activationCode String @default("NotRequired")
+  description    String @default("some description")
+}
+
+model Coupon {
+  id                      Int      @id @default(autoincrement())
+  name                    String   @unique
+  listingId               Int?
+  description             String
+  expirationDate          DateTime @default(dbgenerated("'2019-10-12 07:20:50.520 +00:00'"))
+  email                   String
+  groupName               String?
+  dollarsOff              String?
+  amountRequiredToQualify String?
+  percentOff              String?
+  itemName                String?
+  percentOffFor           String?
+  couponType              String?
+}
+
+model Listing {
+  id           Int     @id @default(autoincrement())
+  name         String  @unique
+  address      String
+  city         String
+  zipcode      String
+  displayTitle String
+  subTitle     String?
+  category     String?
+  experience1  String?
+  experience2  String?
+  experience3  String?
+  experience4  String?
+  description  String
+  email        String
+  phone        String
+  website      String
+  image1       String?
+  image2       String?
+  image3       String?
+  image4       String?
+  code         String
+}

@@ -1,4 +1,4 @@
-import { Coupon, Groups, Listing, User } from "@prisma/client";
+import { Coupon, Groups, Listing, User } from "../prisma";
 const addDays = (date, days) => {
   var result = new Date(date);
   result.setDate(result.getDate() + days);
@@ -100,6 +100,7 @@ export const mockListings = {
     email: "daves66@gmail.com",
     phone: "(920) 233-2565",
     category: "bars",
+    code: "d pub",
     description:
       "Located in historic downtown Oshkosh. Quaint, laid back pub, full-service restaurant and amazing mugs of imported beer.",
   },

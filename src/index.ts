@@ -8,19 +8,17 @@ import { ListingsRoutes } from "./listing";
 import { UserRoutes } from "./user";
 import { CouponRoutes } from "./coupons";
 import { S3Routes } from './image';  // Import the S3 routes
-
 import multer from 'multer';
+import { redeem } from './redeem';
 const PORT = process.env.PORT || 80;
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
 const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => {
-  return {};
+  return { req, res };
 };
 type Context = inferAsyncReturnType<typeof createContext>;
 const t = initTRPC.context<Context>().create();
-
 const publicProcedure = t.procedure;
-
 const router = t.router;
 const listingRoutes = ListingsRoutes(prisma, publicProcedure);
 const couponRoutes = CouponRoutes(prisma, publicProcedure);
@@ -59,6 +57,7 @@ app.get("/", (req, res) => res.send("Venture Wisconsin API"));
 app.get("/download-app", function(req, res) {
   res.sendFile(__dirname + "/download-app.html");
 });
+app.use('/', redeem)
 
 app.listen(PORT, () => {
   console.log('Server running on port', PORT);
@@ -71,34 +70,3 @@ app.use(
     createContext,
   })
 );
-app.get('/redeem', (req, res) => {
-  // Extract and parse the JSON from the query parameter
-  const data: any = req.query.data;
-  if (data) {
-    try {
-      const parsedData = JSON.parse(decodeURIComponent(data));
-      const { couponId, email, listingName } = parsedData;
-
-      // Generate the HTML response
-      const htmlResponse = `
-        <html>
-          <head>
-            <title>Coupon Redemption</title>
-          </head>
-          <body>
-            <h1>Coupon Redemption</h1>
-            <p><strong>Coupon ID:</strong> ${couponId}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Listing Name:</strong> ${listingName}</p>
-          </body>
-        </html>
-      `;
-
-      res.send(htmlResponse);
-    } catch (error) {
-      res.status(400).send('Invalid data parameter');
-    }
-  } else {
-    res.status(400).send('Missing data parameter');
-  }
-});

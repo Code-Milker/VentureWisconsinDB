@@ -1,12 +1,19 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../prisma";
 import { mockGroups, getCoupons, getMockListings, mockUsers } from "./data";
 import bCrypt from "bcrypt";
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: [
+    'query', 'info', 'warn', 'error'],
+});
+
 export const createData = async () => {
   try {
     // Create listings one by one
+    //
+    const user = await prisma.user.findFirst();
     const mockListings = getMockListings();
     for (const listing of mockListings) {
+
       await prisma.listing.create({ data: listing });
     }
 
@@ -23,6 +30,7 @@ export const createData = async () => {
     );
 
     for (const user of mockUsersWithHashedPassword) {
+      // @ts-ignore
       await prisma.user.create({ data: user });
     }
 
@@ -73,6 +81,23 @@ export const deleteAllData = async () => {
     console.log(e);
   }
 };
+
+
+
+async function getDatabaseFileName() {
+  const result = await prisma.$queryRaw`PRAGMA database_list;`;
+  // @ts-ignore
+  const dbFileName = result[0]?.file;
+  console.log('Database file name:', dbFileName);
+}
+
+// getDatabaseFileName()
+//   .catch(e => {
+//     console.error(e);
+//   })
+//   .finally(async () => {
+//     await prisma.$disconnect();
+//   });
 const res = deleteAllData()
   .then(() => createData())
   .then(() => console.log("data import success"))

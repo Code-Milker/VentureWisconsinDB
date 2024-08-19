@@ -4,24 +4,10 @@ import { z } from "zod";
 import { DefaultArgs } from "@prisma/client/runtime/library";
 
 export const GroupsRoutes = (
-  prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
-  publicProcedure:
-    | ProcedureBuilder<{
-        _config: RootConfig<{
-          ctx: object;
-          meta: object;
-          errorShape: DefaultErrorShape;
-          transformer: DefaultDataTransformer;
-        }>;
-        _ctx_out: object;
-        _input_in: typeof unsetMarker;
-        _input_out: typeof unsetMarker;
-        _output_in: typeof unsetMarker;
-        _output_out: typeof unsetMarker;
-        _meta: object;
-      }>
-    | undefined
+  prisma: PrismaClient,
+  publicProcedure: ProcedureBuilder<any>
 ) => {
+
   if (!publicProcedure) {
     throw Error("public Procedure not found");
   }

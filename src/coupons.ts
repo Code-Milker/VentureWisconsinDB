@@ -128,9 +128,9 @@ export const CouponRoutes = (
     });
 
   const couponUse = publicProcedure
-    .input((payload: unknown) => {
-      const parsedName = useCouponSchema.parse(payload);
-      return parsedName;
+    .input(async (payload: unknown) => {
+      const useCoupon = useCouponSchema.parse(payload);
+      return useCoupon;
     })
     .mutation(async ({ input }) => {
       const user = await prisma.user.findUnique({
@@ -328,3 +328,4 @@ export const CouponRoutes = (
   };
   return couponRoutes;
 };
+

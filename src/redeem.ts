@@ -1,8 +1,10 @@
-// redeemCouponRoute.js
-
 import express from 'express';
-const router = express.Router();
 import { PrismaClient } from "../prisma";
+import dotenv from 'dotenv';
+dotenv.config();
+const serverUrl = process.env.SERVER_URL
+console.log(serverUrl);
+const router = express.Router();
 const prisma = new PrismaClient();
 
 export const redeem = router.get('/redeem', async (req, res) => {
@@ -77,9 +79,6 @@ export const redeem = router.get('/redeem', async (req, res) => {
         cursor: pointer;
         width: 100%; /* Full width on mobile */
       }
-      .button:hover {
-        background-color: #45a049;
-      }
       .disclaimer {
         margin-top: 20px;
         font-size: 16px;
@@ -111,7 +110,7 @@ export const redeem = router.get('/redeem', async (req, res) => {
       <p><strong>Listing Name:</strong> ${listing.name}</p>
       <form id="claim-form">
         <p>
-          Please enter your employee passcode to verify and claim the coupon. This ensures that only authorized personnel can redeem the coupon.
+          Please enter your employee passcode to verify and claim this coupon for ${user.firstName} ${user.lastName}. 
         </p>
         <input type="password" id="passcode" class="input-field" placeholder="Enter Passcode" required />
         <button type="button" class="button" onclick="claimCoupon()">Claim Coupon</button>
@@ -123,21 +122,25 @@ export const redeem = router.get('/redeem', async (req, res) => {
     <script>
       function claimCoupon() {
         const passcode = document.getElementById('passcode').value;
+
         if (passcode === '') {
           alert('Please enter the passcode.');
           return;
         }
-
+        if(passcode !== '${listing.code}'){
+           alert('Wrong passcode')
+        }
         // Here, you would send a request to the backend to verify the passcode and redeem the coupon
-        fetch('/redeem-coupon', {
+        fetch('${serverUrl}'+'trpc/couponUse', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ couponId: '${couponId}', passcode: passcode })
+          body: JSON.stringify({email: '${user.email}',couponId: '${couponId}' })
         })
         .then(response => response.json())
         .then(data => {
+
           if (data.success) {
             alert('Coupon successfully redeemed!');
           } else {

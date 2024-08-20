@@ -37,7 +37,6 @@ app.use(express.json())
 app.use(express.static(__dirname + '/public'));
 
 // Use the S3 routes
-//
 const storage = multer.memoryStorage();
 
 const upload = multer({ storage: storage });

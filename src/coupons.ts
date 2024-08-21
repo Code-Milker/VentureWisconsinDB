@@ -133,6 +133,7 @@ export const CouponRoutes = (
       return useCoupon;
     })
     .mutation(async ({ input }) => {
+
       const user = await prisma.user.findUnique({
         where: { email: input.email },
       });

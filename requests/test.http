@@ -1,0 +1,16 @@
+
+### Get request to fetch user data from an API
+GET http://192.168.1.115:3001/redeem?data=%7B%22couponId%22%3A42%2C%22email%22%3A%22tylerf66%40gmail.com%22%7D
+### Post request to create a new user
+
+
+# GET http://192.168.1.115:3001/redeem
+# params:
+#   data: {
+#     "couponId": 42,
+#     "email": "tylerf66@gmail.com"
+#   }
+#
+
+### Delete request to remove a user
+DELETE https://jsonplaceholder.typicode.com/users/1

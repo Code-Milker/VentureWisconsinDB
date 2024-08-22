@@ -1,12 +1,8 @@
 import { PrismaClient } from "../prisma";
 import { mockGroups, getCoupons, getMockListings, mockUsers } from "./data";
 import bCrypt from "bcrypt";
-const prisma = new PrismaClient({
-  log: [
-    'query', 'info', 'warn', 'error'],
-});
 
-export const createData = async () => {
+export const createData = async (prisma: PrismaClient) => {
   try {
     // Create listings one by one
     //
@@ -39,10 +35,10 @@ export const createData = async () => {
     const users = await prisma.user.findMany();
     const groups = await prisma.groups.findMany();
     const { dPub } = getCoupons(listings, groups, users);
-
     // Create coupons one by one
     const allCoupons = [...dPub];
     for (const coupon of allCoupons) {
+
       await prisma.coupon.create({ data: coupon });
     }
 
@@ -55,7 +51,7 @@ export const createData = async () => {
   }
 };
 
-export const deleteAllData = async () => {
+export const deleteAllData = async (prisma: PrismaClient) => {
   try {
     //delete all listings
     const listings = await prisma.listing.findMany();
@@ -84,21 +80,10 @@ export const deleteAllData = async () => {
 
 
 
-async function getDatabaseFileName() {
+async function getDatabaseFileName(prisma: PrismaClient) {
   const result = await prisma.$queryRaw`PRAGMA database_list;`;
   // @ts-ignore
   const dbFileName = result[0]?.file;
   console.log('Database file name:', dbFileName);
 }
 
-// getDatabaseFileName()
-//   .catch(e => {
-//     console.error(e);
-//   })
-//   .finally(async () => {
-//     await prisma.$disconnect();
-//   });
-const res = deleteAllData()
-  .then(() => createData())
-  .then(() => console.log("data import success"))
-  .catch(() => console.log("data import fail"));

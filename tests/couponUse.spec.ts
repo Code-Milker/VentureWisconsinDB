@@ -4,11 +4,7 @@
 import { PrismaClient } from '../prisma';
 import request from 'supertest';
 import app from '../src/index';
-import { TRPCError } from '@trpc/server';
 import { createData, deleteAllData } from '../scripts/insertData';
-import {
-  getDefaultCouponGroupName
-} from "../src/shared";
 import { mockGroups, USER } from '../scripts/data';
 
 const prisma = new PrismaClient();

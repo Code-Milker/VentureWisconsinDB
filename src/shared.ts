@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Listing } from "../prisma";
 
 export const listingSchema = z.object({
   address: z.string().min(1),
@@ -109,3 +110,13 @@ export const GetCouponForUserBySchema = z.object({
 });
 
 export const deleteUserSchema = z.string(); //validate the incoming object
+
+export const getDefaultCouponGroupName = (listingForCoupon: Listing | null | undefined) => {
+  if (!listingForCoupon) {
+    return "";
+  }
+  // alright so if a coupon doesn't have a group name explicitly given then assign it
+  // the display title and id
+  // listing can only have one default coupon
+  return `${listingForCoupon?.name}`;
+};

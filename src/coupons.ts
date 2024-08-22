@@ -9,6 +9,7 @@ import {
   useCouponSchema,
   addCouponForUserByGroupSchema,
   GetCouponForUserBySchema,
+  getDefaultCouponGroupName
 } from "./shared";
 import { PrismaClient, Prisma, Coupon, CouponsForUser, Listing } from "../prisma";
 import { z } from "zod";
@@ -22,15 +23,6 @@ export const couponIsExpired = (date: string | undefined): boolean => {
   return new Date().getTime() > new Date(date as unknown as string).getTime();
 };
 
-const getDefaultCouponGroupName = (listingForCoupon: Listing | null | undefined) => {
-  if (!listingForCoupon) {
-    return "";
-  }
-  // alright so if a coupon doesn't have a group name explicitly given then assign it
-  // the display title and id
-  // listing can only have one default coupon
-  return `${listingForCoupon?.name}`;
-};
 
 export const CouponRoutes = (
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
@@ -129,7 +121,7 @@ export const CouponRoutes = (
     });
 
 
-  const validateCouponForListing = async (couponId: number) => {
+  const getListingCoupon = async (couponId: number) => {
     const coupon = await prisma.coupon.findUnique({
       where: { id: couponId },
     });
@@ -140,8 +132,15 @@ export const CouponRoutes = (
       });
     }
 
+    if (!coupon.listingId) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Listing for coupon not found.',
+      });
+    }
+
     const listing = await prisma.listing.findUnique({
-      where: { id: coupon.listingId ?? -1 },
+      where: { id: coupon.listingId },
     });
     if (!listing) {
       throw new TRPCError({
@@ -164,6 +163,7 @@ export const CouponRoutes = (
   const couponUse = publicProcedure
     .input((payload: unknown) => useCouponSchema.parseAsync(payload))
     .mutation(async ({ input }) => {
+
       const user = await prisma.user.findUnique({
         where: { email: input.email },
       });
@@ -181,16 +181,8 @@ export const CouponRoutes = (
         },
       });
 
-      if (couponExistsForUser?.used) {
-        throw new TRPCError({
-          code: 'BAD_REQUEST',
-          message: 'This coupon has already been used.',
-        });
-      }
-
       if (!couponExistsForUser) {
-        const coupon = await validateCouponForListing(Number(input.couponId));
-
+        const coupon = await getListingCoupon(Number(input.couponId));
         // Track coupon usage for user
         const response = await prisma.couponsForUser.create({
           data: {
@@ -202,6 +194,14 @@ export const CouponRoutes = (
         return response;
       }
 
+      if (couponExistsForUser?.used) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This coupon has already been used.',
+        });
+      }
+
+
       // Mark existing coupon as used
       const response = await prisma.couponsForUser.update({
         where: { id: couponExistsForUser.id },
@@ -210,68 +210,6 @@ export const CouponRoutes = (
 
       return response;
     });
-  // const couponUse = publicProcedure
-  //   .input(async (payload: unknown) => {
-  //     const useCoupon = useCouponSchema.parse(payload);
-  //     return useCoupon;
-  //   })
-  //   .mutation(async ({ input }) => {
-  //     const user = await prisma.user.findUnique({
-  //       where: { email: input.email },
-  //     });
-  //     if (!user) {
-  //       throw new TRPCError({
-  //         code: 'NOT_FOUND',
-  //         message: 'User not found.',
-  //       });
-  //     }
-  //     if (user.id && input.email) {
-  //       const couponExistsForUser = await prisma.couponsForUser.findFirst({
-  //         where: {
-  //           AND: {
-  //             couponId: Number(input.couponId),
-  //             userEmail: input.email,
-  //           },
-  //         },
-  //       });
-  //       if (couponExistsForUser?.used === true) {
-  //         throw new TRPCError({
-  //           code: 'BAD_REQUEST',
-  //           message: 'This coupon has already been used.',
-  //         });
-  //       }
-  //       if (!couponExistsForUser) {
-  //         // if the coupon does not exist for a user it may be the listing coupon
-  //         const isCouponForListing = await prisma.coupon
-  //           .findUnique({
-  //             where: { id: Number(input.couponId) },
-  //           })
-  //           .then(async (coupon) => {
-  //             const listing = await prisma.listing.findUnique({
-  //               where: { id: coupon?.listingId ?? -1 },
-  //             });
-  //             return { coupon, listing };
-  //           })
-  //           .then(({ listing, coupon }) => getDefaultCouponGroupName(listing) === coupon?.groupName);
-  //         if (!isCouponForListing) {
-  //           throw new TRPCError({
-  //             code: 'BAD_REQUEST',
-  //             message: 'This coupon is not valid for the associated listing.',
-  //           });
-  //         }
-  //         // if it is the coupon for listing adding it as a coupon for the user. this way we can track that they used it
-  //         const response = await prisma.couponsForUser.create({
-  //           data: { couponId: Number(input.couponId), used: true, userEmail: input.email },
-  //         });
-  //         return response;
-  //       }
-  //       const response = await prisma.couponsForUser.update({
-  //         where: { id: couponExistsForUser?.id },
-  //         data: { used: true },
-  //       });
-  //       return response;
-  //     }
-  //   });
   const addCouponForUserByGroup = publicProcedure
     .input(async (payload: unknown) => {
       const parsedPayload = addCouponForUserByGroupSchema.parse(payload); //passed in the correct info

@@ -35,6 +35,9 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     pendingAccountChange: true,
   },
 ];
+export const ADMIN = mockUsers[0]
+export const LISTER = mockUsers[1]
+export const USER = mockUsers[2]
 export const mockListings = {
   // BAR_430: {
   //   image1:

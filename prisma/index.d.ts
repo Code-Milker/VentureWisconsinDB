@@ -7436,14 +7436,14 @@ export namespace Prisma {
   }
 
   export type CouponsForUserCreateInput = {
-    userEmail?: string
+    userEmail: string
     couponId: number
     used?: boolean
   }
 
   export type CouponsForUserUncheckedCreateInput = {
     id?: number
-    userEmail?: string
+    userEmail: string
     couponId: number
     used?: boolean
   }

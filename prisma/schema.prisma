@@ -28,7 +28,7 @@ model PinnedUserListing {
 
 model CouponsForUser {
   id        Int     @id @default(autoincrement())
-  userEmail String  @default("")
+  userEmail String
   couponId  Int
   used      Boolean @default(false)
 }

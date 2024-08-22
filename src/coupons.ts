@@ -1,4 +1,5 @@
 import { ProcedureBuilder, RootConfig, DefaultErrorShape, DefaultDataTransformer, unsetMarker } from "@trpc/server";
+import { TRPCError } from '@trpc/server';
 import {
   createCouponSchema,
   couponIdSchema,
@@ -127,55 +128,150 @@ export const CouponRoutes = (
       return removedCoupon.id;
     });
 
-  const couponUse = publicProcedure
-    .input(async (payload: unknown) => {
-      const useCoupon = useCouponSchema.parse(payload);
-      return useCoupon;
-    })
-    .mutation(async ({ input }) => {
 
+  const validateCouponForListing = async (couponId: number) => {
+    const coupon = await prisma.coupon.findUnique({
+      where: { id: couponId },
+    });
+    if (!coupon) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Coupon not found.',
+      });
+    }
+
+    const listing = await prisma.listing.findUnique({
+      where: { id: coupon.listingId ?? -1 },
+    });
+    if (!listing) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: 'Listing not found for this coupon.',
+      });
+    }
+
+    const isCouponValid = getDefaultCouponGroupName(listing) === coupon.groupName;
+    if (!isCouponValid) {
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'This coupon is not valid for the associated listing.',
+      });
+    }
+
+    return coupon;
+  };
+
+  const couponUse = publicProcedure
+    .input((payload: unknown) => useCouponSchema.parseAsync(payload))
+    .mutation(async ({ input }) => {
       const user = await prisma.user.findUnique({
         where: { email: input.email },
       });
-      if (user?.id && input.email) {
-        const couponExistsForUser = await prisma.couponsForUser.findFirst({
-          where: {
-            AND: {
-              couponId: input.couponId,
-              userEmail: input.email,
-            },
-          },
+      if (!user) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'User not found.',
         });
-        if (!couponExistsForUser) {
-          // if the coupon does not exist for a user it may be the listing coupon
-          const isCouponForListing = await prisma.coupon
-            .findUnique({
-              where: { id: input.couponId },
-            })
-            .then(async (coupon) => {
-              const listing = await prisma.listing.findUnique({
-                where: { id: coupon?.listingId ?? -1 },
-              });
-              return { coupon, listing };
-            })
-            .then(({ listing, coupon }) => getDefaultCouponGroupName(listing) === coupon?.groupName);
-          if (isCouponForListing) {
-            // if it is the coupon for listing adding it as a coupon for the user. this way we can track that they used it
-            const response = await prisma.couponsForUser.create({
-              data: { couponId: input.couponId, used: true, userEmail: input.email },
-            });
-            return response;
-          } else {
-            throw Error("Coupon does not exist for user and coupon is not for listing");
-          }
-        }
-        const response = await prisma.couponsForUser.update({
-          where: { id: couponExistsForUser?.id },
-          data: { used: true },
+      }
+
+      const couponExistsForUser = await prisma.couponsForUser.findFirst({
+        where: {
+          couponId: Number(input.couponId),
+          userEmail: input.email,
+        },
+      });
+
+      if (couponExistsForUser?.used) {
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: 'This coupon has already been used.',
+        });
+      }
+
+      if (!couponExistsForUser) {
+        const coupon = await validateCouponForListing(Number(input.couponId));
+
+        // Track coupon usage for user
+        const response = await prisma.couponsForUser.create({
+          data: {
+            couponId: coupon.id,
+            used: true,
+            userEmail: input.email,
+          },
         });
         return response;
       }
+
+      // Mark existing coupon as used
+      const response = await prisma.couponsForUser.update({
+        where: { id: couponExistsForUser.id },
+        data: { used: true },
+      });
+
+      return response;
     });
+  // const couponUse = publicProcedure
+  //   .input(async (payload: unknown) => {
+  //     const useCoupon = useCouponSchema.parse(payload);
+  //     return useCoupon;
+  //   })
+  //   .mutation(async ({ input }) => {
+  //     const user = await prisma.user.findUnique({
+  //       where: { email: input.email },
+  //     });
+  //     if (!user) {
+  //       throw new TRPCError({
+  //         code: 'NOT_FOUND',
+  //         message: 'User not found.',
+  //       });
+  //     }
+  //     if (user.id && input.email) {
+  //       const couponExistsForUser = await prisma.couponsForUser.findFirst({
+  //         where: {
+  //           AND: {
+  //             couponId: Number(input.couponId),
+  //             userEmail: input.email,
+  //           },
+  //         },
+  //       });
+  //       if (couponExistsForUser?.used === true) {
+  //         throw new TRPCError({
+  //           code: 'BAD_REQUEST',
+  //           message: 'This coupon has already been used.',
+  //         });
+  //       }
+  //       if (!couponExistsForUser) {
+  //         // if the coupon does not exist for a user it may be the listing coupon
+  //         const isCouponForListing = await prisma.coupon
+  //           .findUnique({
+  //             where: { id: Number(input.couponId) },
+  //           })
+  //           .then(async (coupon) => {
+  //             const listing = await prisma.listing.findUnique({
+  //               where: { id: coupon?.listingId ?? -1 },
+  //             });
+  //             return { coupon, listing };
+  //           })
+  //           .then(({ listing, coupon }) => getDefaultCouponGroupName(listing) === coupon?.groupName);
+  //         if (!isCouponForListing) {
+  //           throw new TRPCError({
+  //             code: 'BAD_REQUEST',
+  //             message: 'This coupon is not valid for the associated listing.',
+  //           });
+  //         }
+  //         // if it is the coupon for listing adding it as a coupon for the user. this way we can track that they used it
+  //         const response = await prisma.couponsForUser.create({
+  //           data: { couponId: Number(input.couponId), used: true, userEmail: input.email },
+  //         });
+  //         return response;
+  //       }
+  //       const response = await prisma.couponsForUser.update({
+  //         where: { id: couponExistsForUser?.id },
+  //         data: { used: true },
+  //       });
+  //       return response;
+  //     }
+  //   });
   const addCouponForUserByGroup = publicProcedure
     .input(async (payload: unknown) => {
       const parsedPayload = addCouponForUserByGroupSchema.parse(payload); //passed in the correct info

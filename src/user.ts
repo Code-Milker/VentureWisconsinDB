@@ -100,7 +100,6 @@ export const UserRoutes = (
       return { ...parsedPayload, email: parsedPayload.email.toLowerCase() };
     })
     .mutation(async ({ input }) => {
-      console.log(input);
       let user;
       try {
         user = await prisma.user.findUnique({

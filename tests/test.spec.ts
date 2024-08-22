@@ -45,6 +45,8 @@ describe('POST /api/v1/users', () => {
       const response = await request(app)
         .get('/redeem')
         .query({ couponId: coupon?.id, email: user?.email })
+      console.log(response.request)
+
       //
       // // Check that the status code is 200
       expect(response.status).toBe(200);

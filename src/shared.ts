@@ -72,7 +72,7 @@ export const couponIdSchema = z.object({
 export const updateCouponSchema = createCouponSchema.merge(couponIdSchema);
 export const useCouponSchema = z.object({
   email: z.string().email(),
-  couponId: z.number(),
+  couponId: z.string(),
   passcode: z.string(),
 });
 export const createNewUserSchema = z.object({

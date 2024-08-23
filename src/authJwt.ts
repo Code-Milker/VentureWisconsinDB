@@ -1,30 +1,28 @@
+import jwt from "jsonwebtoken";
 
-import jwt from 'jsonwebtoken';
-
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from "express";
 
 export const authenticateJWT = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
-  const token = req.headers.authorization?.split(' ')[1];
+  const token = req.headers.authorization?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({ message: 'No token provided' });
+    return res.status(401).json({ message: "No token provided" });
   }
 
   const user = verifyToken(token);
   if (!user) {
-    return res.status(403).json({ message: 'Invalid or expired token' });
+    return res.status(403).json({ message: "Invalid or expired token" });
   }
 
   req.user = user; // Attach user info to request object
   next();
 };
 
-
-const SECRET_KEY = process.env.JWT_SECRET || 'your_secret_key';
+const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
 
 export const generateToken = (user: { id: string; email: string }) => {
   return jwt.sign({ userId: user.id, email: user.email }, SECRET_KEY);

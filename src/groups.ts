@@ -1,13 +1,18 @@
-import { DefaultDataTransformer, DefaultErrorShape, ProcedureBuilder, RootConfig, unsetMarker } from "@trpc/server";
+import {
+  DefaultDataTransformer,
+  DefaultErrorShape,
+  ProcedureBuilder,
+  RootConfig,
+  unsetMarker,
+} from "@trpc/server";
 import { PrismaClient, Prisma } from "../prisma";
 import { z } from "zod";
 import { DefaultArgs } from "../prisma/runtime/library";
 
 export const GroupsRoutes = (
   prisma: PrismaClient,
-  publicProcedure: ProcedureBuilder<any>
+  publicProcedure: ProcedureBuilder<any>,
 ) => {
-
   if (!publicProcedure) {
     throw Error("public Procedure not found");
   }
@@ -19,10 +24,14 @@ export const GroupsRoutes = (
       const userGroupNames = await prisma.couponsForUser
         .findMany({ where: { userEmail: input.email } })
         .then((uc) => {
-          return prisma.coupon.findMany({ where: { id: { in: uc.map((c) => c.couponId) } } });
+          return prisma.coupon.findMany({
+            where: { id: { in: uc.map((c) => c.couponId) } },
+          });
         })
         .then((uc) => {
-          return [...new Set(uc.map((c) => c.groupName))].filter((c) => !!c) as string[]; // set removes dupes
+          return [...new Set(uc.map((c) => c.groupName))].filter(
+            (c) => !!c,
+          ) as string[]; // set removes dupes
         });
       const groupName = await prisma.groups.findMany();
       return groupName

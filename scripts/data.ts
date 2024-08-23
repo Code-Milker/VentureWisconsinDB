@@ -17,8 +17,8 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     password: "password123",
     role: "ADMIN",
     pendingAccountChange: false,
-    authId: '',
-    authStrategy: ''
+    authId: "",
+    authStrategy: "",
   },
   {
     email: "kyguy6969@gmail.com",
@@ -27,8 +27,8 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     password: "password123",
     role: "LISTER",
     pendingAccountChange: false,
-    authId: '',
-    authStrategy: ''
+    authId: "",
+    authStrategy: "",
   },
   {
     email: "daves66@gmail.com",
@@ -37,13 +37,13 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     password: "password123",
     role: "USER",
     pendingAccountChange: true,
-    authId: '',
-    authStrategy: ''
+    authId: "",
+    authStrategy: "",
   },
 ];
-export const ADMIN = mockUsers[0]
-export const LISTER = mockUsers[1]
-export const USER = mockUsers[2]
+export const ADMIN = mockUsers[0];
+export const LISTER = mockUsers[1];
+export const USER = mockUsers[2];
 export const mockListings = {
   // BAR_430: {
   //   image1:
@@ -228,7 +228,8 @@ const bar430Group2BuySomeGetSome: BuySomeGetSomeCoupon = {
 };
 const bar430Group3BuySomeGetSome: BuySomeGetSomeCoupon = {
   amountRequiredToQualify: "33",
-  description: "Our bogo deal caused us to close down in 10 different locations",
+  description:
+    "Our bogo deal caused us to close down in 10 different locations",
   email: "tylerf66@gmail.com",
   name: "ANTI BOGO",
   couponType: CouponTypes.offers,
@@ -274,7 +275,11 @@ export const mockGroups: Groups[] = [
   },
 ];
 
-export const getCoupons = (listings: Listing[], groups: Groups[], users: User[]) => {
+export const getCoupons = (
+  listings: Listing[],
+  groups: Groups[],
+  users: User[],
+) => {
   const updateCoupon = (c, i, listingName) => {
     const listing = listings.find((l) => l.name === listingName);
     const groupName = i === 0 ? listing?.name : groups[i - 1].groupName;
@@ -285,8 +290,10 @@ export const getCoupons = (listings: Listing[], groups: Groups[], users: User[])
       groupName: groupName as string,
     };
   };
-  const dPub: Coupon[] = dPubCoupons.map((c, i) => updateCoupon(c, i, mockListings.D_PUB.name));
+  const dPub: Coupon[] = dPubCoupons.map((c, i) =>
+    updateCoupon(c, i, mockListings.D_PUB.name),
+  );
 
   return { dPub };
 };
-export const getMockListings = () => [mockListings.D_PUB,];
+export const getMockListings = () => [mockListings.D_PUB];

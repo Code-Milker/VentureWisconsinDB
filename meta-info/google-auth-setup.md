@@ -1,4 +1,3 @@
-
 Yes, when setting up Google OAuth, part of the process involves registering your application with Google. This is done through the OAuth consent screen setup, where you provide information about your application that users will see when they authenticate using Google. Here’s how to go through the app registration process:
 
 Step-by-Step Guide to Register Your App
@@ -51,9 +50,3 @@ App Registration: Required for Google OAuth to identify and authorize your appli
 OAuth Consent Screen: Where you configure how your app is presented to users.
 OAuth 2.0 Credentials: These credentials allow your app to securely authenticate users via Google.
 This process is necessary to ensure that your app complies with Google's policies and securely handles user authentication. Once completed, your application will be set up to use Google OAuth for user authentication.
-
-
-
-
-
-

@@ -1,15 +1,15 @@
-import express from 'express';
+import express from "express";
 import { PrismaClient } from "../prisma";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
-const serverUrl = process.env.SERVER_URL
+const serverUrl = process.env.SERVER_URL;
 const router = express.Router();
 const prisma = new PrismaClient();
 
-export const redeem = router.get('/redeem', async (req, res) => {
+export const redeem = router.get("/redeem", async (req, res) => {
   const { couponId, email } = req.query;
   if (!couponId || !email) {
-    res.status(400).send('Missing couponId or email');
+    res.status(400).send("Missing couponId or email");
     return;
   }
 
@@ -19,7 +19,7 @@ export const redeem = router.get('/redeem', async (req, res) => {
     });
 
     if (!coupon?.listingId) {
-      res.status(404).send('Coupon not found');
+      res.status(404).send("Coupon not found");
       return;
     }
 
@@ -27,9 +27,9 @@ export const redeem = router.get('/redeem', async (req, res) => {
       where: { id: coupon.listingId },
     });
 
-    console.log(listing)
+    console.log(listing);
     if (!listing) {
-      res.status(404).send('Listing not found');
+      res.status(404).send("Listing not found");
       return;
     }
 
@@ -38,7 +38,7 @@ export const redeem = router.get('/redeem', async (req, res) => {
     });
 
     if (!user) {
-      res.status(404).send('User not found');
+      res.status(404).send("User not found");
       return;
     }
 
@@ -198,11 +198,9 @@ export const redeem = router.get('/redeem', async (req, res) => {
 </html>
 `;
 
-
-    res.setHeader('Content-Type', 'text/html');
+    res.setHeader("Content-Type", "text/html");
     res.send(htmlResponse);
   } catch (error) {
-    res.status(500).send('An error occurred while processing the request');
+    res.status(500).send("An error occurred while processing the request");
   }
 });
-

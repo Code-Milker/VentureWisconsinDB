@@ -1,8 +1,9 @@
-
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+  preset: "ts-jest",
+  testEnvironment: "node",
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    "^.+\\.ts$": "ts-jest",
   },
+
+  // testPathIgnorePatterns: ["/node_modules/", "/dist/"], // Ignore dist folder
 };

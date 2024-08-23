@@ -1,17 +1,17 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import multer from 'multer';
-import dotenv from 'dotenv';
-import { Prisma, PrismaClient } from '../prisma';
-import { DefaultArgs } from '../prisma/runtime/library';
-import sharp from 'sharp';
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import multer from "multer";
+import dotenv from "dotenv";
+import { Prisma, PrismaClient } from "../prisma";
+import { DefaultArgs } from "../prisma/runtime/library";
+import sharp from "sharp";
 
 dotenv.config();
 
 // Initialize the S3 client
 const s3 = new S3Client({
-  region: 'us-east-2', // Replace with your desired region, e.g., 'us-west-2'
+  region: "us-east-2", // Replace with your desired region, e.g., 'us-west-2'
   credentials: {
-    accessKeyId: 'AKIARWOZAT34JUYNCZWF', // Replace with your IAM user's access key ID
+    accessKeyId: "AKIARWOZAT34JUYNCZWF", // Replace with your IAM user's access key ID
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string, // Load from environment variable
   },
 });
@@ -44,7 +44,7 @@ export const S3Routes = {
         .toBuffer();
 
       const params = {
-        Bucket: 'venture-wisconsin-test', // Replace with your S3 bucket name
+        Bucket: "venture-wisconsin-test", // Replace with your S3 bucket name
         Key: file.originalname, // Create a unique file name in S3
         Body: processedImageBuffer,
         ContentType: file.mimetype,
@@ -61,8 +61,10 @@ export const S3Routes = {
         // uploadedFiles.push({ filename: file.originalname, location: data.Location });
         index++;
       } catch (err) {
-        console.error('Error uploading file:', file.originalname, err);
-        return res.status(500).json({ message: `Error uploading file: ${file.originalname}` });
+        console.error("Error uploading file:", file.originalname, err);
+        return res
+          .status(500)
+          .json({ message: `Error uploading file: ${file.originalname}` });
       }
     }
   },

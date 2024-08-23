@@ -28,7 +28,10 @@ const ListingsRoutes = (prisma, publicProcedure) => {
         })
             .then((listing) => __awaiter(void 0, void 0, void 0, function* () {
             yield prisma.user.findUnique({ where: { email: listing.email } });
-            yield prisma.user.update({ where: { email: listing.email }, data: { pendingAccountChange: true } });
+            yield prisma.user.update({
+                where: { email: listing.email },
+                data: { pendingAccountChange: true },
+            });
             return listing;
         }));
         return listing;
@@ -54,7 +57,10 @@ const ListingsRoutes = (prisma, publicProcedure) => {
     })
         .query(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
         const listings = yield prisma.listing.findMany({
-            where: { name: { startsWith: input.name }, email: { startsWith: input.email } },
+            where: {
+                name: { startsWith: input.name },
+                email: { startsWith: input.email },
+            },
         });
         return listings;
     }));
@@ -65,7 +71,10 @@ const ListingsRoutes = (prisma, publicProcedure) => {
     })
         .query(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
         const listings = yield prisma.listing.findMany({
-            where: { name: { startsWith: input.name }, email: { startsWith: input.email } },
+            where: {
+                name: { startsWith: input.name },
+                email: { startsWith: input.email },
+            },
         });
         const approvedListings = yield prisma.user
             .findMany({
@@ -102,11 +111,17 @@ const ListingsRoutes = (prisma, publicProcedure) => {
         const deletedListing = yield prisma.listing.delete({
             where: { name: input },
         });
-        const couponsAssociatedWithListing = yield prisma.coupon.findMany({ where: { listingId: deletedListing.id } });
-        yield prisma.couponsForUser.deleteMany({
-            where: { couponId: { in: couponsAssociatedWithListing.map((c) => c.id) } },
+        const couponsAssociatedWithListing = yield prisma.coupon.findMany({
+            where: { listingId: deletedListing.id },
         });
-        yield prisma.coupon.deleteMany({ where: { listingId: deletedListing.id } });
+        yield prisma.couponsForUser.deleteMany({
+            where: {
+                couponId: { in: couponsAssociatedWithListing.map((c) => c.id) },
+            },
+        });
+        yield prisma.coupon.deleteMany({
+            where: { listingId: deletedListing.id },
+        });
         return deletedListing;
     }));
     const listingRoutes = {

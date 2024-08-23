@@ -1,5 +1,17 @@
-import { ProcedureBuilder, RootConfig, DefaultErrorShape, DefaultDataTransformer, unsetMarker } from "@trpc/server";
-import { createNewUserSchema, deleteUserSchema, getUserSchema, pinListingSchema, updatedUserSchema } from "./shared";
+import {
+  ProcedureBuilder,
+  RootConfig,
+  DefaultErrorShape,
+  DefaultDataTransformer,
+  unsetMarker,
+} from "@trpc/server";
+import {
+  createNewUserSchema,
+  deleteUserSchema,
+  getUserSchema,
+  pinListingSchema,
+  updatedUserSchema,
+} from "./shared";
 import { z } from "zod";
 import bCrypt from "bcrypt";
 import { PrismaClient, Prisma } from "../prisma";
@@ -7,11 +19,15 @@ import { USER_ROLE } from "./consts";
 import { DefaultArgs } from "../prisma/runtime/library";
 export const UserRoutes = (
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>,
-  publicProcedure) => {
+  publicProcedure,
+) => {
   if (!publicProcedure) {
     throw Error("public Procedure not found");
   }
-  const validateUserPermission = async (session: string, expectedRole: USER_ROLE) => {
+  const validateUserPermission = async (
+    session: string,
+    expectedRole: USER_ROLE,
+  ) => {
     const user = await prisma.user.findFirst({
       where: { password: session },
     });
@@ -56,7 +72,7 @@ export const UserRoutes = (
     });
 
   const getAll = publicProcedure
-    .input((payload: unknown) => { })
+    .input((payload: unknown) => {})
     .query(async ({ input }) => {
       const users = await prisma.user.findMany();
       return users;
@@ -106,15 +122,18 @@ export const UserRoutes = (
           where: { email: input.email },
         });
       } catch (e) {
-        console.log(e)
+        console.log(e);
       }
-      console.log('user', user);
+      console.log("user", user);
       if (user === null) {
         return false;
       }
-      const isCorrectLogin = await bCrypt.compare(input.password, user.password);
-      console.log(isCorrectLogin)
-      console.log('here?')
+      const isCorrectLogin = await bCrypt.compare(
+        input.password,
+        user.password,
+      );
+      console.log(isCorrectLogin);
+      console.log("here?");
       if (isCorrectLogin) {
         return {
           email: user.email,
@@ -198,7 +217,9 @@ export const UserRoutes = (
     });
   const getUserInfo = publicProcedure
     .input((payload: unknown) => {
-      const parsedPayload = z.object({ email: z.string().email() }).parse(payload);
+      const parsedPayload = z
+        .object({ email: z.string().email() })
+        .parse(payload);
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
@@ -239,13 +260,18 @@ export const UserRoutes = (
 
   const manageUserApprovalRequest = publicProcedure
     .input((payload: unknown) => {
-      const parsedPayload = z.object({ email: z.string().email(), accepted: z.boolean() }).parse(payload);
+      const parsedPayload = z
+        .object({ email: z.string().email(), accepted: z.boolean() })
+        .parse(payload);
       return parsedPayload;
     })
     .mutation(async ({ input }) => {
       await prisma.user.update({
         where: { email: input.email },
-        data: { pendingAccountChange: false, role: input.accepted ? "LISTER" : "USER" },
+        data: {
+          pendingAccountChange: false,
+          role: input.accepted ? "LISTER" : "USER",
+        },
       });
       if (!input.accepted) {
         await prisma.listing.deleteMany({ where: { email: input.email } });
@@ -253,7 +279,9 @@ export const UserRoutes = (
     });
   const userApprovalRequestPending = publicProcedure
     .input((payload: unknown) => {
-      const parsedPayload = z.object({ email: z.string().email() }).parse(payload);
+      const parsedPayload = z
+        .object({ email: z.string().email() })
+        .parse(payload);
       return parsedPayload;
     })
     .query(async ({ input }) => {

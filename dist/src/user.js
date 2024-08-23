@@ -119,13 +119,13 @@ const UserRoutes = (prisma, publicProcedure) => {
         catch (e) {
             console.log(e);
         }
-        console.log('user', user);
+        console.log("user", user);
         if (user === null) {
             return false;
         }
         const isCorrectLogin = yield bcrypt_1.default.compare(input.password, user.password);
         console.log(isCorrectLogin);
-        console.log('here?');
+        console.log("here?");
         if (isCorrectLogin) {
             return {
                 email: user.email,
@@ -203,7 +203,9 @@ const UserRoutes = (prisma, publicProcedure) => {
     }));
     const getUserInfo = publicProcedure
         .input((payload) => {
-        const parsedPayload = zod_1.z.object({ email: zod_1.z.string().email() }).parse(payload);
+        const parsedPayload = zod_1.z
+            .object({ email: zod_1.z.string().email() })
+            .parse(payload);
         return parsedPayload;
     })
         .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
@@ -242,13 +244,18 @@ const UserRoutes = (prisma, publicProcedure) => {
     }));
     const manageUserApprovalRequest = publicProcedure
         .input((payload) => {
-        const parsedPayload = zod_1.z.object({ email: zod_1.z.string().email(), accepted: zod_1.z.boolean() }).parse(payload);
+        const parsedPayload = zod_1.z
+            .object({ email: zod_1.z.string().email(), accepted: zod_1.z.boolean() })
+            .parse(payload);
         return parsedPayload;
     })
         .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
         yield prisma.user.update({
             where: { email: input.email },
-            data: { pendingAccountChange: false, role: input.accepted ? "LISTER" : "USER" },
+            data: {
+                pendingAccountChange: false,
+                role: input.accepted ? "LISTER" : "USER",
+            },
         });
         if (!input.accepted) {
             yield prisma.listing.deleteMany({ where: { email: input.email } });
@@ -256,7 +263,9 @@ const UserRoutes = (prisma, publicProcedure) => {
     }));
     const userApprovalRequestPending = publicProcedure
         .input((payload) => {
-        const parsedPayload = zod_1.z.object({ email: zod_1.z.string().email() }).parse(payload);
+        const parsedPayload = zod_1.z
+            .object({ email: zod_1.z.string().email() })
+            .parse(payload);
         return parsedPayload;
     })
         .query(({ input }) => __awaiter(void 0, void 0, void 0, function* () {

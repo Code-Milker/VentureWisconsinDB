@@ -32,11 +32,16 @@ async function moveFiles(path) {
 
   copyFile("./src/privacy-policy.html", "../../db-dist/");
   copyFile("./src/download-app.html", "../../db-dist/");
-  fs.cp("./node_modules", "../../db-dist/node_modules", { recursive: true }, (err) => {
-    if (err) {
-      console.error(err);
-    }
-  });
+  fs.cp(
+    "./node_modules",
+    "../../db-dist/node_modules",
+    { recursive: true },
+    (err) => {
+      if (err) {
+        console.error(err);
+      }
+    },
+  );
   fs.cp("./dist/src", "../../db-dist/", { recursive: true }, (err) => {
     if (err) {
       console.error(err);

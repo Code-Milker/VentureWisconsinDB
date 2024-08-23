@@ -120,7 +120,9 @@ const CouponRoutes = (prisma, publicProcedure) => {
         const removedCoupon = yield prisma.coupon.delete({
             where: { id: input.id },
         });
-        yield prisma.couponsForUser.deleteMany({ where: { couponId: removedCoupon.id } });
+        yield prisma.couponsForUser.deleteMany({
+            where: { couponId: removedCoupon.id },
+        });
         return removedCoupon.id;
     }));
     const getListingCoupon = (couponId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -129,14 +131,14 @@ const CouponRoutes = (prisma, publicProcedure) => {
         });
         if (!coupon) {
             throw new server_1.TRPCError({
-                code: 'NOT_FOUND',
-                message: 'Coupon not found.',
+                code: "NOT_FOUND",
+                message: "Coupon not found.",
             });
         }
         if (!coupon.listingId) {
             throw new server_1.TRPCError({
-                code: 'NOT_FOUND',
-                message: 'Listing for coupon not found.',
+                code: "NOT_FOUND",
+                message: "Listing for coupon not found.",
             });
         }
         const listing = yield prisma.listing.findUnique({
@@ -144,15 +146,15 @@ const CouponRoutes = (prisma, publicProcedure) => {
         });
         if (!listing) {
             throw new server_1.TRPCError({
-                code: 'NOT_FOUND',
-                message: 'Listing not found for this coupon.',
+                code: "NOT_FOUND",
+                message: "Listing not found for this coupon.",
             });
         }
         const isCouponValid = (0, shared_1.getDefaultCouponGroupName)(listing) === coupon.groupName;
         if (!isCouponValid) {
             throw new server_1.TRPCError({
-                code: 'BAD_REQUEST',
-                message: 'This coupon is not valid for the associated listing.',
+                code: "BAD_REQUEST",
+                message: "This coupon is not valid for the associated listing.",
             });
         }
         return coupon;
@@ -165,8 +167,8 @@ const CouponRoutes = (prisma, publicProcedure) => {
         });
         if (!user) {
             throw new server_1.TRPCError({
-                code: 'NOT_FOUND',
-                message: 'User not found.',
+                code: "NOT_FOUND",
+                message: "User not found.",
             });
         }
         const couponExistsForUser = yield prisma.couponsForUser.findFirst({
@@ -189,8 +191,8 @@ const CouponRoutes = (prisma, publicProcedure) => {
         }
         if (couponExistsForUser === null || couponExistsForUser === void 0 ? void 0 : couponExistsForUser.used) {
             throw new server_1.TRPCError({
-                code: 'BAD_REQUEST',
-                message: 'This coupon has already been used.',
+                code: "BAD_REQUEST",
+                message: "This coupon has already been used.",
             });
         }
         // Mark existing coupon as used
@@ -266,7 +268,8 @@ const CouponRoutes = (prisma, publicProcedure) => {
             .findUnique({ where: { groupName: (_b = selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.groupName) !== null && _b !== void 0 ? _b : "" } })
             .then((g) => !!g);
         const couponAvailableToUser = couponsForUser.find((c) => c.couponId === selectedCoupon.id);
-        if (couponAvailableToUser === undefined && selectedCoupon.groupName !== (listing === null || listing === void 0 ? void 0 : listing.name)) {
+        if (couponAvailableToUser === undefined &&
+            selectedCoupon.groupName !== (listing === null || listing === void 0 ? void 0 : listing.name)) {
             // needs to enroll in group
             couponUsedState = "NEEDS_GROUP";
         }
@@ -274,7 +277,8 @@ const CouponRoutes = (prisma, publicProcedure) => {
             couponUsedState = "USED";
         else if ((0, exports.couponIsExpired)(selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.expirationDate))
             couponUsedState = "EXPIRED";
-        else if ((0, shared_1.getDefaultCouponGroupName)(listing) === (selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.groupName) || groupExists) {
+        else if ((0, shared_1.getDefaultCouponGroupName)(listing) === (selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.groupName) ||
+            groupExists) {
             couponUsedState = "VALID";
         }
         return { couponId: selectedCoupon.id, couponUsedState };
@@ -291,35 +295,54 @@ const CouponRoutes = (prisma, publicProcedure) => {
         })
             .then((couponsAvailableToUser) => __awaiter(void 0, void 0, void 0, function* () {
             const usersCoupons = yield prisma.coupon.findMany({
-                where: { id: { in: couponsAvailableToUser.map((cIds) => cIds.couponId) } },
+                where: {
+                    id: { in: couponsAvailableToUser.map((cIds) => cIds.couponId) },
+                },
             });
             const listings = yield prisma.listing.findMany({
                 where: { id: { in: usersCoupons.map((c) => { var _a; return (_a = c.listingId) !== null && _a !== void 0 ? _a : -1; }) } },
             });
             const couponsValidity = yield Promise.all(usersCoupons.map((c) => getCouponsValidity(c, couponsAvailableToUser, listings)));
-            return { usersCoupons, couponsAvailableToUser, listings, couponsValidity };
+            return {
+                usersCoupons,
+                couponsAvailableToUser,
+                listings,
+                couponsValidity,
+            };
         }));
         return couponResponse;
     }));
     const getCouponsForListing = publicProcedure
         .input((payload) => {
-        const parsedPayload = zod_1.z.object({ listingId: zod_1.z.number(), userEmail: zod_1.z.string().email() }).parse(payload); //validate the incoming object
+        const parsedPayload = zod_1.z
+            .object({ listingId: zod_1.z.number(), userEmail: zod_1.z.string().email() })
+            .parse(payload); //validate the incoming object
         return parsedPayload;
     })
         .query(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
-        const couponsForListing = yield prisma.coupon.findMany({ where: { listingId: input.listingId } });
-        const listings = yield prisma.listing.findMany({ where: { id: input.listingId } });
-        const couponsForUser = yield prisma.couponsForUser.findMany({ where: { userEmail: input.userEmail } });
+        const couponsForListing = yield prisma.coupon.findMany({
+            where: { listingId: input.listingId },
+        });
+        const listings = yield prisma.listing.findMany({
+            where: { id: input.listingId },
+        });
+        const couponsForUser = yield prisma.couponsForUser.findMany({
+            where: { userEmail: input.userEmail },
+        });
         const couponAvailability = yield Promise.all(couponsForListing.map((c) => getCouponsValidity(c, couponsForUser, listings)));
         return { couponsForListing, couponAvailability };
     }));
     const getCouponsForGroup = publicProcedure
         .input((payload) => {
-        const parsedPayload = zod_1.z.object({ groupName: zod_1.z.string().min(1) }).parse(payload);
+        const parsedPayload = zod_1.z
+            .object({ groupName: zod_1.z.string().min(1) })
+            .parse(payload);
         return parsedPayload;
     })
         .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
-        const couponsByGroup = yield prisma.coupon.findMany({ where: { groupName: input.groupName } });
+        const couponsByGroup = yield prisma.coupon.findMany({
+            where: { groupName: input.groupName },
+        });
         return couponsByGroup;
     }));
     const getListingForCoupon = publicProcedure
@@ -328,7 +351,9 @@ const CouponRoutes = (prisma, publicProcedure) => {
         return parsedPayload;
     })
         .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
-        const listingForCoupon = yield prisma.listing.findUnique({ where: { id: input.listingId } });
+        const listingForCoupon = yield prisma.listing.findUnique({
+            where: { id: input.listingId },
+        });
         return listingForCoupon;
     }));
     const couponRoutes = {

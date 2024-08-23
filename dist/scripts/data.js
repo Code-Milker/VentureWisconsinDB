@@ -20,8 +20,8 @@ exports.mockUsers = [
         password: "password123",
         role: "ADMIN",
         pendingAccountChange: false,
-        authId: '',
-        authStrategy: ''
+        authId: "",
+        authStrategy: "",
     },
     {
         email: "kyguy6969@gmail.com",
@@ -30,8 +30,8 @@ exports.mockUsers = [
         password: "password123",
         role: "LISTER",
         pendingAccountChange: false,
-        authId: '',
-        authStrategy: ''
+        authId: "",
+        authStrategy: "",
     },
     {
         email: "daves66@gmail.com",
@@ -40,8 +40,8 @@ exports.mockUsers = [
         password: "password123",
         role: "USER",
         pendingAccountChange: true,
-        authId: '',
-        authStrategy: ''
+        authId: "",
+        authStrategy: "",
     },
 ];
 exports.ADMIN = exports.mockUsers[0];
@@ -252,5 +252,5 @@ const getCoupons = (listings, groups, users) => {
     return { dPub };
 };
 exports.getCoupons = getCoupons;
-const getMockListings = () => [exports.mockListings.D_PUB,];
+const getMockListings = () => [exports.mockListings.D_PUB];
 exports.getMockListings = getMockListings;

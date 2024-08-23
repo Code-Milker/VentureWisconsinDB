@@ -111,7 +111,9 @@ export const GetCouponForUserBySchema = z.object({
 
 export const deleteUserSchema = z.string(); //validate the incoming object
 
-export const getDefaultCouponGroupName = (listingForCoupon: Listing | null | undefined) => {
+export const getDefaultCouponGroupName = (
+  listingForCoupon: Listing | null | undefined,
+) => {
   if (!listingForCoupon) {
     return "";
   }

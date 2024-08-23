@@ -1,10 +1,8 @@
-
-
 // Google Strategy
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { generateToken } from './authJwt';
-import { PrismaClient } from '../prisma';
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { generateToken } from "./authJwt";
+import { PrismaClient } from "../prisma";
 
 const prisma = new PrismaClient();
 
@@ -14,10 +12,10 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      callbackURL: '/auth/google/callback',
+      callbackURL: "/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log('here')
+      console.log("here");
       try {
         // Check if user already exists
         let user = await prisma.user.findUnique({
@@ -31,7 +29,7 @@ passport.use(
           user = await prisma.user.create({
             data: {
               email: profile.emails![0].value,
-              password: 'ignore', // Set password to something secure if needed, or use a different field for OAuth users
+              password: "ignore", // Set password to something secure if needed, or use a different field for OAuth users
               firstName: profile.name?.givenName,
               lastName: profile.name?.familyName,
               authId: profile.id,
@@ -40,14 +38,14 @@ passport.use(
         }
 
         // Generate JWT without expiration
-        const token = generateToken({ id: user.id + '', email: user.email });
+        const token = generateToken({ id: user.id + "", email: user.email });
 
         done(null, { user, token });
       } catch (error) {
         done(error, false);
       }
-    }
-  )
+    },
+  ),
 );
 
 // Facebook Strategy

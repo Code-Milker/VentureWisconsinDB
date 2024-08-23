@@ -23,7 +23,9 @@ const GroupsRoutes = (prisma, publicProcedure) => {
         const userGroupNames = yield prisma.couponsForUser
             .findMany({ where: { userEmail: input.email } })
             .then((uc) => {
-            return prisma.coupon.findMany({ where: { id: { in: uc.map((c) => c.couponId) } } });
+            return prisma.coupon.findMany({
+                where: { id: { in: uc.map((c) => c.couponId) } },
+            });
         })
             .then((uc) => {
             return [...new Set(uc.map((c) => c.groupName))].filter((c) => !!c); // set removes dupes

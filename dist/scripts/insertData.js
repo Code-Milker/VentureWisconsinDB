@@ -61,23 +61,36 @@ const deleteAllData = (prisma) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         //delete all listings
         const listings = yield prisma.listing.findMany();
-        yield prisma.listing.deleteMany({ where: { id: { in: listings.map((m) => m.id) } } });
+        yield prisma.listing.deleteMany({
+            where: { id: { in: listings.map((m) => m.id) } },
+        });
         // delete all coupons
         const coupons = yield prisma.coupon.findMany();
-        yield prisma.coupon.deleteMany({ where: { id: { in: coupons.map((c) => c.id) } } });
+        yield prisma.coupon.deleteMany({
+            where: { id: { in: coupons.map((c) => c.id) } },
+        });
         // delete all user coupons
         const couponsForUser = yield prisma.couponsForUser.findMany();
-        yield prisma.couponsForUser.deleteMany({ where: { id: { in: couponsForUser.map((c) => c.id) } } });
+        yield prisma.couponsForUser.deleteMany({
+            where: { id: { in: couponsForUser.map((c) => c.id) } },
+        });
         // delete all groups
         const groups = yield prisma.groups.findMany();
-        yield prisma.groups.deleteMany({ where: { groupName: { in: groups.map((g) => g.groupName) } } });
+        yield prisma.groups.deleteMany({
+            where: { groupName: { in: groups.map((g) => g.groupName) } },
+        });
         // delete all pins
         const userPins = yield prisma.pinnedUserListing.findMany();
-        yield prisma.pinnedUserListing.deleteMany({ where: { id: { in: userPins.map((p) => p.id) } } });
+        yield prisma.pinnedUserListing.deleteMany({
+            where: { id: { in: userPins.map((p) => p.id) } },
+        });
         // delete all users
         const users = yield prisma.user.findMany();
         yield prisma.user.deleteMany();
-        yield prisma.pinnedUserListing.deleteMany({ where: { id: { in: users.map((p) => p.id) } } });
+        yield prisma.pinnedUserListing.deleteMany({
+            where: { id: { in: users.map((p) => p.id) } },
+        });
+        console.log("delete data succeeded");
     }
     catch (e) {
         console.log("failed on delete data");
@@ -91,6 +104,6 @@ function getDatabaseFileName(prisma) {
         const result = yield prisma.$queryRaw `PRAGMA database_list;`;
         // @ts-ignore
         const dbFileName = (_a = result[0]) === null || _a === void 0 ? void 0 : _a.file;
-        console.log('Database file name:', dbFileName);
+        console.log("Database file name:", dbFileName);
     });
 }

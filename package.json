@@ -9,7 +9,7 @@
     "test": "jest --detectOpenHandles",
     "build": "npm run clean && npm ci && npm run format && npm run test && npm run prisma:migrate && tsc && npm run copy:prisma",
     "prisma:migrate": "prisma migrate dev && prisma generate",
-    "clean": "rimraf dist",
+    "clean": "rm -rf dist",
     "format": "prettier --write .",
     "copy:prisma": "cpx \"./prisma/**/*\" ./dist/prisma"
   },

@@ -113,7 +113,9 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   groupsGroupName: 'groupsGroupName',
-  pendingAccountChange: 'pendingAccountChange'
+  pendingAccountChange: 'pendingAccountChange',
+  authId: 'authId',
+  authStrategy: 'authStrategy'
 };
 
 exports.Prisma.PinnedUserListingScalarFieldEnum = {

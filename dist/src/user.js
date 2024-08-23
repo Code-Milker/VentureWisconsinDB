@@ -110,13 +110,22 @@ const UserRoutes = (prisma, publicProcedure) => {
         return Object.assign(Object.assign({}, parsedPayload), { email: parsedPayload.email.toLowerCase() });
     }))
         .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield prisma.user.findUnique({
-            where: { email: input.email },
-        });
+        let user;
+        try {
+            user = yield prisma.user.findUnique({
+                where: { email: input.email },
+            });
+        }
+        catch (e) {
+            console.log(e);
+        }
+        console.log('user', user);
         if (user === null) {
             return false;
         }
         const isCorrectLogin = yield bcrypt_1.default.compare(input.password, user.password);
+        console.log(isCorrectLogin);
+        console.log('here?');
         if (isCorrectLogin) {
             return {
                 email: user.email,

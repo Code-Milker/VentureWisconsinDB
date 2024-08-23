@@ -18,6 +18,8 @@ model User {
   role                 String   @default("USER")
   groupsGroupName      String?
   pendingAccountChange Boolean  @default(false)
+  authId               String   @default("filler data")
+  authStrategy         String   @default("usernamePassword")
 }
 
 model PinnedUserListing {

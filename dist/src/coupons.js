@@ -21,6 +21,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CouponRoutes = exports.couponIsExpired = void 0;
+const server_1 = require("@trpc/server");
 const shared_1 = require("./shared");
 const zod_1 = require("zod");
 const couponIsExpired = (date) => {
@@ -32,15 +33,6 @@ const couponIsExpired = (date) => {
     return new Date().getTime() > new Date(date).getTime();
 };
 exports.couponIsExpired = couponIsExpired;
-const getDefaultCouponGroupName = (listingForCoupon) => {
-    if (!listingForCoupon) {
-        return "";
-    }
-    // alright so if a coupon doesn't have a group name explicitly given then assign it
-    // the display title and id
-    // listing can only have one default coupon
-    return `${listingForCoupon === null || listingForCoupon === void 0 ? void 0 : listingForCoupon.name}`;
-};
 const CouponRoutes = (prisma, publicProcedure) => {
     if (!publicProcedure) {
         throw Error("public Procedure not found");
@@ -70,7 +62,7 @@ const CouponRoutes = (prisma, publicProcedure) => {
             throw Error("can't find listing");
         }
         if (!input.groupName) {
-            input.groupName = getDefaultCouponGroupName(listingForCoupon);
+            input.groupName = (0, shared_1.getDefaultCouponGroupName)(listingForCoupon);
         }
         const coupon = yield prisma.coupon.create({
             data: Object.assign(Object.assign({}, input), { expirationDate }),
@@ -131,55 +123,82 @@ const CouponRoutes = (prisma, publicProcedure) => {
         yield prisma.couponsForUser.deleteMany({ where: { couponId: removedCoupon.id } });
         return removedCoupon.id;
     }));
+    const getListingCoupon = (couponId) => __awaiter(void 0, void 0, void 0, function* () {
+        const coupon = yield prisma.coupon.findUnique({
+            where: { id: couponId },
+        });
+        if (!coupon) {
+            throw new server_1.TRPCError({
+                code: 'NOT_FOUND',
+                message: 'Coupon not found.',
+            });
+        }
+        if (!coupon.listingId) {
+            throw new server_1.TRPCError({
+                code: 'NOT_FOUND',
+                message: 'Listing for coupon not found.',
+            });
+        }
+        const listing = yield prisma.listing.findUnique({
+            where: { id: coupon.listingId },
+        });
+        if (!listing) {
+            throw new server_1.TRPCError({
+                code: 'NOT_FOUND',
+                message: 'Listing not found for this coupon.',
+            });
+        }
+        const isCouponValid = (0, shared_1.getDefaultCouponGroupName)(listing) === coupon.groupName;
+        if (!isCouponValid) {
+            throw new server_1.TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'This coupon is not valid for the associated listing.',
+            });
+        }
+        return coupon;
+    });
     const couponUse = publicProcedure
-        .input((payload) => {
-        const parsedName = shared_1.useCouponSchema.parse(payload);
-        return parsedName;
-    })
+        .input((payload) => shared_1.useCouponSchema.parseAsync(payload))
         .mutation(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield prisma.user.findUnique({
             where: { email: input.email },
         });
-        if ((user === null || user === void 0 ? void 0 : user.id) && input.email) {
-            const couponExistsForUser = yield prisma.couponsForUser.findFirst({
-                where: {
-                    AND: {
-                        couponId: input.couponId,
-                        userEmail: input.email,
-                    },
-                },
+        if (!user) {
+            throw new server_1.TRPCError({
+                code: 'NOT_FOUND',
+                message: 'User not found.',
             });
-            if (!couponExistsForUser) {
-                // if the coupon does not exist for a user it may be the listing coupon
-                const isCouponForListing = yield prisma.coupon
-                    .findUnique({
-                    where: { id: input.couponId },
-                })
-                    .then((coupon) => __awaiter(void 0, void 0, void 0, function* () {
-                    var _a;
-                    const listing = yield prisma.listing.findUnique({
-                        where: { id: (_a = coupon === null || coupon === void 0 ? void 0 : coupon.listingId) !== null && _a !== void 0 ? _a : -1 },
-                    });
-                    return { coupon, listing };
-                }))
-                    .then(({ listing, coupon }) => getDefaultCouponGroupName(listing) === (coupon === null || coupon === void 0 ? void 0 : coupon.groupName));
-                if (isCouponForListing) {
-                    // if it is the coupon for listing adding it as a coupon for the user. this way we can track that they used it
-                    const response = yield prisma.couponsForUser.create({
-                        data: { couponId: input.couponId, used: true, userEmail: input.email },
-                    });
-                    return response;
-                }
-                else {
-                    throw Error("Coupon does not exist for user and coupon is not for listing");
-                }
-            }
-            const response = yield prisma.couponsForUser.update({
-                where: { id: couponExistsForUser === null || couponExistsForUser === void 0 ? void 0 : couponExistsForUser.id },
-                data: { used: true },
+        }
+        const couponExistsForUser = yield prisma.couponsForUser.findFirst({
+            where: {
+                couponId: Number(input.couponId),
+                userEmail: input.email,
+            },
+        });
+        if (!couponExistsForUser) {
+            const coupon = yield getListingCoupon(Number(input.couponId));
+            // Track coupon usage for user
+            const response = yield prisma.couponsForUser.create({
+                data: {
+                    couponId: coupon.id,
+                    used: true,
+                    userEmail: input.email,
+                },
             });
             return response;
         }
+        if (couponExistsForUser === null || couponExistsForUser === void 0 ? void 0 : couponExistsForUser.used) {
+            throw new server_1.TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'This coupon has already been used.',
+            });
+        }
+        // Mark existing coupon as used
+        const response = yield prisma.couponsForUser.update({
+            where: { id: couponExistsForUser.id },
+            data: { used: true },
+        });
+        return response;
     }));
     const addCouponForUserByGroup = publicProcedure
         .input((payload) => __awaiter(void 0, void 0, void 0, function* () {
@@ -233,18 +252,18 @@ const CouponRoutes = (prisma, publicProcedure) => {
         return parsedPayload;
     })
         .query(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
-        var _b;
+        var _a;
         const coupon = yield prisma.couponsForUser.findFirst({
             where: { couponId: input.couponId },
         });
-        return (_b = coupon === null || coupon === void 0 ? void 0 : coupon.used) !== null && _b !== void 0 ? _b : false;
+        return (_a = coupon === null || coupon === void 0 ? void 0 : coupon.used) !== null && _a !== void 0 ? _a : false;
     }));
     const getCouponsValidity = (selectedCoupon, couponsForUser, listings) => __awaiter(void 0, void 0, void 0, function* () {
-        var _c;
+        var _b;
         let couponUsedState = "INVALID";
         const listing = listings.find((l) => { var _a; return (_a = l.id === (selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.listingId)) !== null && _a !== void 0 ? _a : ""; });
         const groupExists = yield prisma.groups
-            .findUnique({ where: { groupName: (_c = selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.groupName) !== null && _c !== void 0 ? _c : "" } })
+            .findUnique({ where: { groupName: (_b = selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.groupName) !== null && _b !== void 0 ? _b : "" } })
             .then((g) => !!g);
         const couponAvailableToUser = couponsForUser.find((c) => c.couponId === selectedCoupon.id);
         if (couponAvailableToUser === undefined && selectedCoupon.groupName !== (listing === null || listing === void 0 ? void 0 : listing.name)) {
@@ -255,7 +274,7 @@ const CouponRoutes = (prisma, publicProcedure) => {
             couponUsedState = "USED";
         else if ((0, exports.couponIsExpired)(selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.expirationDate))
             couponUsedState = "EXPIRED";
-        else if (getDefaultCouponGroupName(listing) === (selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.groupName) || groupExists) {
+        else if ((0, shared_1.getDefaultCouponGroupName)(listing) === (selectedCoupon === null || selectedCoupon === void 0 ? void 0 : selectedCoupon.groupName) || groupExists) {
             couponUsedState = "VALID";
         }
         return { couponId: selectedCoupon.id, couponUsedState };

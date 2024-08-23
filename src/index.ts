@@ -10,6 +10,9 @@ import { CouponRoutes } from "./coupons";
 import { S3Routes } from './image';  // Import the S3 routes
 import multer from 'multer';
 import { redeem } from './redeem';
+
+import { authenticateJWT } from './authJwt';  // Import the JWT authentication middleware
+import passport from 'passport';
 const PORT = process.env.PORT || 80;
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
@@ -58,12 +61,27 @@ app.get("/download-app", function(req, res) {
 });
 app.use('/', redeem)
 
+// app.use(passport.initialize());
+//
+// app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+//
+// app.get(
+//   '/auth/google/callback',
+//   passport.authenticate('google', { session: false }),
+//   (req, res) => {
+//     // Assuming that the user and token are passed in the done callback
+//     const { user, token } = req.user as { user: any; token: string };
+//     res.json({ user, token });
+//   }
+// );
+
 app.listen(PORT, () => {
   console.log('Server running on port', PORT);
 });
 
 app.use(
   "/trpc",
+  //TODO authenticateJWT,
   trpcExpress.createExpressMiddleware({
     router: appRouter,
     createContext,

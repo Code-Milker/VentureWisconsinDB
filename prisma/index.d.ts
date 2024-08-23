@@ -1276,6 +1276,8 @@ export namespace Prisma {
     role: string | null
     groupsGroupName: string | null
     pendingAccountChange: boolean | null
+    authId: string | null
+    authStrategy: string | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1288,6 +1290,8 @@ export namespace Prisma {
     role: string | null
     groupsGroupName: string | null
     pendingAccountChange: boolean | null
+    authId: string | null
+    authStrategy: string | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1300,6 +1304,8 @@ export namespace Prisma {
     role: number
     groupsGroupName: number
     pendingAccountChange: number
+    authId: number
+    authStrategy: number
     _all: number
   }
 
@@ -1322,6 +1328,8 @@ export namespace Prisma {
     role?: true
     groupsGroupName?: true
     pendingAccountChange?: true
+    authId?: true
+    authStrategy?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1334,6 +1342,8 @@ export namespace Prisma {
     role?: true
     groupsGroupName?: true
     pendingAccountChange?: true
+    authId?: true
+    authStrategy?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1346,6 +1356,8 @@ export namespace Prisma {
     role?: true
     groupsGroupName?: true
     pendingAccountChange?: true
+    authId?: true
+    authStrategy?: true
     _all?: true
   }
 
@@ -1445,6 +1457,8 @@ export namespace Prisma {
     role: string
     groupsGroupName: string | null
     pendingAccountChange: boolean
+    authId: string
+    authStrategy: string
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -1476,6 +1490,8 @@ export namespace Prisma {
     role?: boolean
     groupsGroupName?: boolean
     pendingAccountChange?: boolean
+    authId?: boolean
+    authStrategy?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1488,6 +1504,8 @@ export namespace Prisma {
     role?: boolean
     groupsGroupName?: boolean
     pendingAccountChange?: boolean
+    authId?: boolean
+    authStrategy?: boolean
   }
 
 
@@ -1504,6 +1522,8 @@ export namespace Prisma {
       role: string
       groupsGroupName: string | null
       pendingAccountChange: boolean
+      authId: string
+      authStrategy: string
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -1891,6 +1911,8 @@ export namespace Prisma {
     readonly role: FieldRef<"User", 'String'>
     readonly groupsGroupName: FieldRef<"User", 'String'>
     readonly pendingAccountChange: FieldRef<"User", 'Boolean'>
+    readonly authId: FieldRef<"User", 'String'>
+    readonly authStrategy: FieldRef<"User", 'String'>
   }
     
 
@@ -6757,7 +6779,9 @@ export namespace Prisma {
     password: 'password',
     role: 'role',
     groupsGroupName: 'groupsGroupName',
-    pendingAccountChange: 'pendingAccountChange'
+    pendingAccountChange: 'pendingAccountChange',
+    authId: 'authId',
+    authStrategy: 'authStrategy'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -6909,6 +6933,8 @@ export namespace Prisma {
     role?: StringFilter<"User"> | string
     groupsGroupName?: StringNullableFilter<"User"> | string | null
     pendingAccountChange?: BoolFilter<"User"> | boolean
+    authId?: StringFilter<"User"> | string
+    authStrategy?: StringFilter<"User"> | string
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6921,6 +6947,8 @@ export namespace Prisma {
     role?: SortOrder
     groupsGroupName?: SortOrderInput | SortOrder
     pendingAccountChange?: SortOrder
+    authId?: SortOrder
+    authStrategy?: SortOrder
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -6936,6 +6964,8 @@ export namespace Prisma {
     role?: StringFilter<"User"> | string
     groupsGroupName?: StringNullableFilter<"User"> | string | null
     pendingAccountChange?: BoolFilter<"User"> | boolean
+    authId?: StringFilter<"User"> | string
+    authStrategy?: StringFilter<"User"> | string
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -6948,6 +6978,8 @@ export namespace Prisma {
     role?: SortOrder
     groupsGroupName?: SortOrderInput | SortOrder
     pendingAccountChange?: SortOrder
+    authId?: SortOrder
+    authStrategy?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -6968,6 +7000,8 @@ export namespace Prisma {
     role?: StringWithAggregatesFilter<"User"> | string
     groupsGroupName?: StringNullableWithAggregatesFilter<"User"> | string | null
     pendingAccountChange?: BoolWithAggregatesFilter<"User"> | boolean
+    authId?: StringWithAggregatesFilter<"User"> | string
+    authStrategy?: StringWithAggregatesFilter<"User"> | string
   }
 
   export type PinnedUserListingWhereInput = {
@@ -7342,6 +7376,8 @@ export namespace Prisma {
     role?: string
     groupsGroupName?: string | null
     pendingAccountChange?: boolean
+    authId?: string
+    authStrategy?: string
   }
 
   export type UserUncheckedCreateInput = {
@@ -7354,6 +7390,8 @@ export namespace Prisma {
     role?: string
     groupsGroupName?: string | null
     pendingAccountChange?: boolean
+    authId?: string
+    authStrategy?: string
   }
 
   export type UserUpdateInput = {
@@ -7365,6 +7403,8 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
     pendingAccountChange?: BoolFieldUpdateOperationsInput | boolean
+    authId?: StringFieldUpdateOperationsInput | string
+    authStrategy?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateInput = {
@@ -7377,6 +7417,8 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
     pendingAccountChange?: BoolFieldUpdateOperationsInput | boolean
+    authId?: StringFieldUpdateOperationsInput | string
+    authStrategy?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -7388,6 +7430,8 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
     pendingAccountChange?: BoolFieldUpdateOperationsInput | boolean
+    authId?: StringFieldUpdateOperationsInput | string
+    authStrategy?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -7400,6 +7444,8 @@ export namespace Prisma {
     role?: StringFieldUpdateOperationsInput | string
     groupsGroupName?: NullableStringFieldUpdateOperationsInput | string | null
     pendingAccountChange?: BoolFieldUpdateOperationsInput | boolean
+    authId?: StringFieldUpdateOperationsInput | string
+    authStrategy?: StringFieldUpdateOperationsInput | string
   }
 
   export type PinnedUserListingCreateInput = {
@@ -7814,6 +7860,8 @@ export namespace Prisma {
     role?: SortOrder
     groupsGroupName?: SortOrder
     pendingAccountChange?: SortOrder
+    authId?: SortOrder
+    authStrategy?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -7830,6 +7878,8 @@ export namespace Prisma {
     role?: SortOrder
     groupsGroupName?: SortOrder
     pendingAccountChange?: SortOrder
+    authId?: SortOrder
+    authStrategy?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -7842,6 +7892,8 @@ export namespace Prisma {
     role?: SortOrder
     groupsGroupName?: SortOrder
     pendingAccountChange?: SortOrder
+    authId?: SortOrder
+    authStrategy?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {

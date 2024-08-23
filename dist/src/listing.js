@@ -33,14 +33,14 @@ const ListingsRoutes = (prisma, publicProcedure) => {
         }));
         return listing;
     }));
-    const getByUnique = publicProcedure
+    const getListingById = publicProcedure
         .input((payload) => {
-        const parsedName = shared_1.getListingSchema.parse(name); //validate the incoming object
-        return parsedName;
+        const parsedId = shared_1.getListingByIdSchema.parse(payload); //validate the incoming object
+        return parsedId;
     })
         .query(({ input }) => __awaiter(void 0, void 0, void 0, function* () {
         const listing = yield prisma.listing.findUnique({
-            where: { name: input },
+            where: { id: input },
         });
         if (listing === null) {
             throw Error("No listing found");
@@ -111,7 +111,7 @@ const ListingsRoutes = (prisma, publicProcedure) => {
     }));
     const listingRoutes = {
         listingCreate: create,
-        listingGetByUnique: getByUnique,
+        getListingById,
         listingUpdate: update,
         listingRemove: remove,
         listingGetAll: getAll,

@@ -17,6 +17,8 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     password: "password123",
     role: "ADMIN",
     pendingAccountChange: false,
+    authId: '',
+    authStrategy: ''
   },
   {
     email: "kyguy6969@gmail.com",
@@ -25,6 +27,8 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     password: "password123",
     role: "LISTER",
     pendingAccountChange: false,
+    authId: '',
+    authStrategy: ''
   },
   {
     email: "daves66@gmail.com",
@@ -33,6 +37,8 @@ export const mockUsers: Omit<User, "id" | "createdAt" | "groupsGroupName">[] = [
     password: "password123",
     role: "USER",
     pendingAccountChange: true,
+    authId: '',
+    authStrategy: ''
   },
 ];
 export const ADMIN = mockUsers[0]

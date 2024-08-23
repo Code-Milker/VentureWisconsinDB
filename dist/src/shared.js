@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserSchema = exports.GetCouponForUserBySchema = exports.addCouponForUserByGroupSchema = exports.createGroupSchema = exports.pinListingSchema = exports.updatedUserSchema = exports.getUserSchema = exports.createNewUserSchema = exports.useCouponSchema = exports.updateCouponSchema = exports.couponIdSchema = exports.getCouponSchema = exports.createCouponSchema = exports.CouponTypes = exports.getAllCouponsSchema = exports.deleteListingSchema = exports.getAllListingsParams = exports.getListingSchema = exports.listingSchema = void 0;
+exports.getDefaultCouponGroupName = exports.deleteUserSchema = exports.GetCouponForUserBySchema = exports.addCouponForUserByGroupSchema = exports.createGroupSchema = exports.pinListingSchema = exports.updatedUserSchema = exports.getUserSchema = exports.createNewUserSchema = exports.useCouponSchema = exports.updateCouponSchema = exports.couponIdSchema = exports.getCouponSchema = exports.createCouponSchema = exports.CouponTypes = exports.getAllCouponsSchema = exports.deleteListingSchema = exports.getAllListingsParams = exports.getListingByIdSchema = exports.getListingSchema = exports.listingSchema = void 0;
 const zod_1 = require("zod");
 exports.listingSchema = zod_1.z.object({
     address: zod_1.z.string().min(1),
@@ -13,7 +13,7 @@ exports.listingSchema = zod_1.z.object({
     description: zod_1.z.string().min(1),
     displayTitle: zod_1.z.string().min(1),
     email: zod_1.z.string().email().min(1),
-    image1: zod_1.z.string().min(1),
+    image1: zod_1.z.string().min(1).optional().nullable(),
     image2: zod_1.z.string().min(1).optional().nullable(),
     image3: zod_1.z.string().min(1).optional().nullable(),
     image4: zod_1.z.string().min(1).optional().nullable(),
@@ -24,6 +24,7 @@ exports.listingSchema = zod_1.z.object({
     zipcode: zod_1.z.string().min(5),
 });
 exports.getListingSchema = zod_1.z.string();
+exports.getListingByIdSchema = zod_1.z.number();
 exports.getAllListingsParams = zod_1.z.object({
     name: zod_1.z.string().default(""),
     email: zod_1.z.string().default(""),
@@ -57,7 +58,8 @@ exports.couponIdSchema = zod_1.z.object({
 exports.updateCouponSchema = exports.createCouponSchema.merge(exports.couponIdSchema);
 exports.useCouponSchema = zod_1.z.object({
     email: zod_1.z.string().email(),
-    couponId: zod_1.z.number(),
+    couponId: zod_1.z.string(),
+    passcode: zod_1.z.string(),
 });
 exports.createNewUserSchema = zod_1.z.object({
     firstName: zod_1.z.string(),
@@ -89,3 +91,13 @@ exports.GetCouponForUserBySchema = zod_1.z.object({
     userEmail: zod_1.z.string().email(),
 });
 exports.deleteUserSchema = zod_1.z.string(); //validate the incoming object
+const getDefaultCouponGroupName = (listingForCoupon) => {
+    if (!listingForCoupon) {
+        return "";
+    }
+    // alright so if a coupon doesn't have a group name explicitly given then assign it
+    // the display title and id
+    // listing can only have one default coupon
+    return `${listingForCoupon === null || listingForCoupon === void 0 ? void 0 : listingForCoupon.name}`;
+};
+exports.getDefaultCouponGroupName = getDefaultCouponGroupName;

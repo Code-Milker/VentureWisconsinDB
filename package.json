@@ -12,7 +12,7 @@
     "clean": "rm -rf dist",
     "format": "prettier --write .",
     "copy:prisma": "cpx \"./prisma/**/*\" ./dist/prisma",
-    "setup:var_data": "mkdir -p /var/data && [ ! -f /var/data/dev.db ] && cp ./prisma/dev.db /var/data/dev.db || true"
+    "setup:var_data": "mkdir -p /var/data && [ ! -f /var/data/dev.db ] && cp ./prisma/prisma/dev.db /var/data/dev.db || true"
   },
   "keywords": [],
   "author": "Tyler Fischer",

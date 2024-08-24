@@ -7,12 +7,11 @@
     "dev": "nodemon --watch src --exec ts-node src/index.ts",
     "start": "npx ts-node src/index.ts",
     "test": "jest --detectOpenHandles",
-    "build": "npm run clean && npm ci && npm run format && npm run prisma:migrate && tsc && npm run copy:prisma && npm run test ",
+    "build": "npm run clean && npm ci && npm run format && npm run prisma:migrate && tsc && npm run test ",
     "prisma:migrate": "prisma migrate deploy && prisma generate",
     "clean": "rm -rf dist",
     "format": "prettier --write .",
-    "copy:prisma": "cpx \"./prisma/**/*\" ./dist/prisma",
-    "setup:var_data": "[ ! -f /var/data/dev.db ] && cp ./prisma/prisma/dev.db /var/data/dev.db || true"
+    "copy:prisma": "cpx \"./prisma/**/*\" ./dist/prisma"
   },
   "keywords": [],
   "author": "Tyler Fischer",

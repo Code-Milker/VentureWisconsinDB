@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch src --exec ts-node src/index.ts",
-    "start": "npm run test && npm run prisma:migrate && node dist/index.js",
+    "start": "npm run test && npm run prisma:migrate && node dist/src/index.js",
     "test": "jest --detectOpenHandles",
     "build": "npm run clean && npm ci && npm run format && tsc  ",
     "prisma:migrate": "prisma migrate deploy && prisma generate",

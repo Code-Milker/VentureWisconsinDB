@@ -5,5 +5,5 @@ module.exports = {
     "^.+\\.ts$": "ts-jest",
   },
 
-  // testPathIgnorePatterns: ["/node_modules/", "/dist/"], // Ignore dist folder
+  testPathIgnorePatterns: ["/node_modules/", "/dist/"], // Ignore dist folder
 };

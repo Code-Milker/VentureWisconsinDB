@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --watch src --exec ts-node src/index.ts",
-    "start": "npm run prisma:migrate && node dist/index.js",
+    "start": "npm run test && npm run prisma:migrate && node dist/index.js",
     "test": "jest --detectOpenHandles",
-    "build": "npm run clean && npm ci && npm run format && tsc && npm run test ",
+    "build": "npm run clean && npm ci && npm run format && tsc  ",
     "prisma:migrate": "prisma migrate deploy && prisma generate",
     "clean": "rm -rf dist",
     "format": "prettier --write .",

@@ -6,6 +6,10 @@ import { PrismaClient } from "../prisma";
 
 const prisma = new PrismaClient();
 
+export enum AuthTypes {
+  google = "google",
+  offers = "email",
+}
 // Google Strategy
 passport.use(
   new GoogleStrategy(
@@ -15,30 +19,59 @@ passport.use(
       callbackURL: "/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log("here");
       try {
-        // Check if user already exists
+
+        console.log('here')
+        console.log(profile)
+        //   // Check if user already exists
+        if (!profile.emails?.length) {
+          return done(Error('no email found'), false);
+        }
+        const email = profile?.emails[0].value;
+        const firstName = profile.name!.givenName;
+        const lastName = profile.name!.familyName;
+        const accessTokenValue = accessToken;
+        // if (email) {
+        //   return done(Error('no email found'), false);
+        // }
         let user = await prisma.user.findUnique({
           where: {
-            id: Number(profile.id),
+            email: email
           },
         });
 
-        // If user does not exist, create a new user
+        let token;
         if (!user) {
           user = await prisma.user.create({
             data: {
-              email: profile.emails![0].value,
-              password: "ignore", // Set password to something secure if needed, or use a different field for OAuth users
-              firstName: profile.name?.givenName,
-              lastName: profile.name?.familyName,
-              authId: profile.id,
+              email,
+              firstName,
+              lastName,
+              authStrategy: AuthTypes.google
             },
           });
         }
+        token = generateToken({ id: user.id + "", email: user.email });
 
-        // Generate JWT without expiration
-        const token = generateToken({ id: user.id + "", email: user.email });
+        user = await prisma.user.update({
+          where: { email: email },
+          data: {
+            authStrategy: AuthTypes.google
+          },
+        });
+
+        //
+        //   // If user does not exist, create a new user
+        console.log(
+          {
+            email,
+            password: "ignore", // Set password to something secure if needed, or use a different field for OAuth users
+            firstName,
+            lastName,
+            authId: token
+          })
+        //
+        //   // Generate JWT without expiration
 
         done(null, { user, token });
       } catch (error) {

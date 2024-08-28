@@ -10,8 +10,13 @@ import { CouponRoutes } from "./coupons";
 import { S3Routes } from "./image"; // Import the S3 routes
 import multer from "multer";
 import { redeem } from "./redeem";
-import { authenticateJWT } from "./authJwt"; // Import the JWT authentication middleware
+import adminRouter from "./admin";
+import './authStrategies'
 import passport from "passport";
+
+import { engine } from "express-handlebars";
+
+// Set up Handlebars as the view engine
 export type AppRouter = typeof appRouter;
 const prisma = new PrismaClient();
 const createContext = ({
@@ -39,7 +44,16 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
+app.engine("hbs", engine({
+  extname: '.hbs',
+  defaultLayout: false, // Use false if you're not using a default layout
+  // layoutsDir: __dirname + "/views", // Path to layouts directory if you use it
+  partialsDir: __dirname + "/views/partials" // Path to partials directory,
+}));
+app.set("view engine", "hbs");
+app.set("views", __dirname + "/views");
 
+// Add this line to specify the partials directory
 // Use the S3 routes
 const storage = multer.memoryStorage();
 
@@ -67,24 +81,24 @@ app.post(
 
 app.get("/", (req, res) => res.send("Venture Wisconsin API"));
 
-app.get("/download-app", function (req, res) {
+app.get("/download-app", function(req, res) {
   res.sendFile(__dirname + "/download-app.html");
 });
 app.use("/", redeem);
 
-// app.use(passport.initialize());
-//
-// app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-//
-// app.get(
-//   '/auth/google/callback',
-//   passport.authenticate('google', { session: false }),
-//   (req, res) => {
-//     // Assuming that the user and token are passed in the done callback
-//     const { user, token } = req.user as { user: any; token: string };
-//     res.json({ user, token });
-//   }
-// );
+app.use(passport.initialize());
+
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get(
+  '/auth/google/callback',
+  passport.authenticate('google', { session: false }),
+  (req, res) => {
+    // Assuming that the user and token are passed in the done callback
+    const { user, token } = req.user as { user: any; token: string };
+    res.json({ user, token });
+  }
+);
 
 app.use(
   "/trpc",
@@ -93,4 +107,10 @@ app.use(
     createContext,
   }),
 );
+
+
+// Other imports and setup code...
+
+// Use the admin router
+app.use(adminRouter);
 export default app;

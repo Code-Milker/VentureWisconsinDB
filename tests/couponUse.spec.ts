@@ -3,9 +3,7 @@ import request from "supertest";
 import app from "../src/indexSetup";
 import { createData, deleteAllData } from "../scripts/insertData";
 import { mockGroups, USER } from "../scripts/data";
-
 const prisma = new PrismaClient();
-
 describe("POST /trpc/couponUse", () => {
   beforeEach(async () => {
     // Clean up the database before tests
@@ -18,7 +16,7 @@ describe("POST /trpc/couponUse", () => {
     await prisma.$disconnect();
   });
 
-  it("should successfully redeem a valid non listing coupon", async () => {
+  it("should successfully redeem a valid non listing coupon ", async () => {
     const user = await prisma.user.findFirst({ where: { email: USER.email } });
     expect(user).toBeDefined();
     const group = await prisma.groups.findFirst({
@@ -39,6 +37,7 @@ describe("POST /trpc/couponUse", () => {
         groupName: mockGroups[0].groupName, // Use d pub
       },
     });
+
     const couponForUser = await prisma.couponsForUser.create({
       data: { couponId: coupon.id, userEmail: user!.email },
     });
@@ -60,7 +59,6 @@ describe("POST /trpc/couponUse", () => {
     expect(user).toBeDefined();
     const listing = await prisma.listing.findFirst();
     expect(listing).toBeDefined();
-
     // Create a coupon with a groupName that does not correspond to any listing
     const coupon = await prisma.coupon.create({
       data: {

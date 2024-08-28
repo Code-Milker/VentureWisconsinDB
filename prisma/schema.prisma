@@ -14,12 +14,11 @@ model User {
   email                String   @unique
   firstName            String?
   lastName             String?
-  password             String
   role                 String   @default("USER")
   groupsGroupName      String?
   pendingAccountChange Boolean  @default(false)
-  authId               String   @default("filler data")
-  authStrategy         String   @default("usernamePassword")
+  jwt                  String?
+  authStrategy         String // google, email login 
 }
 
 model PinnedUserListing {

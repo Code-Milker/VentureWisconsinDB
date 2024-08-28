@@ -29,7 +29,7 @@ export const UserRoutes = (
     expectedRole: USER_ROLE,
   ) => {
     const user = await prisma.user.findFirst({
-      where: { password: session },
+      where: { jwt: session },
     });
     if (user === null) return false;
     return user.role === expectedRole;
@@ -51,7 +51,7 @@ export const UserRoutes = (
       });
       return {
         ...user,
-        session: user.password,
+        session: user.jwt,
         role: user.role,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -72,7 +72,7 @@ export const UserRoutes = (
     });
 
   const getAll = publicProcedure
-    .input((payload: unknown) => {})
+    .input((payload: unknown) => { })
     .query(async ({ input }) => {
       const users = await prisma.user.findMany();
       return users;

@@ -1,0 +1,41 @@
+
+  <style>
+    body {
+      display: flex;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .sidebar {
+      width: 200px;
+      padding: 15px;
+      background-color: #f4f4f4;
+      border-right: 1px solid #ddd;
+    }
+    .sidebar ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      margin: 10px 0;
+    }
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #333;
+    }
+    .content {
+      padding: 15px;
+      flex-grow: 1;
+    }
+  </style>
+<div class="sidebar">
+  <ul>
+    <li><a href="/listing/create">Listing Create</a></li>
+    <li><a href="/listing/update">Listing Update</a></li>
+    <li><a href="/listing/delete">Listing Delete</a></li>
+    <li><a href="/listing/account-requests">Listing Account Requests</a></li>
+    <li><a href="/coupon/create">Create Coupon</a></li>
+    <li><a href="/coupon/update">Update Coupon</a></li>
+    <li><a href="/coupon/delete">Delete Coupon</a></li>
+    <li><a href="/user/update">Update User</a></li>
+  </ul>
+</div>

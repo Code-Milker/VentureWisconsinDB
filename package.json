@@ -11,7 +11,11 @@
     "prisma:migrate": "prisma migrate deploy && prisma generate",
     "clean": "rm -rf dist",
     "format": "prettier --write .",
-    "copy:prisma": "cpx \"./prisma/**/*\" ./dist/prisma"
+    "copy:prisma": "cpx \"./prisma/**/*\" ./dist/prisma",
+    "create-listings": "ts-node scripts/addListings.ts",
+    "generate-groups": "ts-node scripts/addCouponGroups.ts",
+    "generate-coupons": "ts-node scripts/addCoupons.ts",
+    "generate-data": "npm run create-listings && npm run generate-groups && npm run generate-coupons"
   },
   "keywords": [],
   "author": "Tyler Fischer",
@@ -48,6 +52,8 @@
     "@types/supertest": "^6.0.2",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
+    "csv-parse": "^5.5.6",
+    "csv-parser": "^3.0.0",
     "dotenv": "^16.4.5",
     "express": "^4.18.2",
     "express-handlebars": "^8.0.1",

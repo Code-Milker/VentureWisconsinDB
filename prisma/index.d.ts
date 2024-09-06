@@ -7815,14 +7815,14 @@ export namespace Prisma {
 
   export type GroupsCreateInput = {
     groupName: string
-    activationCode?: string
-    description?: string
+    activationCode: string
+    description: string
   }
 
   export type GroupsUncheckedCreateInput = {
     groupName: string
-    activationCode?: string
-    description?: string
+    activationCode: string
+    description: string
   }
 
   export type GroupsUpdateInput = {
@@ -7839,8 +7839,8 @@ export namespace Prisma {
 
   export type GroupsCreateManyInput = {
     groupName: string
-    activationCode?: string
-    description?: string
+    activationCode: string
+    description: string
   }
 
   export type GroupsUpdateManyMutationInput = {

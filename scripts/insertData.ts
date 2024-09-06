@@ -20,7 +20,7 @@ export const createData = async (prisma: PrismaClient) => {
     // Hash user passwords and create users one by one
     const mockUsersWithHashedPassword = await Promise.all(
       mockUsers.map(async (u) => {
-        return { ...u, password: await bCrypt.hash(u.password, 10) };
+        return { ...u, password: await bCrypt.hash('', 10) };
       }),
     );
 

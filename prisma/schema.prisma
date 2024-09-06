@@ -36,8 +36,8 @@ model CouponsForUser {
 
 model Groups {
   groupName      String @id
-  activationCode String @default("NotRequired")
-  description    String @default("some description")
+  activationCode String
+  description    String
 }
 
 model Coupon {

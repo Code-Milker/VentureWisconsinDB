@@ -1,11 +1,4 @@
 import {
-  ProcedureBuilder,
-  RootConfig,
-  DefaultErrorShape,
-  DefaultDataTransformer,
-  unsetMarker,
-} from "@trpc/server";
-import {
   createNewUserSchema,
   deleteUserSchema,
   getUserSchema,
@@ -43,11 +36,8 @@ export const UserRoutes = (
     .mutation(async ({ input }) => {
       const hashedPassword = await bCrypt.hash(input.password, 0);
       let role = "USER";
-      if (input.email === "tylerf66@gmail.com") {
-        role = "ADMIN";
-      }
       const user = await prisma.user.create({
-        data: { ...input, password: hashedPassword, role },
+        data: { ...input, jws: hashedPassword, role, },
       });
       return {
         ...user,
@@ -106,52 +96,52 @@ export const UserRoutes = (
       return res.id;
     });
 
-  const userLogin = publicProcedure
-    .input(async (payload: unknown) => {
-      const loginSchema = z.object({
-        email: z.string().min(1),
-        password: z.string().min(8),
-      });
-      const parsedPayload = loginSchema.parse(payload);
-      return { ...parsedPayload, email: parsedPayload.email.toLowerCase() };
-    })
-    .mutation(async ({ input }) => {
-      let user;
-      try {
-        user = await prisma.user.findUnique({
-          where: { email: input.email },
-        });
-      } catch (e) {
-        console.log(e);
-      }
-      console.log("user", user);
-      if (user === null) {
-        return false;
-      }
-      const isCorrectLogin = await bCrypt.compare(
-        input.password,
-        user.password,
-      );
-      console.log(isCorrectLogin);
-      console.log("here?");
-      if (isCorrectLogin) {
-        return {
-          email: user.email,
-          session: user.password,
-          role: user.role,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        };
-      } else {
-        return {
-          email: null,
-          session: null,
-          role: null,
-          firstName: null,
-          lastName: null,
-        };
-      }
-    });
+  // const userLogin = publicProcedure
+  //   .input(async (payload: unknown) => {
+  //     const loginSchema = z.object({
+  //       email: z.string().min(1),
+  //       password: z.string().min(8),
+  //     });
+  //     const parsedPayload = loginSchema.parse(payload);
+  //     return { ...parsedPayload, email: parsedPayload.email.toLowerCase() };
+  //   })
+  //   .mutation(async ({ input }) => {
+  //     let user;
+  //     try {
+  //       user = await prisma.user.findUnique({
+  //         where: { email: input.email },
+  //       });
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //     console.log("user", user);
+  //     if (user === null) {
+  //       return false;
+  //     }
+  //     const isCorrectLogin = await bCrypt.compare(
+  //       input.password,
+  //       user.password,
+  //     );
+  //     console.log(isCorrectLogin);
+  //     console.log("here?");
+  //     if (isCorrectLogin) {
+  //       return {
+  //         email: user.email,
+  //         session: user.password,
+  //         role: user.role,
+  //         firstName: user.firstName,
+  //         lastName: user.lastName,
+  //       };
+  //     } else {
+  //       return {
+  //         email: null,
+  //         session: null,
+  //         role: null,
+  //         firstName: null,
+  //         lastName: null,
+  //       };
+  //     }
+  //   });
 
   const userUnPinListing = publicProcedure
     .input((payload: unknown) => {
@@ -298,7 +288,7 @@ export const UserRoutes = (
     userUpdate: update,
     userRemove: remove,
     userGetAll: getAll,
-    userLogin,
+    // userLogin,
     userPinListing,
     userUnPinListing,
     getUserPins,

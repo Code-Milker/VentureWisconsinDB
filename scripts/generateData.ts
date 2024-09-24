@@ -1,49 +1,18 @@
 import { PrismaClient } from "../prisma";
-import { mockGroups, getCoupons, getMockListings, mockUsers } from "./data";
-import bCrypt from "bcrypt";
+import { generateGroups } from "./addCouponGroups";
+import { addCouponsFromCSV } from "./addCoupons";
+import { addListings } from "./addListings";
+import { mockUsers } from './data'
 
 export const createData = async (prisma: PrismaClient) => {
   try {
-    // Create listings one by one
-    //
-    const user = await prisma.user.findFirst();
-    const mockListings = getMockListings();
-    for (const listing of mockListings) {
-      await prisma.listing.create({ data: listing });
-    }
-
-    // Create groups one by one
-    for (const group of mockGroups) {
-      await prisma.groups.create({ data: group });
-    }
-
-    // Hash user passwords and create users one by one
-    const mockUsersWithHashedPassword = await Promise.all(
-      mockUsers.map(async (u) => {
-        return { ...u, password: await bCrypt.hash('', 10) };
-      }),
-    );
-
-    for (const user of mockUsersWithHashedPassword) {
-      // @ts-ignore
+    await deleteAllData(prisma)
+    for (const user of mockUsers) {
       await prisma.user.create({ data: user });
     }
-
-    // Get all necessary data to create coupons
-    const listings = await prisma.listing.findMany();
-    const users = await prisma.user.findMany();
-    const groups = await prisma.groups.findMany();
-    const { dPub } = getCoupons(listings, groups, users);
-    // Create coupons one by one
-    const allCoupons = [...dPub];
-    for (const coupon of allCoupons) {
-      await prisma.coupon.create({ data: coupon });
-    }
-
-    console.log("Data creation succeeded");
-  } catch (e) {
-    console.log("Failed on create data");
-    console.error(e);
+    await addListings(prisma)
+    await generateGroups(prisma)
+    await addCouponsFromCSV(prisma)
   } finally {
     await prisma.$disconnect();
   }
@@ -89,9 +58,6 @@ export const deleteAllData = async (prisma: PrismaClient) => {
   }
 };
 
-async function getDatabaseFileName(prisma: PrismaClient) {
-  const result = await prisma.$queryRaw`PRAGMA database_list;`;
-  // @ts-ignore
-  const dbFileName = result[0]?.file;
-  console.log("Database file name:", dbFileName);
-}
+createData(new PrismaClient())
+  .then(res => { console.log('success: ', res) })
+  .catch(err => { console.log('error:', err) })

@@ -3,9 +3,8 @@ import { PrismaClient } from "../prisma";
 import fs from 'fs';
 import csv from 'csv-parser';
 
-const prisma = new PrismaClient();
 
-async function addCouponsFromCSV() {
+export async function addCouponsFromCSV(prisma: PrismaClient) {
   await prisma.coupon.deleteMany();
   // Path to your CSV file
   const csvFilePath = './scripts/coupons.csv';
@@ -54,12 +53,10 @@ async function addCouponsFromCSV() {
           }
 
           // Insert the coupon into the database
-          console.log(coupon)
           await prisma.coupon.create({
             data: coupon,
           });
 
-          console.log(`Coupon added for listing: ${listing.name}`);
         } catch (error) {
           console.error(
             `Error adding coupon for listing: ${couponData.listingName}`,
@@ -73,8 +70,3 @@ async function addCouponsFromCSV() {
     });
 }
 
-addCouponsFromCSV().catch((e) => {
-  console.error(e);
-  prisma.$disconnect();
-  process.exit(1);
-});

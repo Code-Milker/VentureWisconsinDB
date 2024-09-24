@@ -1,10 +1,8 @@
 
 import { PrismaClient } from "../prisma";
 
-const prisma = new PrismaClient();
-
 // Define creative group names based on the actual listing categories and descriptions
-const generateGroups = async () => {
+export const generateGroups = async (prisma: PrismaClient) => {
   const groups = [
     {
       groupName: "Historic Coffee Experiences",
@@ -60,7 +58,3 @@ const generateGroups = async () => {
   }
 };
 
-// Run the function to generate the groups
-(async () => {
-  await generateGroups();
-})();

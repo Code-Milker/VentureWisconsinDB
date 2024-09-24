@@ -2,9 +2,7 @@
 import { PrismaClient } from "../prisma";
 import { parse } from "csv-parse/sync";
 import * as fs from 'fs';
-import { deleteAllData } from "./insertData";
 
-const prisma = new PrismaClient();
 
 // Function to parse CSV data
 const parseCSV = (filePath: string) => {
@@ -16,7 +14,10 @@ const parseCSV = (filePath: string) => {
 };
 
 // Function to add listings to the database
-const addListings = async (listings: any[]) => {
+export const addListings = async (prisma: PrismaClient) => {
+
+  const filePath = './scripts/listings.csv'; // Update this path as needed
+  const listings = parseCSV(filePath);
   try {
     for (const listing of listings) {
       await prisma.listing.create({
@@ -57,10 +58,3 @@ const generateRandomCode = () => {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 };
 
-// Main function to run the script
-(async () => {
-  deleteAllData(prisma)
-  const filePath = './scripts/listings.csv'; // Update this path as needed
-  const listings = parseCSV(filePath);
-  await addListings(listings);
-})();

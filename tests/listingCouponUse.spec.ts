@@ -1,7 +1,7 @@
 import { PrismaClient } from "../prisma";
 import request from "supertest";
 import app from "../src/indexSetup";
-import { createData, deleteAllData } from "../scripts/insertData";
+import { createData, deleteAllData } from "../scripts/generateData";
 
 const prisma = new PrismaClient();
 

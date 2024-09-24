@@ -1,6 +1,6 @@
 import request from "supertest";
 import { PrismaClient } from "../prisma";
-import { createData, deleteAllData } from "../scripts/insertData";
+import { deleteAllData } from "../scripts/generateData";
 import app from "../src/indexSetup"; // Assuming your Express app is exported from a file named app.ts
 
 const PORT = 80;

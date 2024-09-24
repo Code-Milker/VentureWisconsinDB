@@ -12,10 +12,7 @@
     "clean": "rm -rf dist",
     "format": "prettier --write .",
     "copy:prisma": "cpx \"./prisma/**/*\" ./dist/prisma",
-    "create-listings": "ts-node scripts/addListings.ts",
-    "generate-groups": "ts-node scripts/addCouponGroups.ts",
-    "generate-coupons": "ts-node scripts/addCoupons.ts",
-    "generate-data": "npm run create-listings && npm run generate-groups && npm run generate-coupons"
+    "generate-data": "ts-node scripts/generateData.ts"
   },
   "keywords": [],
   "author": "Tyler Fischer",

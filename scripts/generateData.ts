@@ -2,17 +2,17 @@ import { PrismaClient } from "../prisma";
 import { generateGroups } from "./addCouponGroups";
 import { addCouponsFromCSV } from "./addCoupons";
 import { addListings } from "./addListings";
-import { mockUsers } from './data'
+import { mockUsers } from "./data";
 
-export const createData = async (prisma: PrismaClient) => {
+export const generateData = async (prisma: PrismaClient) => {
   try {
-    await deleteAllData(prisma)
+    await deleteAllData(prisma);
     for (const user of mockUsers) {
       await prisma.user.create({ data: user });
     }
-    await addListings(prisma)
-    await generateGroups(prisma)
-    await addCouponsFromCSV(prisma)
+    await addListings(prisma);
+    await generateGroups(prisma);
+    await addCouponsFromCSV(prisma);
   } finally {
     await prisma.$disconnect();
   }
@@ -58,6 +58,10 @@ export const deleteAllData = async (prisma: PrismaClient) => {
   }
 };
 
-createData(new PrismaClient())
-  .then(res => { console.log('success: ', res) })
-  .catch(err => { console.log('error:', err) })
+generateData(new PrismaClient())
+  .then((res) => {
+    console.log("success: ", res);
+  })
+  .catch((err) => {
+    console.log("error:", err);
+  });

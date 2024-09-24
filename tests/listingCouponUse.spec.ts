@@ -1,7 +1,7 @@
 import { PrismaClient } from "../prisma";
 import request from "supertest";
 import app from "../src/indexSetup";
-import { createData, deleteAllData } from "../scripts/generateData";
+import { generateData, deleteAllData } from "../scripts/generateData";
 
 const prisma = new PrismaClient();
 
@@ -9,7 +9,7 @@ describe("POST /trpc/couponUse", () => {
   beforeEach(async () => {
     // Clean up the database before tests
     await deleteAllData(prisma);
-    await createData(prisma);
+    await generateData(prisma);
   });
 
   afterAll(async () => {

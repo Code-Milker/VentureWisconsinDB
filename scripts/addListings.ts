@@ -1,12 +1,10 @@
-
 import { PrismaClient } from "../prisma";
 import { parse } from "csv-parse/sync";
-import * as fs from 'fs';
-
+import * as fs from "fs";
 
 // Function to parse CSV data
 const parseCSV = (filePath: string) => {
-  const fileContent = fs.readFileSync(filePath, { encoding: 'utf-8' });
+  const fileContent = fs.readFileSync(filePath, { encoding: "utf-8" });
   return parse(fileContent, {
     columns: true,
     skip_empty_lines: true,
@@ -15,8 +13,7 @@ const parseCSV = (filePath: string) => {
 
 // Function to add listings to the database
 export const addListings = async (prisma: PrismaClient) => {
-
-  const filePath = './scripts/listings.csv'; // Update this path as needed
+  const filePath = "./scripts/listings.csv"; // Update this path as needed
   const listings = parseCSV(filePath);
   try {
     for (const listing of listings) {
@@ -45,9 +42,9 @@ export const addListings = async (prisma: PrismaClient) => {
         },
       });
     }
-    console.log('All listings have been added.');
+    console.log("All listings have been added.");
   } catch (e) {
-    console.error('Error adding listings:', e);
+    console.error("Error adding listings:", e);
   } finally {
     await prisma.$disconnect();
   }
@@ -57,4 +54,3 @@ export const addListings = async (prisma: PrismaClient) => {
 const generateRandomCode = () => {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 };
-

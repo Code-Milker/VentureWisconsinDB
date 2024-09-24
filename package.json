@@ -24,6 +24,7 @@
     "@types/node": "^18.11.18",
     "chokidar": "^3.6.0",
     "cpx": "^1.2.1",
+    "handlebars-loader": "^1.7.3",
     "jest": "^29.7.0",
     "nodemon": "^3.1.4",
     "prettier": "^3.3.3",
@@ -65,6 +66,14 @@
     "zod": "^3.20.2"
   },
   "prettier": {
-    "printWidth": 80
+    "printWidth": 80,
+    "overrides": [
+      {
+        "files": "**/*.hbs",
+        "options": {
+          "parser": "angular"
+        }
+      }
+    ]
   }
 }

@@ -20,12 +20,11 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
-
-        console.log('here')
-        console.log(profile)
+        console.log("here");
+        console.log(profile);
         //   // Check if user already exists
         if (!profile.emails?.length) {
-          return done(Error('no email found'), false);
+          return done(Error("no email found"), false);
         }
         const email = profile?.emails[0].value;
         const firstName = profile.name!.givenName;
@@ -36,7 +35,7 @@ passport.use(
         // }
         let user = await prisma.user.findUnique({
           where: {
-            email: email
+            email: email,
           },
         });
 
@@ -47,7 +46,7 @@ passport.use(
               email,
               firstName,
               lastName,
-              authStrategy: AuthTypes.google
+              authStrategy: AuthTypes.google,
             },
           });
         }
@@ -56,20 +55,19 @@ passport.use(
         user = await prisma.user.update({
           where: { email: email },
           data: {
-            authStrategy: AuthTypes.google
+            authStrategy: AuthTypes.google,
           },
         });
 
         //
         //   // If user does not exist, create a new user
-        console.log(
-          {
-            email,
-            password: "ignore", // Set password to something secure if needed, or use a different field for OAuth users
-            firstName,
-            lastName,
-            authId: token
-          })
+        console.log({
+          email,
+          password: "ignore", // Set password to something secure if needed, or use a different field for OAuth users
+          firstName,
+          lastName,
+          authId: token,
+        });
         //
         //   // Generate JWT without expiration
 

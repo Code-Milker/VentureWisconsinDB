@@ -1,6 +1,6 @@
 import request from "supertest";
 import { PrismaClient } from "../prisma";
-import { deleteAllData } from "../scripts/generateData";
+import { deleteAllData, generateData } from "../scripts/generateData";
 import app from "../src/indexSetup"; // Assuming your Express app is exported from a file named app.ts
 
 const PORT = 80;
@@ -9,7 +9,7 @@ describe("POST /api/v1/users", () => {
   beforeAll(async () => {
     // Clean up the database before tests
     await deleteAllData(prisma);
-    await createData(prisma);
+    await generateData(prisma);
   });
 
   afterAll(async () => {

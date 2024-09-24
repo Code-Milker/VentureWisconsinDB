@@ -11,7 +11,7 @@ import { S3Routes } from "./image"; // Import the S3 routes
 import multer from "multer";
 import { redeem } from "./redeem";
 import adminRouter from "./admin";
-import './authStrategies'
+import "./authStrategies";
 import passport from "passport";
 
 import { engine } from "express-handlebars";
@@ -44,12 +44,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
-app.engine("hbs", engine({
-  extname: '.hbs',
-  defaultLayout: false, // Use false if you're not using a default layout
-  // layoutsDir: __dirname + "/views", // Path to layouts directory if you use it
-  partialsDir: __dirname + "/views/partials" // Path to partials directory,
-}));
+app.engine(
+  "hbs",
+  engine({
+    extname: ".hbs",
+    defaultLayout: false, // Use false if you're not using a default layout
+    // layoutsDir: __dirname + "/views", // Path to layouts directory if you use it
+    partialsDir: __dirname + "/views/partials", // Path to partials directory,
+  }),
+);
 app.set("view engine", "hbs");
 app.set("views", __dirname + "/views");
 
@@ -81,23 +84,26 @@ app.post(
 
 app.get("/", (req, res) => res.send("Venture Wisconsin API"));
 
-app.get("/download-app", function(req, res) {
+app.get("/download-app", function (req, res) {
   res.sendFile(__dirname + "/download-app.html");
 });
 app.use("/", redeem);
 
 app.use(passport.initialize());
 
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] }),
+);
 
 app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', { session: false }),
+  "/auth/google/callback",
+  passport.authenticate("google", { session: false }),
   (req, res) => {
     // Assuming that the user and token are passed in the done callback
     const { user, token } = req.user as { user: any; token: string };
     res.json({ user, token });
-  }
+  },
 );
 
 app.use(
@@ -107,7 +113,6 @@ app.use(
     createContext,
   }),
 );
-
 
 // Other imports and setup code...
 

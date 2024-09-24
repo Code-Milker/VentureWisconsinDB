@@ -66,5 +66,3 @@ type PercentOffItemCoupon = CouponBase & {
   itemName: string;
 };
 type PercentOffBillCoupon = Omit<PercentOffItemCoupon, "itemName">;
-
-

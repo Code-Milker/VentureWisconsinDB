@@ -37,7 +37,7 @@ export const UserRoutes = (
       const hashedPassword = await bCrypt.hash(input.password, 0);
       let role = "USER";
       const user = await prisma.user.create({
-        data: { ...input, jws: hashedPassword, role, },
+        data: { ...input, jws: hashedPassword, role },
       });
       return {
         ...user,
@@ -62,7 +62,7 @@ export const UserRoutes = (
     });
 
   const getAll = publicProcedure
-    .input((payload: unknown) => { })
+    .input((payload: unknown) => {})
     .query(async ({ input }) => {
       const users = await prisma.user.findMany();
       return users;
